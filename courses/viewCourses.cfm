@@ -1,6 +1,5 @@
 <!--- Thomas Dye, July 2016 --->
 <main>
-	<a href="" title="View All">View All</a>
 	<a href="#A" title="A">A</a>
 	<a href="#C" title="C">C</a>
 	<h3 id="A">A</h3>

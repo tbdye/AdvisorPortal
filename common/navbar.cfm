@@ -1,6 +1,6 @@
 <!--- Thomas Dye, July 2016 --->
 <nav>
-	<a href="advise.cfm" title="Advise student">Advise student</a>
+	<a href="advisor.cfm" title="Advise student">Advise student</a>
 	<a href="dashboard.cfm" title="Dashboard">Dashboard</a>
 	<a href="courses.cfm" title="Completed courses">Completed courses</a>
 	<a href="degrees.cfm" title="Degree plans">Degree plans</a>

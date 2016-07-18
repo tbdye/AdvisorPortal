@@ -3,7 +3,8 @@
 <html>
 	<cfinclude template="styles/default.cfm" >
     <body>
-		<cfinclude template="account/disclaimer.cfm" >
-		<cfinclude template="account/createAccountForm.cfm" >
+		<section aria-label="Password recovery" id="recovery">
+			<p>Placeholder for password recovery</p>
+		</section>
     </body>
 </html>

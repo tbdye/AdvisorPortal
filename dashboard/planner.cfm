@@ -42,7 +42,7 @@
 					<input type="text" name="courseCode">
 					<input type="submit" value="Add">
 				</form>
-				<a href="" title="Look up available courses">Look up available courses</a>
+				<a href="courses/lookupCourse.cfm" title="Look up available courses" target="_blank">Look up available courses</a>
 			<table>
 			</table>
 		<h4>Social Sciences</h4>

@@ -9,7 +9,7 @@
 			</select>
 			<input type="submit" value="Change active plan">
 		</form>
-		<a href="" title="Degree name">Degree name</a>
+		<a href="degrees/viewDegree.cfm" title="Degree name" target="_blank">Degree name</a>
 		<p>School name</p>
 		<p>Degree type</p>
 </section>

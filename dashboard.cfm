@@ -6,7 +6,7 @@
 		<cfinclude template="common/header.cfm" >
 		<cfinclude template="common/navbar.cfm" >
 		<section aria-label="Dashboard" id="dashboard">
-			<h2>Dashboard</h2>
+			<h2>Dashboard<!--- for User Name---></h2>
 				<p>Provide some instructions on how the dashboard works and initial steps to get started using the Advisor Services Portal.</p>
 		</section>
 		<!---<cfinclude template="dashboard/gettingStarted.cfm" >--->
