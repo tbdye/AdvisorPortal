@@ -1,3 +1,4 @@
+<!--- Thomas Dye, July 2016 --->
 <!---<cfquery name="qPhotographer">
 	SELECT * FROM Photographer WHERE featured = 1
 </cfquery>
@@ -11,12 +12,12 @@
 </cfscript>--->
 
 <cfmodule template="../includes/header.cfm"
-	pagetitle = "Advisor Services Portal - Home Page">
+	pagetitle = "Advisor Service Portal - Home Page">
 	
-    <h1>Test page</h1>
-	<!---<cfoutput><h2>#items[1].getFirstName()# #items[1].getLastName()#</h2></cfoutput>--->
+    <h1>Main page</h1>
+<!---	<cfoutput><h2>#items[1].getFirstName()# #items[1].getLastName()#</h2></cfoutput>
 
-	<!---<cfmodule template="../tags/photodisplay.cfm"
+	<cfmodule template="../tags/photodisplay.cfm"
 		photos="#photos#">--->
-	
+	<a href="../login/logout.cfm">Logout</a>
 <cfmodule template="../includes/footer.cfm">
