@@ -6,6 +6,6 @@
 	<cfproperty name="password" ormtype="string" >
 	<cfproperty name="salt" ormtype="string" >
 	
-	<cfproperty name="STUDENTS" fieldtype="one-to-one" cfc="STUDENTS" mappedby="ACCOUNTS" >
-	<cfproperty name="FACULTY" fieldtype="one-to-one" cfc="FACULTY" mappedby="ACCOUNTS" >
+	<cfproperty name="STUDENTS" fieldtype="one-to-one" cfc="STUDENTS" >
+	<cfproperty name="FACULTY" fieldtype="one-to-one" cfc="FACULTY" >
 </cfcomponent>

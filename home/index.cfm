@@ -1,9 +1,13 @@
 <!--- Thomas Dye, July 2016 --->
 <cfscript>
-	ormReload();
+	/*ormReload();*/
 	accounts = EntityLoad("Accounts");
-	students = EntityLoad("Students");
-	faculty = EntityLoad("Faculty");
+	/*students = EntityLoad("Students");
+	faculty = EntityLoad("Faculty");*/
+	
+	WriteDump(accounts);
+	/*WriteDump(students);
+	WriteDump(faculty);*/
 </cfscript>
 
 <cfmodule template="../includes/header.cfm"
