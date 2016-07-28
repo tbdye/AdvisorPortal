@@ -27,9 +27,7 @@
 				<!--- Perform simple validation on form fields --->
 				<cfif !len(trim(form.emailAddress))>
 					<cfset errorBean.addError('An email address is required.', 'emailAddress')>
-				</cfif>
-				
-				<cfif !IsValid("email", trim(form.emailAddress))>
+				<cfelseif !IsValid("email", trim(form.emailAddress))>
 					<cfset errorBean.addError('The email address is not valid.', 'emailAddress')>
 				</cfif>
 				
@@ -47,6 +45,8 @@
 				<cfquery name="qGetAccount">
 					SELECT
 						id,
+						first_name,
+						last_name,
 						email,
 						password,
 						salt
@@ -73,12 +73,12 @@
 				    </cfquery>
 				    <cfif qGetStudent.RecordCount>
 				    	<!--- Found student record, so log in --->
-				    	<cfloginuser name="#trim(form.emailAddress)#" password="#form.password#" roles="student">
+				    	<cfloginuser name="#qGetAccount.first_name# #qGetAccount.last_name#" password="#form.password#" roles="student">
 				    <cfelse>
 				    	<cfquery name="qGetFaculty">
 					      	SELECT
 					      		accounts_id,
-					      		editor
+					      		editor,
 					      		administrator
 				      		FROM
 				      			FACULTY
@@ -88,13 +88,13 @@
 				
 				    	<cfif qGetFaculty.RecordCount && qGetFaculty.administrator>
 				    		<!--- Log in as a faculty administrator --->
-				    		<cfloginuser name="#trim(form.emailAddress)#" password="#form.password#" roles="administrator,editor,advisor">
+				    		<cfloginuser name="#qGetAccount.first_name# #qGetAccount.last_name#" password="#form.password#" roles="administrator,editor,advisor">
 				    	<cfelseif qGetFaculty.RecordCount && qGetFaculty.editor>
 				    		<!--- Log in as a faculty editor --->
-				    		<cfloginuser name="#trim(form.emailAddress)#" password="#form.password#" roles="editor,advisor">
+				    		<cfloginuser name="#qGetAccount.first_name# #qGetAccount.last_name#" password="#form.password#" roles="editor,advisor">
 				    	<cfelseif qGetFaculty.RecordCount>
 				    		<!--- Log in as a faculty advisor --->
-				    		<cfloginuser name="#trim(form.emailAddress)#" password="#form.password#" roles="advisor">
+				    		<cfloginuser name="#qGetAccount.first_name# #qGetAccount.last_name#" password="#form.password#" roles="advisor">
 				    	<cfelse>
 				    		<!--- An account record exists, but a faculty record does not, so stop here --->
 				    		<cfset errorBean.addError('The account could not be loaded; please contact the administrator.', 'accounts_id')>
@@ -118,17 +118,13 @@
 				
 				<cfif !len(trim(form.studentId))>
 					<cfset errorBean.addError('A student ID number is required.', 'studentId')>
-				</cfif>
-				
-				<cfif !IsValid("integer", trim(form.studentId))>
+				<cfelseif !IsValid("integer", trim(form.studentId))>
 					<cfset errorBean.addError('Enter the student ID as a number with no spaces', 'studentId')>
 				</cfif>
 				
 				<cfif !len(trim(form.emailAddress))>
 					<cfset errorBean.addError('An email address is required.', 'emailAddress')>
-				</cfif>
-				
-				<cfif !IsValid("email", trim(form.emailAddress))>
+				<cfelseif !IsValid("email", trim(form.emailAddress))>
 					<cfset errorBean.addError('The email address is not valid.', 'emailAddress')>
 				</cfif>
 				
@@ -200,6 +196,8 @@
 				<cfquery name="qGetAccount">
 					SELECT
 						id,
+						first_name,
+						last_name,
 						email,
 						password,
 						salt
@@ -221,7 +219,7 @@
 				
 				<!--- Log in the user in if the account was created successfully --->
 				<cfif qGetAccount.RecordCount>
-					<cfloginuser name="#trim(form.emailAddress)#" password="#form.password#" roles="student">
+					<cfloginuser name="#qGetAccount.first_name# #qGetAccount.last_name#" password="#form.password#" roles="student">
 				<cfelse>
 					<cfset errorBean.addError('Unable to create account.', 'emailAddress')>
 				</cfif>
