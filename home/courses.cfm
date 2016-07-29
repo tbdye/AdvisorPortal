@@ -5,5 +5,5 @@
 
 <cfset errorBean=createObject('ASP.cfc.errorBean').init()>
 
-<cfinclude template="../model/dashboard.cfm">
+<cfinclude template="../model/courses.cfm">
 <cfreturn>

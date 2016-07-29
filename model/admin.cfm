@@ -1,6 +1,6 @@
 <!--- Thomas Dye, July 2016 --->
-<cfif !IsUserInRole("administrator")>
-	<cflocation url="../login/logout.cfm">
+<cfif !isDefined("errorBean")>
+	<cflocation url="../home/admin.cfm">
 </cfif>
 
 <cfmodule template="../includes/header.cfm"
