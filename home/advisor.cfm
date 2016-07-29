@@ -39,12 +39,10 @@
 	<!--- Handle student ID search results. --->
 	<cfif !qGetStudent.RecordCount>
 		<cfset errorBean.addError('No records found for that student ID.', 'studentId')>
-		<cfinclude template="../model/advisor.cfm">
-		<cfreturn>
-	<cfelse>
-		<cfinclude template="../model/advisor.cfm">
-		<cfreturn>
 	</cfif>
+	
+	<cfinclude template="../model/advisor.cfm">
+	<cfreturn>
 	
 <!--- Display all students --->
 <cfelseif isDefined("url.search") && url.search EQ 'all'>
@@ -76,7 +74,7 @@
 			STUDENTS s ON a.id = s.accounts_id
 	</cfquery>
 	
-	<!--- Passively validate the student ID in the URL against known students. --->
+	<!--- Don't trust url variables, so passively validate the student ID in the URL against known students. --->
 	<cfloop query="qGetStudent">
 		<cfif url.advise EQ qGetStudent.student_id>
 			<!--- Student matched, so setup the advising session. --->
