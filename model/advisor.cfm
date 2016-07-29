@@ -49,7 +49,11 @@
 			</cfloop>
 		</table>
 	<cfelse>
-		<p>No student selected.</p>
+		<cfif isDefined("session.studentId")>
+			<p><a href="?advise=end" title="End advising session">Stop advising <cfoutput>#session.studentName#</cfoutput></a></p>
+		<cfelse>
+			<p>No student selected.</p>
+		</cfif>
 	</cfif>
 	
 <cfmodule template="../includes/footer.cfm">

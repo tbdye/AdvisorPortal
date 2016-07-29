@@ -63,7 +63,7 @@
 	<cfreturn>
 	
 <!--- Advise student --->
-<cfelseif isDefined('url.advise')>
+<cfelseif isDefined('url.advise') && url.advise NEQ 'end'>
 	<cfquery name="qGetStudent">
 		SELECT
 			a.id,
@@ -90,6 +90,12 @@
 	<cfset errorBean.addError('Unable to advise this student.', 'studentId')>
 	<cfinclude template="../model/advisor.cfm">
 	<cfreturn>
+
+<!--- End the advising session. --->
+<cfelseif isDefined('url.advise') && url.advise EQ 'end'>
+	<cfset StructDelete(session, "studentId")>
+	<cfset StructDelete(session, "studentName")>
+	<cflocation url="../home/advisor.cfm">
 	
 <!--- Display default landing page. --->
 <cfelse>

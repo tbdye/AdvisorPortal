@@ -29,9 +29,11 @@
 				<a href="advisor.cfm" title="Advise student">Advise student</a>
 			</cfif>
 			
-			<a href="dashboard.cfm" title="Dashboard">Dashboard</a>
-			<a href="courses.cfm" title="Completed courses">Completed courses</a>
-			<a href="degrees.cfm" title="Degree plans">Degree plans</a>
+			<cfif IsUserInRole("student") || isDefined("session.studentId")>
+				<a href="dashboard.cfm" title="Dashboard">Dashboard</a>
+				<a href="courses.cfm" title="Completed courses">Completed courses</a>
+				<a href="degrees.cfm" title="Degree plans">Degree plans</a>
+			</cfif>
 			
 			<cfif IsUserInRole("editor")>
 				<a href="editCourses.cfm" title="Edit courses">Edit courses</a>
