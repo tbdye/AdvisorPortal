@@ -25,7 +25,7 @@
 <div id="main">
     <cfif attributes.includeNavBar>
 	    <div id="navBar">
-			<cfif IsUserInRole("advisor") || IsUserInRole("editor") || IsUserInRole("administrator")>
+			<cfif IsUserInRole("advisor")>
 				<a href="advisor.cfm" title="Advise student">Advise student</a>
 			</cfif>
 			
@@ -33,7 +33,7 @@
 			<a href="courses.cfm" title="Completed courses">Completed courses</a>
 			<a href="degrees.cfm" title="Degree plans">Degree plans</a>
 			
-			<cfif IsUserInRole("editor") || IsUserInRole("administrator")>
+			<cfif IsUserInRole("editor")>
 				<a href="editCourses.cfm" title="Edit courses">Edit courses</a>
 				<a href="editSchools.cfm" title="Edit schools">Edit schools</a>
 				<a href="editDegrees.cfm" title="Edit degrees">Edit degrees</a>

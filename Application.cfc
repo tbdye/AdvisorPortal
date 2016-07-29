@@ -7,7 +7,7 @@
 	<cfset this.sessionTimeout=CreateTimeSpan(0, 0, 30, 0)>
 	<cfset this.loginStorage='session'>
 	<cfset this.ormEnabled=true>
-	<cfset this.ormSettings={logsql=true, cfclocation="model"}>
+	<cfset this.ormSettings={logsql=true, cfclocation="model/orm"}>
 	<cfset this.invokeImplicitAccessor=true>
 	<cfset this.sessionCookie.httpOnly=true>
 	<cfset this.sessionCookie.timeout='10'>
@@ -19,7 +19,7 @@
 
 		<!--- Display the login form if users aren't logged in. --->
 		<cflogin>
-			<cfset errorBean=createObject('ASP.controllers.errorBean').init()>
+			<cfset errorBean=createObject('ASP.cfc.errorBean').init()>
 			
 			<!--- Define form action for "Log in" button. --->
 			<cfif isDefined("form.loginButton")>
