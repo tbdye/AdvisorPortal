@@ -74,54 +74,54 @@
 				</cfif>
 				
 				<cfif isDefined("qGetPrerequisite") || isDefined("qGetPermission") || isDefined("qGetPlacement")>
-					<cfif isDefined("qGetPrerequisite") && q.GetPrerequisite.RecordCount>
-						<cfset group="#qGetPrequisite.group#">
+					<cfif isDefined("qGetPrerequisite") && qGetPrerequisite.RecordCount>
+						<cfset group="#qGetPrerequisite.group_id#">
 						<cfset createLabel="true">
 						<cfset firstInGroup="true">
 						
 						<!--- Build UI for prerequisite radio groups --->
 						<cfloop query="qGetPrerequisite">
 							<cfif createLabel EQ 'true'>
-								<cfinput type="radio" id="prereq#group#" name="prereq#group#">
+								<cfinput type="radio" id="prereq#group#" name="prereq#group#" value="prereq#group#">
 								<label for="prereq#group#">
 							</cfif>
 							
-							<cfif group EQ qGetPrequisite.group>
+							<cfif group EQ qGetPrerequisite.group_id>
 								<cfset createLabel="false">
 								
 								<!--- add from the same group --->
 								<cfif firstInGroup EQ 'true'>
-									<cfoutput>#qGetPrerequiste.courses_prerequisite_id#</cfoutput>
+									<cfoutput>#qGetPrerequisite.course_number#</cfoutput>
 									<cfset firstInGroup="false">
 								<cfelse>
-									<cfoutput> and #qGetPrerequiste.courses_prerequisite_id#</cfoutput>
+									<cfoutput> and #qGetPrerequisite.course_number#</cfoutput>
 								</cfif>
 							<cfelse>
 								<!--- the group changed, so end the label --->
 								<cfoutput> with a grade of C or higher</cfoutput></label><br>
 								
-								<cfset group="#qGetPrequisite.group#">
+								<cfset group="#qGetPrerequisite.group_id#">
 								
 								<!--- begin the next radio and label --->
-								<cfinput type="radio" id="prereq#group#" name="prereq#group#">
-								<label for="prereq#group#"><cfoutput>#qGetPrerequiste.courses_prerequisite_id#</cfoutput>
+								<cfinput type="radio" id="prereq#group#" name="prereq#group#" value="prereq#group#">
+								<label for="prereq#group#"><cfoutput>#qGetPrerequisite.course_number#</cfoutput>
 							</cfif>	
 						</cfloop>
 						<cfoutput> with a grade of C or higher</cfoutput></label><br>
 					</cfif>
 					
 					<cfif isDefined("qGetPermission") && qGetPermission.RecordCount>
-						<cfinput type="radio" id="coursePermission" name="coursePermission">
+						<cfinput type="radio" id="coursePermission" name="coursePermission" value="coursePermission">
 						<label for="coursePermission">Instructor permission</label><br>
 					</cfif>
 					
 					<cfif isDefined("qGetPlacement") && qGetPlacement.RecordCount>
-						<cfinput type="radio" id="coursePlacement" name="coursePlacement">
+						<cfinput type="radio" id="coursePlacement" name="coursePlacement" value="coursePlacement">
 						<label for="coursePermission">Placement into <cfoutput>#qCheckCourse.course_number#</cfoutput> by assessment.</label><br>
 					</cfif>
 				</cfif>
 				
-				<cfinput type="submit" name="addButton" value="Add course">
+				<cfinput type="submit" name="verifyButton" value="Add course">
 				<cfinput type="button" name="cancelButton" value="Cancel">
 			</cfform>
 		</cfif>

@@ -68,7 +68,46 @@
 		<cfreturn>
 	</cfif>
 	
-	<!--- ToDo:  do eligibility stuff --->
+	<!--- Determine if eligibility requirements exist before adding course --->
+	<cfquery name="qGetPrerequisite">
+		SELECT
+			p.id,
+			p.courses_id,
+			p.group_id,
+			p.courses_prerequisite_id,
+			c.course_number
+		FROM
+			PREREQUISITES p
+		JOIN
+			COURSES c
+		ON
+			p.courses_prerequisite_id = c.id
+		WHERE
+			p.courses_id = <cfqueryparam value="#qCheckCourse.id#" cfsqltype="cf_sql_integer">
+	</cfquery>
+	
+	<cfquery name="qGetPermission">
+		SELECT
+			courses_id
+		FROM
+			PREREQUISITE_PERMISSIONS
+		WHERE
+			courses_id = <cfqueryparam value="#qCheckCourse.id#" cfsqltype="cf_sql_integer">
+	</cfquery>
+	
+	<cfquery name="qGetPlacement">
+		SELECT
+			courses_id,
+			placement
+		FROM
+			PREREQUISITE_PLACEMENTS
+		WHERE
+			courses_id = <cfqueryparam value="#qCheckCourse.id#" cfsqltype="cf_sql_integer">
+	</cfquery>
+	
+	<cfif isDefined("form.addButton")>
+		<!--- Left off here --->
+	</cfif>
 	
 	<cfinclude template="../model/courses.cfm">
 	<cfreturn>
