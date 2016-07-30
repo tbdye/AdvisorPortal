@@ -5,7 +5,7 @@
 
 <cfset errorBean=createObject('AdvisorPortal.cfc.errorBean').init()>
 
-<!--- Define form action for "Select" button. --->
+<!--- Define form action for "Add" button. --->
 <cfif isDefined("form.addButton")>
 	
 	<!--- Perform simple validation on form fields --->
@@ -19,7 +19,7 @@
 		<cfreturn>
 	</cfif>
 
-	<!--- Find the student, if exists --->
+	<!--- Find the course, if exists --->
 	<cfquery name="qGetCourse">
 		SELECT
 			id,
@@ -68,7 +68,9 @@
 		<cfreturn>
 	</cfif>
 	
-	<!--- Determine if eligibility requirements exist before adding course --->
+	<!--- Before adding the course, determine eligibility requirements exist.
+		  Build a UI element to display areas requiring user input or verification.
+		  First, collect relevant information from the database. --->
 	<cfquery name="qGetPrerequisite">
 		SELECT
 			p.id,
@@ -105,8 +107,51 @@
 			courses_id = <cfqueryparam value="#qCheckCourse.id#" cfsqltype="cf_sql_integer">
 	</cfquery>
 	
+	<!--- Build dynamic content for radio labels here as strings to be displayed in the UI. --->
+	<cfset aPrerequisites = arrayNew(1)>
+	
+	<!--- Format prerequisite class groups --->
+	<cfif qGetPrerequisite.RecordCount>
+		<cfset group=qGetPrerequisite.group_id>
+		<cfset firstInGroup="true">
+		
+		<!--- Display individual course groups --->
+		<cfloop query="qGetPrerequisite">
+			<cfif group EQ qGetPrerequisite.group_id>
+				<!--- add from the same group --->
+				<cfif firstInGroup EQ 'true'>
+					<cfset classes=qGetPrerequisite.course_number>
+					<cfset firstInGroup="false">
+				<cfelse>
+					<cfset classes=classes & " and " & qGetPrerequisite.course_number>
+				</cfif>
+			<cfelse>
+				<!--- the group changed, so end the string --->
+				<cfset classes=classes & " with a grade of C or higher">
+				<cfset ArrayAppend(aPrerequisites, classes)>
+				
+				<!--- begin the next string --->
+				<cfset group=qGetPrerequisite.group_id>
+				<cfset classes=qGetPrerequisite.course_number>
+			</cfif>	
+		</cfloop>
+		<cfset classes=classes & " with a grade of C or higher">
+		<cfset ArrayAppend(aPrerequisites, classes)>
+		
+		<!--- Display instructor permission option --->
+		<cfif qGetPermission.RecordCount>
+			<cfset ArrayAppend(aPrerequisites, "Instructor permission")>
+		</cfif>
+		
+		<!--- Display placement exam option --->
+		<cfif qGetPlacement.RecordCount>
+			<cfset ArrayAppend(aPrerequisites, "Placement into <cfoutput>#qCheckCourse.course_number#</cfoutput> by assessment.")>
+		</cfif>
+	</cfif>
+
+	<!--- If eligibility UI exists, after user verifies data, add the course. --->	
 	<cfif isDefined("form.addButton")>
-		<!--- Left off here --->
+		
 	</cfif>
 	
 	<cfinclude template="../model/courses.cfm">

@@ -6,13 +6,16 @@
 <cfmodule template="../includes/header.cfm"
 	pagetitle="Advisor Services Portal - Completed courses">
 	
+	<!--- Alter page header depending if in an adivisng session or not. --->
 	<cfif IsUserInRole("advisor")>
 		<h2>Completed courses for <cfoutput>#session.studentName#</cfoutput></h2>
 	<cfelse>
 		<h2>Completed courses</h2>
 	</cfif>
+	
 	<p>Provide some instructions on how the completed courses section works and initial steps to get started using the Advisor Services Portal.</p>
 
+	<!--- Add completed course UI textbox form. --->
 	<h3>Add completed course</h3>
 	<cfform>
 		<cfinput type="text" id="courseNumber" name="courseNumber">
@@ -21,15 +24,16 @@
 	
 	<a href="https://www.everettcc.edu/catalog/" title="Look up course code" target="_blank">Look up course code</a>
 	
+	<!--- Display any validation errors under form. --->
 	<cfif errorBean.hasErrors() && isDefined("form.addButton")>
 		<ul>
 			<cfloop array="#errorBean.getErrors()#" index="error">
 				<cfoutput><li>Error:  #error.message#</li></cfoutput>
 			</cfloop>
 		</ul>
-	</cfif>
 	
-	<cfif isDefined("qGetCourse")>
+	<!--- After form is submitted, display results. --->
+	<cfelseif isDefined("qGetCourse")>
 		<table>
 			<tr>
 				<th>Course Number</th>
@@ -50,81 +54,44 @@
 				</tr>
 			</cfloop>
 		</table>
-	<cfelse>
-		<p>No completed courses added yet.</p>
 	</cfif>
 	
+	<!--- Display an error if the user selection isn't a valid course. --->
 	<cfif errorBean.hasErrors() && isDefined("qCheckCourse")>
 		<ul>
 			<cfloop array="#errorBean.getErrors()#" index="error">
 				<cfoutput><li>Error:  #error.message#</li></cfoutput>
 			</cfloop>
 		</ul>
-	</cfif>
 	
-	<cfif isDefined("qCheckCourse") && qCheckCourse.RecordCount>
-		<cfif IsNumeric(qCheckCourse.min_credit) || isDefined("qGetPrerequisite") || isDefined("qGetPermission") || isDefined("qGetPlacement")>
+	<!--- The course was valid.  Verify student eligibility before adding the course. --->
+	<cfelseif isDefined("qCheckCourse") && qCheckCourse.RecordCount>
+		<cfif IsNumeric(qCheckCourse.min_credit) || qGetPrerequisite.RecordCount || qGetPermission.RecordCount || qGetPlacement.RecordCount>
 			<h3>Verify course eligibility</h3>
 			<h4><cfoutput>#qCheckCourse.course_number# - #qCheckCourse.title#</cfoutput></h4>
 			
 			<cfform>
+				<!--- Determine student course credit for variable credit courses. --->
 				<cfif IsNumeric(qCheckCourse.min_credit)>
 					<label for="courseCredit">Credits taken <cfoutput>(#qCheckCourse.min_credit# - #qCheckCourse.max_credit#)</cfoutput>:</label>
-					<cfinput type="text" id="courseCredit" name="courseCredit">
+					<cfinput type="text" id="courseCredit" name="courseCredit"><br>
+				</cfif>
+
+				<!--- Display prerequisite radio groups --->
+				<cfif ArrayLen(aPrerequisites)>
+					<p>Prerequisites:</p>
 				</cfif>
 				
-				<cfif isDefined("qGetPrerequisite") || isDefined("qGetPermission") || isDefined("qGetPlacement")>
-					<cfif isDefined("qGetPrerequisite") && qGetPrerequisite.RecordCount>
-						<cfset group="#qGetPrerequisite.group_id#">
-						<cfset createLabel="true">
-						<cfset firstInGroup="true">
-						
-						<!--- Build UI for prerequisite radio groups --->
-						<cfloop query="qGetPrerequisite">
-							<cfif createLabel EQ 'true'>
-								<cfinput type="radio" id="prereq#group#" name="prereq#group#" value="prereq#group#">
-								<label for="prereq#group#">
-							</cfif>
-							
-							<cfif group EQ qGetPrerequisite.group_id>
-								<cfset createLabel="false">
-								
-								<!--- add from the same group --->
-								<cfif firstInGroup EQ 'true'>
-									<cfoutput>#qGetPrerequisite.course_number#</cfoutput>
-									<cfset firstInGroup="false">
-								<cfelse>
-									<cfoutput> and #qGetPrerequisite.course_number#</cfoutput>
-								</cfif>
-							<cfelse>
-								<!--- the group changed, so end the label --->
-								<cfoutput> with a grade of C or higher</cfoutput></label><br>
-								
-								<cfset group="#qGetPrerequisite.group_id#">
-								
-								<!--- begin the next radio and label --->
-								<cfinput type="radio" id="prereq#group#" name="prereq#group#" value="prereq#group#">
-								<label for="prereq#group#"><cfoutput>#qGetPrerequisite.course_number#</cfoutput>
-							</cfif>	
-						</cfloop>
-						<cfoutput> with a grade of C or higher</cfoutput></label><br>
-					</cfif>
-					
-					<cfif isDefined("qGetPermission") && qGetPermission.RecordCount>
-						<cfinput type="radio" id="coursePermission" name="coursePermission" value="coursePermission">
-						<label for="coursePermission">Instructor permission</label><br>
-					</cfif>
-					
-					<cfif isDefined("qGetPlacement") && qGetPlacement.RecordCount>
-						<cfinput type="radio" id="coursePlacement" name="coursePlacement" value="coursePlacement">
-						<label for="coursePermission">Placement into <cfoutput>#qCheckCourse.course_number#</cfoutput> by assessment.</label><br>
-					</cfif>
-				</cfif>
-				
+				<cfloop index="i" from=1 to=#ArrayLen(aPrerequisites)#>
+					<cfinput type="radio" id="prereq#i#" name="prereq#i#" value="prereq#i#">
+					<cfoutput><label for="prereq#i#">#aPrerequisites[i]#</label></cfoutput><br>
+				</cfloop>
+
 				<cfinput type="submit" name="verifyButton" value="Add course">
-				<cfinput type="button" name="cancelButton" value="Cancel">
 			</cfform>
 		</cfif>
 	</cfif>
+
+	<p>No completed courses added yet.</p>
 	
 <cfmodule template="../includes/footer.cfm">
