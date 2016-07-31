@@ -16,7 +16,7 @@
 	<!-- HEADER -->
 	<header id="header" role="banner">
 		<div id="top-brand">
-		        <a href="../index.cfm"><img class="top-logo" src="../assets/evcclogo.png" alt="EvCC logo" title="Everett Community College" /></a>
+		        <a href="index.cfm"><img class="top-logo" src="../assets/evcclogo.png" alt="EvCC logo" title="Everett Community College" /></a>
 		</div>
 	
 	    <div id="top-quicklinks" role="navigation">
