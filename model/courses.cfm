@@ -50,7 +50,7 @@
 					<cfelse>
 						<td><cfoutput>#qGetCourse.min_credit# - #qGetCourse.max_credit#</cfoutput></td>
 					</cfif>
-					<td><cfoutput><a href="?course=#URLEncodedFormat(qGetCourse.course_number)#&id=#URLEncodedFormat(qGetCourse.id)#" title="Add">Add</a></cfoutput></td>
+					<td><cfoutput><a href="?add=#URLEncodedFormat(qGetCourse.course_number)#&id=#URLEncodedFormat(qGetCourse.id)#" title="Add">Add</a></cfoutput></td>
 				</tr>
 			</cfloop>
 		</table>
@@ -92,6 +92,27 @@
 		</cfif>
 	</cfif>
 
-	<p>No completed courses added yet.</p>
-	
+	<!--- Display completed courses --->
+	<h3>Completed courses</h3>
+	<cfif qGetStudentCourses.RecordCount>
+		<table>
+			<tr>
+				<th>Course Number</th>
+				<th>Title</th>
+				<th>Credits</th>
+				<th></th>
+			</tr>
+			<cfloop query="qGetStudentCourses">
+				<tr>
+					<td><cfoutput>#qGetStudentCourses.course_number#</cfoutput></td>
+					<td><cfoutput>#qGetStudentCourses.title#</cfoutput></td>
+					<td><cfoutput>#qGetStudentCourses.credit#</cfoutput></td>
+					<td><cfoutput><a href="?delete=#URLEncodedFormat(qGetStudentCourses.course_number)#&id=#URLEncodedFormat(qGetStudentCourses.completed_id)#" title="Delete">Delete</a></cfoutput></td>
+				</tr>
+			</cfloop>
+		</table>
+	<cfelse>
+		<p>No completed courses added yet.</p>
+	</cfif>
+
 <cfmodule template="../includes/footer.cfm">
