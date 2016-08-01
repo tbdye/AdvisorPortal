@@ -8,7 +8,7 @@
 <head>
 	<meta charset="utf-8">
 	<cfoutput><title>#attributes.pagetitle#</title></cfoutput>
-	<link href="../css/pageLocal.css" rel="stylesheet" type="text/css">
+	<link href="css/pageLocal.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 
@@ -16,13 +16,13 @@
 	<!-- HEADER -->
 	<header id="header" role="banner">
 		<div id="top-brand">
-		        <a href="index.cfm"><img class="top-logo" src="../assets/evcclogo.png" alt="EvCC logo" title="Everett Community College" /></a>
+		        <a href="index.cfm"><img class="top-logo" src="assets/evcclogo.png" alt="EvCC logo" title="Everett Community College" /></a>
 		</div>
 	
 	    <div id="top-quicklinks" role="navigation">
 			<cfif attributes.includeUserNavBar>
 		    	<ul>
-					<li><a href="../login/logout.cfm" title="Log out">Log out</a></li>
+					<li><a href="logout.cfm" title="Log out">Log out</a></li>
 					<li><a href="help.cfm" title="Help">Help</a></li>
 					<li><a href="account.cfm" title="Account Settings"><cfoutput>Hello, #GetAuthUser()#</cfoutput>!</a></li>
 				</ul>

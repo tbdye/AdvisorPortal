@@ -1,6 +1,6 @@
 <!--- Thomas Dye, July 2016 --->
 <cfif !IsUserInRole("advisor")>
-	<cflocation url="../login/logout.cfm">
+	<cflocation url="index.cfm">
 </cfif>
 
 <cfset errorBean=createObject('AdvisorPortal.cfc.errorBean').init()>
@@ -17,7 +17,7 @@
 	
 	<!--- Stop here if errors were detected --->
 	<cfif errorBean.hasErrors()>
-		<cfinclude template="../model/advisor.cfm">
+		<cfinclude template="model/advisor.cfm">
 		<cfreturn>
 	</cfif>
 
@@ -41,7 +41,7 @@
 		<cfset errorBean.addError('No records found for that student ID.', 'studentId')>
 	</cfif>
 	
-	<cfinclude template="../model/advisor.cfm">
+	<cfinclude template="model/advisor.cfm">
 	<cfreturn>
 	
 <!--- Display all students --->
@@ -57,7 +57,7 @@
 		JOIN
 			STUDENTS s ON a.id = s.accounts_id
 	</cfquery>
-	<cfinclude template="../model/advisor.cfm">
+	<cfinclude template="model/advisor.cfm">
 	<cfreturn>
 	
 <!--- Advise student --->
@@ -80,23 +80,23 @@
 			<!--- Student matched, so setup the advising session. --->
 			<cfset session.studentId = qGetStudent.student_id>
 			<cfset session.studentName = qGetStudent.full_name>
-			<cflocation url="../home/dashboard.cfm">
+			<cflocation url="dashboard.cfm">
 		</cfif>
 	</cfloop>
 	
 	<!--- The student ID did not match any known student, so stop here. --->
 	<cfset errorBean.addError('Unable to advise this student.', 'studentId')>
-	<cfinclude template="../model/advisor.cfm">
+	<cfinclude template="model/advisor.cfm">
 	<cfreturn>
 
 <!--- End the advising session. --->
 <cfelseif isDefined('url.advise') && url.advise EQ 'end'>
 	<cfset StructDelete(session, "studentId")>
 	<cfset StructDelete(session, "studentName")>
-	<cflocation url="../home/advisor.cfm">
+	<cflocation url="advisor.cfm">
 	
 <!--- Display default landing page. --->
 <cfelse>
-	<cfinclude template="../model/advisor.cfm">
+	<cfinclude template="model/advisor.cfm">
 	<cfreturn>
 </cfif>

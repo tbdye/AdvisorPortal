@@ -1,6 +1,6 @@
 <!--- Thomas Dye, July 2016 --->
 <cfif !isDefined("errorBean")>
-	<cflocation url="../home/advisor.cfm">
+	<cflocation url="../advisor.cfm">
 </cfif>
 
 <cfmodule template="../includes/header.cfm"
@@ -15,7 +15,7 @@
 	        </header>
 
 			<div class="breadcrumb">
-				<a href="../index.cfm">Home</a>
+				<a href="index.cfm">Home</a>
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">

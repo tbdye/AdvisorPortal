@@ -27,7 +27,7 @@
 	
 	<!--- Stop here if errors were detected --->
 	<cfif errorBean.hasErrors()>
-		<cfinclude template="../model/courses.cfm">
+		<cfinclude template="model/courses.cfm">
 		<cfreturn>
 	</cfif>
 
@@ -44,7 +44,7 @@
 		<cfset errorBean.addError('Course not found.', 'courseNumber')>
 	</cfif>
 	
-	<cfinclude template="../model/courses.cfm">
+	<cfinclude template="model/courses.cfm">
 	<cfreturn>
 	
 <!--- Add course. --->	
@@ -57,7 +57,7 @@
 		<!---declare @Account INT
 		SET @Account = (SELECT accounts_id FROM STUDENTS WHERE student_id = 1234)
 		INSERT INTO STUDENTS_COMPLETEDCOURSES (students_accounts_id, courses_id, credit) VALUES (@Account, 134, 5.00);--->
-		<cflocation url="../home/courses.cfm">
+		<cflocation url="courses.cfm">
 	</cfif>
 	
 	<!--- Validate the url variables to ensure the course exists --->
@@ -71,7 +71,7 @@
 	<!--- Stop here if the course is not valid. --->
 	<cfif !qCheckCourse.RecordCount>
 		<cfset errorBean.addError('There was an error adding this course; course cannot be added.', 'courseId')>
-		<cfinclude template="../model/courses.cfm">
+		<cfinclude template="model/courses.cfm">
 		<cfreturn>
 	</cfif>
 	
@@ -149,7 +149,7 @@
 			<cfset ArrayAppend(aPrerequisites, "Placement into <cfoutput>#qCheckCourse.course_number#</cfoutput> by assessment.")>
 		</cfif>
 		
-		<cfinclude template="../model/courses.cfm">
+		<cfinclude template="model/courses.cfm">
 		<cfreturn>
 	</cfif>
 	
@@ -164,7 +164,7 @@
 			<cfqueryparam value="#qCheckCourse.id#" cfsqltype="cf_sql_integer">,
 			<cfqueryparam value="#qCheckCourse.max_credit#" cfsqltype="cf_sql_decimal">)
 	</cfquery>
-	<cflocation url="../home/courses.cfm">
+	<cflocation url="courses.cfm">
 
 <!--- Delete course. --->
 <cfelseif isDefined("url.delete") && isDefined("url.id") && IsNumeric("#URLDecode(url.id)#")>
@@ -186,13 +186,13 @@
 	<!--- Stop here if the course is not valid. --->
 	<cfif !qCheckCourse.RecordCount>
 		<cfset errorBean.addError('There was an error adding this course; course cannot be added.', 'courseId')>
-		<cfinclude template="../model/courses.cfm">
+		<cfinclude template="model/courses.cfm">
 		<cfreturn>
 	</cfif>
 
 <!--- Display default landing page. --->
 <cfelse>
 	
-	<cfinclude template="../model/courses.cfm">
+	<cfinclude template="model/courses.cfm">
 	<cfreturn>
 </cfif>

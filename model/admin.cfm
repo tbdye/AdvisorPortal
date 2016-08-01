@@ -1,10 +1,9 @@
 <!--- Thomas Dye, July 2016 --->
 <cfif !isDefined("errorBean")>
-	<cflocation url="../home/admin.cfm">
+	<cflocation url="../admin.cfm">
 </cfif>
 
 <cfmodule template="../includes/header.cfm"
-
 
 	pagetitle="Advisor Services Portal - Administration">
 	
@@ -16,7 +15,7 @@
 	        </header>
 
 			<div class="breadcrumb">
-				<a href="../index.cfm">Home</a> &raquo; <a href="../login/admin.cfm">Administration</a> 
+				<a href="index.cfm">Home</a>
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">

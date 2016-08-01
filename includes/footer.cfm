@@ -23,7 +23,7 @@
 			</div>
 
 			<div class="footerblock block2">	
-				<p class="footer-header"><a href="https://www.everettcc.edu/FAQ"><img id="footer-question" style="width:136px;height:35px;border:0;" alt="Have a Question" src="../assets/HaveAQuestion.png"></a></p>
+				<p class="footer-header"><a href="https://www.everettcc.edu/FAQ"><img id="footer-question" style="width:136px;height:35px;border:0;" alt="Have a Question" src="assets/HaveAQuestion.png"></a></p>
 				<!--<p class="footer-header">Resources</p>-->
 				<ul id="footer-resources" role="list">
 					<li><a title="EvCC Emergency Information and Notification Sign-Up" href="https://www.everettcc.edu/emergency/">Emergency Information</a></li>  
@@ -42,12 +42,12 @@
 			<div class="footerblock block3">
 	            <p class="footer-header">Connect With EvCC</p>
 	            <ul id="footer-social" role="list">
-	                   	<li><a href="https://plus.google.com/+EverettccEdu" rel="publisher"><img title="Find Everett Community College on Google+" class="icon-lg" alt="Google+" src="../assets/google-plus.png"></a></li>
-	                   	<li><a href="http://www.facebook.com/EverettCC"><img title="Everett Community College on Facebook" class="icon-lg" alt="Facebook" src="../assets/facebook.png"></a></li>
-	                   	<li><a href="http://twitter.com/EverettCC"><img title="Everett Community College on Twitter" class="icon-lg" alt="Twitter" src="../assets/twitter.png"></a></li>
-	                   	<li><a href="http://www.youtube.com/EverettCommCollege"><img title="Everett Community College on YouTube" class="icon-lg" alt="YouTube" src="../assets/youtube.png"></a></li>
-	                   	<li><a href="https://instagram.com/everettcommcollege/"><img title="Everett Community College on LinkedIn" class="icon-lg" alt="LinkedIn" src="../assets/instagram.png"></a></li>
-	                   	<li><a href="http://www.linkedin.com/company/everett-community-college"><img title="Everett Community College on LinkedIn" class="icon-lg" alt="LinkedIn" src="../assets/linkedin.png"></a></li>
+	                   	<li><a href="https://plus.google.com/+EverettccEdu" rel="publisher"><img title="Find Everett Community College on Google+" class="icon-lg" alt="Google+" src="assets/google-plus.png"></a></li>
+	                   	<li><a href="http://www.facebook.com/EverettCC"><img title="Everett Community College on Facebook" class="icon-lg" alt="Facebook" src="assets/facebook.png"></a></li>
+	                   	<li><a href="http://twitter.com/EverettCC"><img title="Everett Community College on Twitter" class="icon-lg" alt="Twitter" src="assets/twitter.png"></a></li>
+	                   	<li><a href="http://www.youtube.com/EverettCommCollege"><img title="Everett Community College on YouTube" class="icon-lg" alt="YouTube" src="assets/youtube.png"></a></li>
+	                   	<li><a href="https://instagram.com/everettcommcollege/"><img title="Everett Community College on LinkedIn" class="icon-lg" alt="LinkedIn" src="assets/instagram.png"></a></li>
+	                   	<li><a href="http://www.linkedin.com/company/everett-community-college"><img title="Everett Community College on LinkedIn" class="icon-lg" alt="LinkedIn" src="assets/linkedin.png"></a></li>
 	            </ul>
             </div>
 	        <div id=footer-final>

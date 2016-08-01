@@ -1,6 +1,6 @@
 <!--- Thomas Dye, July 2016 --->
 <cfif !isDefined("errorBean")>
-	<cflocation url="../home/dashboard.cfm">
+	<cflocation url="../dashboard.cfm">
 </cfif>
 
 <cfmodule template="../includes/header.cfm"
@@ -15,9 +15,9 @@
 
 	<cfif !isDefined("qGetPlan")>
 		<h3>Getting started</h3>
-		<a href="../home/courses.cfm" title="Completed courses">Completed courses</a>
+		<a href="courses.cfm" title="Completed courses">Completed courses</a>
 		<p>or</p>
-		<a href="../home/degrees.cfm" title="Degree plans">Degree plans</a>
+		<a href="degrees.cfm" title="Degree plans">Degree plans</a>
 	<cfelse>
 		
 	</cfif>

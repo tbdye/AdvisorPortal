@@ -5,5 +5,5 @@
 
 <cfset errorBean=createObject('AdvisorPortal.cfc.errorBean').init()>
 
-<cfinclude template="../model/dashboard.cfm">
+<cfinclude template="model/dashboard.cfm">
 <cfreturn>

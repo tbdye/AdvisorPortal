@@ -1,6 +1,6 @@
 <!--- Thomas Dye, July 2016 --->
 <cfif !isDefined("errorBean")>
-	<cflocation url="../home/courses.cfm">
+	<cflocation url="../courses.cfm">
 </cfif>
 
 <cfmodule template="../includes/header.cfm"

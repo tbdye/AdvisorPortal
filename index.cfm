@@ -1,2 +1,10 @@
 <!--- Thomas Dye, July 2016 --->
-<cflocation url="home/index.cfm"/>
+<cfif IsUserInRole("administrator")>
+	<cflocation url="admin.cfm">
+<cfelseif IsUserInRole("advisor") || IsUserInRole("editor")>
+	<cflocation url="advisor.cfm">
+<cfelseif IsUserInRole("student")>
+	<cflocation url="dashboard.cfm">
+<cfelse>
+	<cflocation url="logout.cfm">
+</cfif>

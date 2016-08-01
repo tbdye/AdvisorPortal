@@ -11,10 +11,6 @@
 	            <h1>Advising Services Portal</h1>
 	        </header>
 
-	        <div id="breadcrumb">
-				<a href="https://www.everettcc.edu/">Home</a> &raquo; <a href="../login/login.cfm">Log in</a> 
-			</div>
-
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
 	                <span property="dc:title" content="Advising" class="rdf-meta element-hidden"></span>

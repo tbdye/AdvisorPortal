@@ -38,7 +38,7 @@
 				
 				<!--- Stop here if errors were detected --->
 				<cfif errorBean.hasErrors()>
-					<cfinclude template="login/login.cfm">
+					<cfinclude template="model/login.cfm">
 					<cfreturn>
 				</cfif>
 				
@@ -53,7 +53,7 @@
 				<cfif !qGetAccount.RecordCount || qGetAccount.password NEQ Hash(form.password & qGetAccount.salt, "SHA-512")>
 					<!--- The user login credentials were incorrect, so stop here --->
 					<cfset errorBean.addError('User or password were incorrect; please try again', 'email')>
-					<cfinclude template="login/login.cfm">
+					<cfinclude template="model/login.cfm">
 					<cfreturn>
 				<cfelse>
 					<cfquery name="qGetStudent">
@@ -93,7 +93,7 @@
 				    	<cfelse>
 				    		<!--- An account record exists, but a faculty record does not, so stop here --->
 				    		<cfset errorBean.addError('The account could not be loaded; please contact the administrator.', 'accounts_id')>
-				    		<cfinclude template="login/login.cfm">
+				    		<cfinclude template="model/login.cfm">
 							<cfreturn>
 				    	</cfif>
 				    </cfif>
@@ -131,7 +131,7 @@
 				
 				<!--- Stop here if errors were detected --->
 				<cfif errorBean.hasErrors()>
-					<cfinclude template="login/login.cfm">
+					<cfinclude template="model/login.cfm">
 					<cfreturn>
 				</cfif>
 				
@@ -155,7 +155,7 @@
 				
 				<!--- Stop here if errors were detected --->
 				<cfif errorBean.hasErrors()>
-					<cfinclude template="login/login.cfm">
+					<cfinclude template="model/login.cfm">
 					<cfreturn>
 				</cfif>
 				
@@ -207,7 +207,7 @@
 			
 			<!--- Display default landing page. --->
 			<cfelse>
-				<cfinclude template="login/login.cfm">
+				<cfinclude template="model/login.cfm">
 				<cfreturn>
 			</cfif>
 		</cflogin>
