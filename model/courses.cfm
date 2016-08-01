@@ -33,7 +33,7 @@
 		</ul>
 	
 	<!--- After form is submitted, display results. --->
-	<cfelseif isDefined("qGetCourse")>
+	<cfelseif isDefined("qGetCourse") && !isDefined("form.verifyButton")>
 		<table>
 			<tr>
 				<th>Course Number</th>
@@ -57,7 +57,7 @@
 	</cfif>
 	
 	<!--- Display an error if the user selection isn't a valid course. --->
-	<cfif errorBean.hasErrors() && isDefined("qCheckCourse")>
+	<cfif errorBean.hasErrors() && isDefined("qCheckCourse") && !isDefined("form.verifyButton")>
 		<ul>
 			<cfloop array="#errorBean.getErrors()#" index="error">
 				<cfoutput><li>Error:  #error.message#</li></cfoutput>
@@ -80,15 +80,23 @@
 				<!--- Display prerequisite radio groups --->
 				<cfif ArrayLen(aPrerequisites)>
 					<p>Prerequisites:</p>
+					<cfinput type="hidden" id="numOfPrereqGroups" name="numOfPrereqGroups" value="#ArrayLen(aPrerequisites)#">
 				</cfif>
 				
 				<cfloop index="i" from=1 to=#ArrayLen(aPrerequisites)#>
-					<cfinput type="radio" id="prereq#i#" name="prereq#i#" value="prereq#i#">
-					<cfoutput><label for="prereq#i#">#aPrerequisites[i]#</label></cfoutput><br>
+					<cfinput type="radio" id="prereq" name="prereq" value="#i#">
+					<cfoutput><label for="prereq">#aPrerequisites[i]#</label></cfoutput><br>
 				</cfloop>
 
 				<cfinput type="submit" name="verifyButton" value="Add course">
 			</cfform>
+		</cfif>
+		<cfif errorBean.hasErrors()>
+			<ul>
+				<cfloop array="#errorBean.getErrors()#" index="error">
+					<cfoutput><li>Error:  #error.message#</li></cfoutput>
+				</cfloop>
+			</ul>
 		</cfif>
 	</cfif>
 

@@ -49,34 +49,52 @@
 
 	<!--- Add a course with eligibility requirements --->
 	<cfif isDefined("form.verifyButton")>
-		<!--- ToDo:  verify form data --->
-		<cfset credit="">
-		
 		<cfquery name="qGetCourse">
-			SELECT id, max_credit
+			SELECT id, min_credit, max_credit
 			FROM COURSES
 			WHERE id = <cfqueryparam value="#URLDecode(url.id)#" cfsqltype="cf_sql_integer">
 			AND course_number = <cfqueryparam value="#URLDecode(url.add)#" cfsqltype="cf_sql_varchar">
 		</cfquery>
 		
+		<!--- ToDo:  verify form data --->
 		<cfif isDefined("form.courseCredit")>
-			<cfset credit="#form.courseCredit#">
-		<cfelse>
-			<cfset credit="#qGetCourse.max_credit#">
+			<cfif !len(trim(form.courseCredit))>
+				<cfset errorBean.addError('The course credit field cannot be left blank.', 'courseCredit')>
+			<cfelseif !IsNumeric("#trim(form.courseCredit)#")>
+				<cfset errorBean.addError('Credits must be entered in as a decimal number.', 'courseCredit')>
+			<cfelseif trim(form.courseCredit) LT qGetCourse.min_credit || trim(form.courseCredit) GT qGetCourse.max_credit>
+				<cfset errorBean.addError('Credit must be between #qGetCourse.min_credit# and #qGetCourse.max_credit#.', 'courseCredit')>
+			</cfif>
+		</cfif>
+		<cfif isDefined("numOfPrereqGroups")>
+			<cfif numOfPrereqGroups && !isDefined("prereq")>
+				<cfset errorBean.addError('A prerequisite option must be selected.', 'prereq')>
+			</cfif>
 		</cfif>
 		
-		<!--- Add course to student for when eligibility check was necessary. --->
-		<cfquery>
-			INSERT INTO	STUDENTS_COMPLETEDCOURSES (
-				students_accounts_id, courses_id, credit)
-			VALUES (
-				<cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">,
-				<cfqueryparam value="#qGetCourse.id#" cfsqltype="cf_sql_integer">,
-				<cfqueryparam value="#credit#" cfsqltype="cf_sql_decimal">)
-		</cfquery>
+		<!--- Add course --->
+		<cfif !errorBean.HasErrors()>
+			<cfset credit="">
 		
-		<!--- Done --->
-		<cflocation url="courses.cfm">
+			<cfif isDefined("form.courseCredit")>
+				<cfset credit="#form.courseCredit#">
+			<cfelse>
+				<cfset credit="#qGetCourse.max_credit#">
+			</cfif>
+	
+			<!--- Add course to student for when eligibility check was necessary. --->
+			<cfquery>
+				INSERT INTO	STUDENTS_COMPLETEDCOURSES (
+					students_accounts_id, courses_id, credit)
+				VALUES (
+					<cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">,
+					<cfqueryparam value="#qGetCourse.id#" cfsqltype="cf_sql_integer">,
+					<cfqueryparam value="#credit#" cfsqltype="cf_sql_decimal">)
+			</cfquery>
+			
+			<!--- Done --->
+			<cflocation url="courses.cfm">
+		</cfif>
 	</cfif>
 	
 	<!--- Validate the url variables to ensure the course exists --->

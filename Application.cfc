@@ -6,8 +6,6 @@
 	<cfset this.sessionManagement=true>
 	<cfset this.sessionTimeout=CreateTimeSpan(0, 0, 30, 0)>
 	<cfset this.loginStorage='session'>
-	<cfset this.ormEnabled=true>
-	<cfset this.ormSettings={logsql=true, cfclocation="model/orm"}>
 	<cfset this.invokeImplicitAccessor=true>
 	<cfset this.sessionCookie.httpOnly=true>
 	<cfset this.sessionCookie.timeout='10'>
