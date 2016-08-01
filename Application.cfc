@@ -79,17 +79,14 @@
 				    		<!--- Log in as a faculty administrator --->
 				    		<cfloginuser name="#qGetAccount.first_name# #qGetAccount.last_name#" password="#form.password#" roles="administrator,editor,advisor">
 				    		<cfset session.loginId="#qGetAccount.id#">
-				    		<cfset session.accountId="#qGetFaculty.accounts_id#">
 				    	<cfelseif qGetFaculty.RecordCount && qGetFaculty.editor>
 				    		<!--- Log in as a faculty editor --->
 				    		<cfloginuser name="#qGetAccount.first_name# #qGetAccount.last_name#" password="#form.password#" roles="editor,advisor">
 				    		<cfset session.loginId="#qGetAccount.id#">
-				    		<cfset session.accountId="#qGetFaculty.accounts_id#">
 				    	<cfelseif qGetFaculty.RecordCount>
 				    		<!--- Log in as a faculty advisor --->
 				    		<cfloginuser name="#qGetAccount.first_name# #qGetAccount.last_name#" password="#form.password#" roles="advisor">
 				    		<cfset session.loginId="#qGetAccount.id#">
-				    		<cfset session.accountId="#qGetFaculty.accounts_id#">
 				    	<cfelse>
 				    		<!--- An account record exists, but a faculty record does not, so stop here --->
 				    		<cfset errorBean.addError('The account could not be loaded; please contact the administrator.', 'accounts_id')>

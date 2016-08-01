@@ -23,17 +23,11 @@
 
 	<!--- Find the student, if exists --->
 	<cfquery name="qGetStudent">
-		SELECT
-			a.id,
-			a.first_name + ' ' + a.last_name AS full_name,
-			a.email,
-			s.student_id
-		FROM
-			ACCOUNTS a
-		JOIN
-			STUDENTS s ON a.id = s.accounts_id
-		WHERE
-			s.student_id = <cfqueryparam value="#trim(form.studentId)#" cfsqltype="cf_sql_integer">
+		SELECT a.id, a.first_name + ' ' + a.last_name AS full_name, a.email, s.student_id
+		FROM ACCOUNTS a
+		JOIN STUDENTS s
+		ON a.id = s.accounts_id
+		WHERE s.student_id = <cfqueryparam value="#trim(form.studentId)#" cfsqltype="cf_sql_integer">
 	</cfquery>
 
 	<!--- Handle student ID search results. --->
@@ -47,15 +41,10 @@
 <!--- Display all students --->
 <cfelseif isDefined("url.search") && url.search EQ 'all'>
 	<cfquery name="qGetStudent">
-		SELECT
-			a.id,
-			a.first_name + ' ' + a.last_name AS full_name,
-			a.email,
-			s.student_id
-		FROM
-			ACCOUNTS a
-		JOIN
-			STUDENTS s ON a.id = s.accounts_id
+		SELECT a.id, a.first_name + ' ' + a.last_name AS full_name, a.email, s.student_id
+		FROM ACCOUNTS a
+		JOIN STUDENTS s
+		ON a.id = s.accounts_id
 	</cfquery>
 	<cfinclude template="model/advisor.cfm">
 	<cfreturn>
@@ -63,21 +52,16 @@
 <!--- Advise student --->
 <cfelseif isDefined('url.advise') && url.advise NEQ 'end'>
 	<cfquery name="qGetStudent">
-		SELECT
-			a.id,
-			a.first_name + ' ' + a.last_name AS full_name,
-			a.email,
-			s.student_id
-		FROM
-			ACCOUNTS a
-		JOIN
-			STUDENTS s ON a.id = s.accounts_id
+		SELECT a.first_name + ' ' + a.last_name AS full_name, a.email, s.accounts_id, s.student_id
+		FROM ACCOUNTS a
+		JOIN STUDENTS s ON a.id = s.accounts_id
 	</cfquery>
 	
 	<!--- Don't trust url variables, so passively validate the student ID in the URL against known students. --->
 	<cfloop query="qGetStudent">
 		<cfif url.advise EQ qGetStudent.student_id>
 			<!--- Student matched, so setup the advising session. --->
+			<cfset session.accountId = qGetStudent.accounts_id>
 			<cfset session.studentId = qGetStudent.student_id>
 			<cfset session.studentName = qGetStudent.full_name>
 			<cflocation url="dashboard.cfm">

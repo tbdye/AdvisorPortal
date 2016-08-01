@@ -11,10 +11,7 @@
 	FROM STUDENTS_COMPLETEDCOURSES s
 	JOIN COURSES c
 	ON c.id = s.courses_id
-	WHERE students_accounts_id = (
-		SELECT accounts_id
-		FROM STUDENTS
-		WHERE student_id = <cfqueryparam value="#session.studentId#" cfsqltype="cf_sql_integer">)
+	WHERE students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">
 </cfquery>
 
 <!--- Define form action for "Add" button. --->
@@ -52,11 +49,33 @@
 
 	<!--- Add a course with eligibility requirements --->
 	<cfif isDefined("form.verifyButton")>
+		<!--- ToDo:  verify form data --->
+		<cfset credit="">
 		
-		<!--- ToDo:  add course insert stuff here when prerequisites existed --->
-		<!---declare @Account INT
-		SET @Account = (SELECT accounts_id FROM STUDENTS WHERE student_id = 1234)
-		INSERT INTO STUDENTS_COMPLETEDCOURSES (students_accounts_id, courses_id, credit) VALUES (@Account, 134, 5.00);--->
+		<cfquery name="qGetCourse">
+			SELECT id, max_credit
+			FROM COURSES
+			WHERE id = <cfqueryparam value="#URLDecode(url.id)#" cfsqltype="cf_sql_integer">
+			AND course_number = <cfqueryparam value="#URLDecode(url.add)#" cfsqltype="cf_sql_varchar">
+		</cfquery>
+		
+		<cfif isDefined("form.courseCredit")>
+			<cfset credit="#form.courseCredit#">
+		<cfelse>
+			<cfset credit="#qGetCourse.max_credit#">
+		</cfif>
+		
+		<!--- Add course to student for when eligibility check was necessary. --->
+		<cfquery>
+			INSERT INTO	STUDENTS_COMPLETEDCOURSES (
+				students_accounts_id, courses_id, credit)
+			VALUES (
+				<cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">,
+				<cfqueryparam value="#qGetCourse.id#" cfsqltype="cf_sql_integer">,
+				<cfqueryparam value="#credit#" cfsqltype="cf_sql_decimal">)
+		</cfquery>
+		
+		<!--- Done --->
 		<cflocation url="courses.cfm">
 	</cfif>
 	
@@ -67,7 +86,7 @@
 		WHERE id = <cfqueryparam value="#URLDecode(url.id)#" cfsqltype="cf_sql_integer">
 		AND course_number = <cfqueryparam value="#URLDecode(url.add)#" cfsqltype="cf_sql_varchar">
 	</cfquery>
-	
+
 	<!--- Stop here if the course is not valid. --->
 	<cfif !qCheckCourse.RecordCount>
 		<cfset errorBean.addError('There was an error adding this course; course cannot be added.', 'courseId')>
@@ -78,7 +97,7 @@
 	<!--- Before adding the course, determine eligibility requirements exist.
 		  Build a UI element to display areas requiring user input or verification.
 		  First, collect relevant information from the database. --->
-	<cfquery name="qGetPrerequisite">
+	<!---<cfquery name="qGetPrerequisite">
 		SELECT p.id, p.courses_id, p.group_id, p.courses_prerequisite_id, c.course_number
 		FROM PREREQUISITES p
 		JOIN COURSES c
@@ -88,10 +107,14 @@
 		NOT IN (
 			SELECT courses_id
 			FROM STUDENTS_COMPLETEDCOURSES
-			WHERE students_accounts_id = (
-				SELECT accounts_id
-				FROM STUDENTS
-				WHERE student_id = <cfqueryparam value="#session.studentId#" cfsqltype="cf_sql_integer">))
+			WHERE students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">)
+	</cfquery>--->
+	<cfquery name="qGetPrerequisite">
+		SELECT p.id, p.courses_id, p.group_id, p.courses_prerequisite_id, c.course_number
+		FROM PREREQUISITES p
+		JOIN COURSES c
+		ON p.courses_prerequisite_id = c.id
+		WHERE p.courses_id = <cfqueryparam value="#qCheckCourse.id#" cfsqltype="cf_sql_integer">
 	</cfquery>
 	
 	<cfquery name="qGetPermission">
@@ -149,18 +172,23 @@
 			<cfset ArrayAppend(aPrerequisites, "Placement into <cfoutput>#qCheckCourse.course_number#</cfoutput> by assessment.")>
 		</cfif>
 		
+		<!--- Stop here to get input --->
+		<cfinclude template="model/courses.cfm">
+		<cfreturn>
+	
+	<!--- The course has variable credit --->
+	<cfelseif IsNumeric(qCheckCourse.min_credit)>
+		<!--- Stop here to get input --->
 		<cfinclude template="model/courses.cfm">
 		<cfreturn>
 	</cfif>
 	
-	<!--- ToDo:  add course insert stuff here when no prerequisites exist --->
+	<!--- Add course to student for when no eligibility check is necessary. --->
 	<cfquery>
 		INSERT INTO	STUDENTS_COMPLETEDCOURSES (
 			students_accounts_id, courses_id, credit)
 		VALUES (
-			(SELECT accounts_id
-				FROM STUDENTS
-				WHERE student_id = <cfqueryparam value="#session.studentId#" cfsqltype="cf_sql_integer">),
+			<cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">,
 			<cfqueryparam value="#qCheckCourse.id#" cfsqltype="cf_sql_integer">,
 			<cfqueryparam value="#qCheckCourse.max_credit#" cfsqltype="cf_sql_decimal">)
 	</cfquery>
@@ -175,11 +203,8 @@
 		FROM STUDENTS_COMPLETEDCOURSES s
 		JOIN COURSES c
 		ON c.id = s.courses_id
-		WHERE students_accounts_id = (
-			SELECT accounts_id
-			FROM STUDENTS
-			WHERE student_id = <cfqueryparam value="#session.studentId#" cfsqltype="cf_sql_integer">)
-		AND c.course_number = <cfqueryparam value="#URLDecode(url.add)#" cfsqltype="cf_sql_varchar">
+		WHERE students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">
+		AND c.course_number = <cfqueryparam value="#URLDecode(url.delete)#" cfsqltype="cf_sql_varchar">
 		AND s.id = <cfqueryparam value="#URLDecode(url.id)#" cfsqltype="cf_sql_integer">
 	</cfquery>
 	
@@ -189,6 +214,14 @@
 		<cfinclude template="model/courses.cfm">
 		<cfreturn>
 	</cfif>
+	
+	<!--- Delete the course from the student record --->
+	<cfquery>
+		DELETE
+		FROM STUDENTS_COMPLETEDCOURSES
+		WHERE id = <cfqueryparam value="#qCheckCourse.id#" cfsqltype="cf_sql_integer">
+	</cfquery>
+	<cflocation url="courses.cfm">
 
 <!--- Display default landing page. --->
 <cfelse>
