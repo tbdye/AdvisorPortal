@@ -3,7 +3,7 @@
 	<cflocation url="index.cfm">
 </cfif>
 
-<cfset errorBean=createObject('AdvisorPortal.cfc.errorBean').init()>
+<cfset errorBean=createObject('cfc.errorBean').init()>
 
 <!--- Always display degree plans by the student. --->
 <cfquery name="qDegreesGetStudentPlans">

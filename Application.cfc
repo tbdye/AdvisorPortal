@@ -17,7 +17,7 @@
 
 		<!--- Display the login form if users aren't logged in. --->
 		<cflogin>
-			<cfset errorBean=createObject('AdvisorPortal.cfc.errorBean').init()>
+			<cfset errorBean=createObject('cfc.errorBean').init()>
 			<cfset StructClear(session)>
 			
 			<!--- Define form action for "Log in" button. --->

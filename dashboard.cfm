@@ -3,7 +3,7 @@
 	<cflocation url="index.cfm">
 </cfif>
 
-<cfset errorBean=createObject('AdvisorPortal.cfc.errorBean').init()>
+<cfset errorBean=createObject('cfc.errorBean').init()>
 
 <cfinclude template="model/dashboard.cfm">
 <cfreturn>

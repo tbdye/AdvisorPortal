@@ -3,7 +3,7 @@
 	<cflocation url="index.cfm">
 </cfif>
 
-<cfset errorBean=createObject('AdvisorPortal.cfc.errorBean').init()>
+<cfset errorBean=createObject('cfc.errorBean').init()>
 
 <!--- Define form action for "Select" button. --->
 <cfif isDefined("form.selectButton")>
