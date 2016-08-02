@@ -43,7 +43,7 @@
 	</cfif>
 	
 	<!--- Perform uniqueness validation on form fields --->
-	<cfset emailAddress=canonicalize(trim(form.emailAddress), true, true, true)>
+	<cfset emailAddress=canonicalize(trim(form.emailAddress), true, true)>
 	
 	<cfquery name="qAccountCheckEmail">
 		SELECT email
@@ -148,7 +148,7 @@
 	
 	<!--- Update first name --->
 	<cfif len(trim(form.firstName))>
-		<cfset firstName=canonicalize(trim(form.firstName), true, true, true)>
+		<cfset firstName=canonicalize(trim(form.firstName), true, true)>
 		
 		<cfquery>
 			UPDATE ACCOUNTS
@@ -159,7 +159,7 @@
 	
 	<!--- Update last name --->
 	<cfif len(trim(form.lastName))>
-		<cfset lastName=canonicalize(trim(form.lastName), true, true, true)>
+		<cfset lastName=canonicalize(trim(form.lastName), true, true)>
 		
 		<cfquery>
 			UPDATE ACCOUNTS

@@ -164,9 +164,9 @@
 					<cfset password=Hash(trim(form.password) & salt, "SHA-512")>
 				</cfif>
 				
-				<cfset emailAddress=canonicalize(trim(form.emailAddress), true, true, true)>
-				<cfset firstName=canonicalize(trim(form.firstName), true, true, true)>
-				<cfset lastName=canonicalize(trim(form.lastName), true, true, true)>
+				<cfset emailAddress=canonicalize(trim(form.emailAddress), true, true)>
+				<cfset firstName=canonicalize(trim(form.firstName), true, true)>
+				<cfset lastName=canonicalize(trim(form.lastName), true, true)>
 				
 				<cfquery>
 					INSERT INTO	ACCOUNTS (
