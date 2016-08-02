@@ -24,7 +24,7 @@
 		    	<ul>
 					<li><a href="logout.cfm" title="Log out">Log out</a></li>
 					<li><a href="help.cfm" title="Help">Help</a></li>
-					<li><a href="account.cfm" title="Account Settings"><cfoutput>Hello, #GetAuthUser()#</cfoutput>!</a></li>
+					<li><a href="account.cfm" title="Account Settings"><cfoutput>Hello, #session.loginName#</cfoutput>!</a></li>
 				</ul>
 			</cfif>
 	    </div>

@@ -24,7 +24,7 @@
 
 <!--- Handle student ID search results. --->
 <cfif !qCoursesGetCourse.RecordCount>
-	<cfset errorBean.addError('Course not found.', 'courseNumber')>
+	<cfset errorBean.addError('No results.', 'courseNumber')>
 </cfif>
 
 <cfinclude template="../model/courses.cfm">

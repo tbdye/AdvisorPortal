@@ -61,8 +61,9 @@
 				    </cfquery>
 				    <cfif qLoginGetStudent.RecordCount>
 				    	<!--- Found student record, so log in --->
-				    	<cfloginuser name="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#" password="#form.password#" roles="student">
+				    	<cfloginuser name="#qLoginGetAccount.id#" password="#form.password#" roles="student">
 				    	<cfset session.loginId="#qLoginGetAccount.id#">
+				    	<cfset session.loginName="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#">
 						<cfset session.accountId="#qLoginGetStudent.accounts_id#">
 						<cfset session.studentId="#qLoginGetStudent.student_id#">
 						<cfset session.studentName="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#">
@@ -75,16 +76,19 @@
 				
 				    	<cfif qLoginGetFaculty.RecordCount && qLoginGetFaculty.administrator>
 				    		<!--- Log in as a faculty administrator --->
-				    		<cfloginuser name="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#" password="#form.password#" roles="administrator,editor,advisor">
+				    		<cfloginuser name="#qLoginGetAccount.id#" password="#form.password#" roles="administrator,editor,advisor">
 				    		<cfset session.loginId="#qLoginGetAccount.id#">
+				    		<cfset session.loginName="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#">
 				    	<cfelseif qLoginGetFaculty.RecordCount && qLoginGetFaculty.editor>
 				    		<!--- Log in as a faculty editor --->
-				    		<cfloginuser name="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#" password="#form.password#" roles="editor,advisor">
+				    		<cfloginuser name="#qLoginGetAccount.id#" password="#form.password#" roles="editor,advisor">
 				    		<cfset session.loginId="#qLoginGetAccount.id#">
+				    		<cfset session.loginName="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#">
 				    	<cfelseif qLoginGetFaculty.RecordCount>
 				    		<!--- Log in as a faculty advisor --->
-				    		<cfloginuser name="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#" password="#form.password#" roles="advisor">
+				    		<cfloginuser name="#qLoginGetAccount.id#" password="#form.password#" roles="advisor">
 				    		<cfset session.loginId="#qLoginGetAccount.id#">
+				    		<cfset session.loginName="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#">
 				    	<cfelse>
 				    		<!--- An account record exists, but a faculty record does not, so stop here --->
 				    		<cfset errorBean.addError('The account could not be loaded; please contact the administrator.', 'accounts_id')>
@@ -157,16 +161,20 @@
 				<!--- Looks good, so create account --->
 				<cfif len(trim(form.password))>
 					<cfset salt=Hash(GenerateSecretKey("AES"), "SHA-512")>
-					<cfset password = Hash(form.password & salt, "SHA-512")>
+					<cfset password=Hash(trim(form.password) & salt, "SHA-512")>
 				</cfif>
+				
+				<cfset emailAddress=canonicalize(trim(form.emailAddress), true, true, true)>
+				<cfset firstName=canonicalize(trim(form.firstName), true, true, true)>
+				<cfset lastName=canonicalize(trim(form.lastName), true, true, true)>
 				
 				<cfquery>
 					INSERT INTO	ACCOUNTS (
 						email, first_name, last_name, password, salt)
 					VALUES (
-						<cfqueryparam value="#trim(form.emailAddress)#" cfsqltype="cf_sql_varchar">,
-						<cfqueryparam value="#trim(form.firstName)#" cfsqltype="cf_sql_varchar">,
-						<cfqueryparam value="#trim(form.lastName)#" cfsqltype="cf_sql_varchar">,
+						<cfqueryparam value="#emailAddress#" cfsqltype="cf_sql_varchar">,
+						<cfqueryparam value="#firstName#" cfsqltype="cf_sql_varchar">,
+						<cfqueryparam value="#lastName#" cfsqltype="cf_sql_varchar">,
 						<cfqueryparam value="#password#" cfsqltype="cf_sql_varchar">,
 						<cfqueryparam value="#salt#" cfsqltype="cf_sql_varchar">)
 				</cfquery>
@@ -191,8 +199,9 @@
 				
 				<!--- Log in the user in if the account was created successfully --->
 				<cfif qLoginGetStudent.RecordCount>
-					<cfloginuser name="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#" password="#form.password#" roles="student">
+					<cfloginuser name="#qLoginGetAccount.id#" password="#form.password#" roles="student">
 					<cfset session.loginId="#qLoginGetAccount.id#">
+					<cfset session.loginName="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#">
 					<cfset session.accountId="#qLoginGetStudent.accounts_id#">
 					<cfset session.studentId="#qLoginGetStudent.student_id#">
 					<cfset session.studentName="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#">
