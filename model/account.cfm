@@ -48,11 +48,11 @@
 									</tr>
 									<tr>
 										<td><label for="email">New Email:</label></td>
-										<td><cfinput type="email" name="emailAddress" id="emailAddress"></td>
+										<td><cfinput type="text" name="emailAddress" id="emailAddress"></td>
 									</tr>
 									<tr>
 										<td><label for="email">Re-enter New Email:</label></td>
-										<td><cfinput type="email" name="emailAddress2" id="emailAddress2"></td>
+										<td><cfinput type="text" name="emailAddress2" id="emailAddress2"></td>
 									</tr>
 									<tr>
 										<td></td>
