@@ -1,6 +1,6 @@
 <!--- Thomas Dye, July 2016 --->
 <cfif !isDefined("errorBean")>
-	<cflocation url="../courses.cfm">
+	<cflocation url="../index.cfm">
 </cfif>
 
 <cfmodule template="../includes/header.cfm"
@@ -24,56 +24,16 @@
 	
 	<a href="https://www.everettcc.edu/catalog/" title="Look up course code" target="_blank">Look up course code</a>
 	
-	<!--- Display any validation errors under form. --->
-	<cfif errorBean.hasErrors() && isDefined("form.addButton")>
-		<ul>
-			<cfloop array="#errorBean.getErrors()#" index="error">
-				<cfoutput><li>Error:  #error.message#</li></cfoutput>
-			</cfloop>
-		</ul>
-	
-	<!--- After form is submitted, display results. --->
-	<cfelseif isDefined("qGetCourse") && !isDefined("form.verifyButton")>
-		<table>
-			<tr>
-				<th>Course Number</th>
-				<th>Title</th>
-				<th>Credits</th>
-				<th></th>
-			</tr>
-			<cfloop query="qGetCourse">
-				<tr>
-					<td><cfoutput>#qGetCourse.course_number#</cfoutput></td>
-					<td><cfoutput>#qGetCourse.title#</cfoutput></td>
-					<cfif !len(qGetCourse.min_credit)>
-						<td><cfoutput>#qGetCourse.max_credit#</cfoutput></td>
-					<cfelse>
-						<td><cfoutput>#qGetCourse.min_credit# - #qGetCourse.max_credit#</cfoutput></td>
-					</cfif>
-					<td><cfoutput><a href="?add=#URLEncodedFormat(qGetCourse.course_number)#&id=#URLEncodedFormat(qGetCourse.id)#" title="Add">Add</a></cfoutput></td>
-				</tr>
-			</cfloop>
-		</table>
-	</cfif>
-	
-	<!--- Display an error if the user selection isn't a valid course. --->
-	<cfif errorBean.hasErrors() && isDefined("qCheckCourse") && !isDefined("form.verifyButton")>
-		<ul>
-			<cfloop array="#errorBean.getErrors()#" index="error">
-				<cfoutput><li>Error:  #error.message#</li></cfoutput>
-			</cfloop>
-		</ul>
-	
 	<!--- The course was valid.  Verify student eligibility before adding the course. --->
-	<cfelseif isDefined("qCheckCourse") && qCheckCourse.RecordCount>
-		<cfif IsNumeric(qCheckCourse.min_credit) || qGetPrerequisite.RecordCount || qGetPermission.RecordCount || qGetPlacement.RecordCount>
+	<cfif isDefined("qCoursesCheckCourse") && qCoursesCheckCourse.RecordCount>
+		<cfif IsNumeric(qCoursesCheckCourse.min_credit) || qCoursesGetPrerequisite.RecordCount || qCoursesGetPermission.RecordCount || qCoursesGetPlacement.RecordCount>
 			<h3>Verify course eligibility</h3>
-			<h4><cfoutput>#qCheckCourse.course_number# - #qCheckCourse.title#</cfoutput></h4>
+			<h4><cfoutput>#qCoursesCheckCourse.course_number# - #qCoursesCheckCourse.title#</cfoutput></h4>
 			
 			<cfform>
 				<!--- Determine student course credit for variable credit courses. --->
-				<cfif IsNumeric(qCheckCourse.min_credit)>
-					<label for="courseCredit">Credits taken <cfoutput>(#qCheckCourse.min_credit# - #qCheckCourse.max_credit#)</cfoutput>:</label>
+				<cfif IsNumeric(qCoursesCheckCourse.min_credit)>
+					<label for="courseCredit">Credits taken <cfoutput>(#qCoursesCheckCourse.min_credit# - #qCoursesCheckCourse.max_credit#)</cfoutput>:</label>
 					<cfinput type="text" id="courseCredit" name="courseCredit"><br>
 				</cfif>
 
@@ -84,25 +44,16 @@
 				</cfif>
 				
 				<cfloop index="i" from=1 to=#ArrayLen(aPrerequisites)#>
-					<cfinput type="radio" id="prereq" name="prereq" value="#i#">
-					<cfoutput><label for="prereq">#aPrerequisites[i]#</label></cfoutput><br>
+					<cfinput type="radio" id="prereq#i#" name="prereq" value="#i#">
+					<cfoutput><label for="prereq#i#">#aPrerequisites[i]#</label></cfoutput><br>
 				</cfloop>
 
 				<cfinput type="submit" name="verifyButton" value="Add course">
 			</cfform>
 		</cfif>
-		<cfif errorBean.hasErrors()>
-			<ul>
-				<cfloop array="#errorBean.getErrors()#" index="error">
-					<cfoutput><li>Error:  #error.message#</li></cfoutput>
-				</cfloop>
-			</ul>
-		</cfif>
-	</cfif>
-
-	<!--- Display completed courses --->
-	<h3>Completed courses</h3>
-	<cfif qGetStudentCourses.RecordCount>
+	
+	<!--- After form is submitted, display results. --->
+	<cfelseif isDefined("qCoursesGetCourse")>
 		<table>
 			<tr>
 				<th>Course Number</th>
@@ -110,12 +61,46 @@
 				<th>Credits</th>
 				<th></th>
 			</tr>
-			<cfloop query="qGetStudentCourses">
+			<cfloop query="qCoursesGetCourse">
 				<tr>
-					<td><cfoutput>#qGetStudentCourses.course_number#</cfoutput></td>
-					<td><cfoutput>#qGetStudentCourses.title#</cfoutput></td>
-					<td><cfoutput>#qGetStudentCourses.credit#</cfoutput></td>
-					<td><cfoutput><a href="?delete=#URLEncodedFormat(qGetStudentCourses.course_number)#&id=#URLEncodedFormat(qGetStudentCourses.completed_id)#" title="Delete">Delete</a></cfoutput></td>
+					<td><cfoutput>#qCoursesGetCourse.course_number#</cfoutput></td>
+					<td><cfoutput>#qCoursesGetCourse.title#</cfoutput></td>
+					<cfif !len(qCoursesGetCourse.min_credit)>
+						<td><cfoutput>#qCoursesGetCourse.max_credit#</cfoutput></td>
+					<cfelse>
+						<td><cfoutput>#qCoursesGetCourse.min_credit# - #qCoursesGetCourse.max_credit#</cfoutput></td>
+					</cfif>
+					<td><cfoutput><a href="?add=#URLEncodedFormat(qCoursesGetCourse.course_number)#&id=#URLEncodedFormat(qCoursesGetCourse.id)#" title="Add">Add</a></cfoutput></td>
+				</tr>
+			</cfloop>
+		</table>
+	</cfif>
+	
+	<!--- Display an error if the user selection isn't a valid course. --->
+	<cfif errorBean.hasErrors()>
+		<ul>
+			<cfloop array="#errorBean.getErrors()#" index="error">
+				<cfoutput><li>Error:  #error.message#</li></cfoutput>
+			</cfloop>
+		</ul>
+	</cfif>
+
+	<!--- Display completed courses --->
+	<h3>Completed courses</h3>
+	<cfif qCoursesGetStudentCourses.RecordCount>
+		<table>
+			<tr>
+				<th>Course Number</th>
+				<th>Title</th>
+				<th>Credits</th>
+				<th></th>
+			</tr>
+			<cfloop query="qCoursesGetStudentCourses">
+				<tr>
+					<td><cfoutput>#qCoursesGetStudentCourses.course_number#</cfoutput></td>
+					<td><cfoutput>#qCoursesGetStudentCourses.title#</cfoutput></td>
+					<td><cfoutput>#qCoursesGetStudentCourses.credit#</cfoutput></td>
+					<td><cfoutput><a href="?delete=#URLEncodedFormat(qCoursesGetStudentCourses.course_number)#&id=#URLEncodedFormat(qCoursesGetStudentCourses.completed_id)#" title="Delete">Delete</a></cfoutput></td>
 				</tr>
 			</cfloop>
 		</table>

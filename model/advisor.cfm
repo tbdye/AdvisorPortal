@@ -1,6 +1,6 @@
 <!--- Thomas Dye, July 2016 --->
 <cfif !isDefined("errorBean")>
-	<cflocation url="../advisor.cfm">
+	<cflocation url="../index.cfm">
 </cfif>
 
 <cfmodule template="../includes/header.cfm"
@@ -58,7 +58,7 @@
 								</cfloop>
 								</ul>
 							</div>
-						<cfelseif isDefined("qGetStudent")>
+						<cfelseif isDefined("qAdvisorGetStudent")>
 							<table>
 								<tr>
 									<th>Name</th>
@@ -66,12 +66,12 @@
 									<th>Email</th>
 									<th></th>
 								</tr>
-								<cfloop query="qGetStudent">
+								<cfloop query="qAdvisorGetStudent">
 									<tr>
-										<td><cfoutput>#qGetStudent.full_name#</cfoutput></td>
-										<td><cfoutput>#qGetStudent.student_id#</cfoutput></td>
-										<td><cfoutput>#qGetStudent.email#</cfoutput></td>
-										<td><a href="?advise=<cfoutput>#qGetStudent.student_id#</cfoutput>" title="Advise">Advise</a></td>
+										<td><cfoutput>#qAdvisorGetStudent.full_name#</cfoutput></td>
+										<td><cfoutput>#qAdvisorGetStudent.student_id#</cfoutput></td>
+										<td><cfoutput>#qAdvisorGetStudent.email#</cfoutput></td>
+										<td><a href="?advise=<cfoutput>#qAdvisorGetStudent.student_id#</cfoutput>" title="Advise">Advise</a></td>
 									</tr>
 								</cfloop>
 							</table>

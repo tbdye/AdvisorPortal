@@ -7,40 +7,11 @@
 
 <!--- Define form action for "Select" button. --->
 <cfif isDefined("form.selectButton")>
-	
-	<!--- Perform simple validation on form fields --->
-	<cfif !len(trim(form.studentId))>
-		<cfset errorBean.addError('A student ID number is required.', 'studentId')>
-	<cfelseif !IsValid("integer", trim(form.studentId))>
-		<cfset errorBean.addError('Enter the student ID as a number with no spaces', 'studentId')>
-	</cfif>
-	
-	<!--- Stop here if errors were detected --->
-	<cfif errorBean.hasErrors()>
-		<cfinclude template="model/advisor.cfm">
-		<cfreturn>
-	</cfif>
-
-	<!--- Find the student, if exists --->
-	<cfquery name="qGetStudent">
-		SELECT a.id, a.first_name + ' ' + a.last_name AS full_name, a.email, s.student_id
-		FROM ACCOUNTS a
-		JOIN STUDENTS s
-		ON a.id = s.accounts_id
-		WHERE s.student_id = <cfqueryparam value="#trim(form.studentId)#" cfsqltype="cf_sql_integer">
-	</cfquery>
-
-	<!--- Handle student ID search results. --->
-	<cfif !qGetStudent.RecordCount>
-		<cfset errorBean.addError('No records found for that student ID.', 'studentId')>
-	</cfif>
-	
-	<cfinclude template="model/advisor.cfm">
-	<cfreturn>
+	<cfinclude template="advisor/formSelectButton.cfm">
 	
 <!--- Display all students --->
 <cfelseif isDefined("url.search") && url.search EQ 'all'>
-	<cfquery name="qGetStudent">
+	<cfquery name="qAdvisorGetStudent">
 		SELECT a.id, a.first_name + ' ' + a.last_name AS full_name, a.email, s.student_id
 		FROM ACCOUNTS a
 		JOIN STUDENTS s
@@ -51,19 +22,19 @@
 	
 <!--- Advise student --->
 <cfelseif isDefined('url.advise') && url.advise NEQ 'end'>
-	<cfquery name="qGetStudent">
+	<cfquery name="qAdvisorGetStudent">
 		SELECT a.first_name + ' ' + a.last_name AS full_name, a.email, s.accounts_id, s.student_id
 		FROM ACCOUNTS a
 		JOIN STUDENTS s ON a.id = s.accounts_id
 	</cfquery>
 	
 	<!--- Don't trust url variables, so passively validate the student ID in the URL against known students. --->
-	<cfloop query="qGetStudent">
-		<cfif url.advise EQ qGetStudent.student_id>
+	<cfloop query="qAdvisorGetStudent">
+		<cfif url.advise EQ qAdvisorGetStudent.student_id>
 			<!--- Student matched, so setup the advising session. --->
-			<cfset session.accountId = qGetStudent.accounts_id>
-			<cfset session.studentId = qGetStudent.student_id>
-			<cfset session.studentName = qGetStudent.full_name>
+			<cfset session.accountId = qAdvisorGetStudent.accounts_id>
+			<cfset session.studentId = qAdvisorGetStudent.student_id>
+			<cfset session.studentName = qAdvisorGetStudent.full_name>
 			<cflocation url="dashboard.cfm">
 		</cfif>
 	</cfloop>

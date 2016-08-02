@@ -41,50 +41,50 @@
 				</cfif>
 				
 				<!--- Find the account, if exists --->
-				<cfquery name="qGetAccount">
+				<cfquery name="qLoginGetAccount">
 					SELECT id, first_name, last_name, email, password, salt
 					FROM ACCOUNTS
 					WHERE email = <cfqueryparam value="#trim(form.emailAddress)#" cfsqltype="cf_sql_varchar">
 				</cfquery>
 				
 				<!--- Check password.  If does not match, fail.  Otherwise, evaluate student or faculty account --->
-				<cfif !qGetAccount.RecordCount || qGetAccount.password NEQ Hash(form.password & qGetAccount.salt, "SHA-512")>
+				<cfif !qLoginGetAccount.RecordCount || qLoginGetAccount.password NEQ Hash(form.password & qLoginGetAccount.salt, "SHA-512")>
 					<!--- The user login credentials were incorrect, so stop here --->
 					<cfset errorBean.addError('User or password were incorrect; please try again', 'email')>
 					<cfinclude template="model/login.cfm">
 					<cfreturn>
 				<cfelse>
-					<cfquery name="qGetStudent">
+					<cfquery name="qLoginGetStudent">
 				      	SELECT accounts_id, student_id
 				  		FROM STUDENTS
-				  		WHERE accounts_id = <cfqueryparam value="#qGetAccount.id#" cfsqltype="cf_sql_integer">
+				  		WHERE accounts_id = <cfqueryparam value="#qLoginGetAccount.id#" cfsqltype="cf_sql_integer">
 				    </cfquery>
-				    <cfif qGetStudent.RecordCount>
+				    <cfif qLoginGetStudent.RecordCount>
 				    	<!--- Found student record, so log in --->
-				    	<cfloginuser name="#qGetAccount.first_name# #qGetAccount.last_name#" password="#form.password#" roles="student">
-				    	<cfset session.loginId="#qGetAccount.id#">
-						<cfset session.accountId="#qGetStudent.accounts_id#">
-						<cfset session.studentId="#qGetStudent.student_id#">
-						<cfset session.studentName="#qGetAccount.first_name# #qGetAccount.last_name#">
+				    	<cfloginuser name="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#" password="#form.password#" roles="student">
+				    	<cfset session.loginId="#qLoginGetAccount.id#">
+						<cfset session.accountId="#qLoginGetStudent.accounts_id#">
+						<cfset session.studentId="#qLoginGetStudent.student_id#">
+						<cfset session.studentName="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#">
 				    <cfelse>
-				    	<cfquery name="qGetFaculty">
+				    	<cfquery name="qLoginGetFaculty">
 					      	SELECT accounts_id, editor, administrator
 				      		FROM FACULTY
-				      		WHERE accounts_id = <cfqueryparam value="#qGetAccount.id#" cfsqltype="cf_sql_integer">
+				      		WHERE accounts_id = <cfqueryparam value="#qLoginGetAccount.id#" cfsqltype="cf_sql_integer">
 					    </cfquery>
 				
-				    	<cfif qGetFaculty.RecordCount && qGetFaculty.administrator>
+				    	<cfif qLoginGetFaculty.RecordCount && qLoginGetFaculty.administrator>
 				    		<!--- Log in as a faculty administrator --->
-				    		<cfloginuser name="#qGetAccount.first_name# #qGetAccount.last_name#" password="#form.password#" roles="administrator,editor,advisor">
-				    		<cfset session.loginId="#qGetAccount.id#">
-				    	<cfelseif qGetFaculty.RecordCount && qGetFaculty.editor>
+				    		<cfloginuser name="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#" password="#form.password#" roles="administrator,editor,advisor">
+				    		<cfset session.loginId="#qLoginGetAccount.id#">
+				    	<cfelseif qLoginGetFaculty.RecordCount && qLoginGetFaculty.editor>
 				    		<!--- Log in as a faculty editor --->
-				    		<cfloginuser name="#qGetAccount.first_name# #qGetAccount.last_name#" password="#form.password#" roles="editor,advisor">
-				    		<cfset session.loginId="#qGetAccount.id#">
-				    	<cfelseif qGetFaculty.RecordCount>
+				    		<cfloginuser name="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#" password="#form.password#" roles="editor,advisor">
+				    		<cfset session.loginId="#qLoginGetAccount.id#">
+				    	<cfelseif qLoginGetFaculty.RecordCount>
 				    		<!--- Log in as a faculty advisor --->
-				    		<cfloginuser name="#qGetAccount.first_name# #qGetAccount.last_name#" password="#form.password#" roles="advisor">
-				    		<cfset session.loginId="#qGetAccount.id#">
+				    		<cfloginuser name="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#" password="#form.password#" roles="advisor">
+				    		<cfset session.loginId="#qLoginGetAccount.id#">
 				    	<cfelse>
 				    		<!--- An account record exists, but a faculty record does not, so stop here --->
 				    		<cfset errorBean.addError('The account could not be loaded; please contact the administrator.', 'accounts_id')>
@@ -131,20 +131,20 @@
 				</cfif>
 				
 				<!--- Perform uniqueness validation on form fields --->
-				<cfquery name="qCheckStudentId">
+				<cfquery name="qLoginCheckStudentId">
 					SELECT accounts_id, student_id
 					FROM STUDENTS
 					WHERE student_id = <cfqueryparam value="#trim(form.studentId)#" cfsqltype="cf_sql_integer">
 				</cfquery>
-				<cfquery name="qCheckEmail">
+				<cfquery name="qLoginCheckEmail">
 					SELECT email
 					FROM ACCOUNTS
 					WHERE email = <cfqueryparam value="#trim(form.emailAddress)#" cfsqltype="cf_sql_varchar">
 				</cfquery>
 				
-				<cfif qCheckStudentId.RecordCount>
+				<cfif qLoginCheckStudentId.RecordCount>
 					<cfset errorBean.addError('This student ID is already in use.', 'studentId')>
-				<cfelseif qCheckEmail.RecordCount>
+				<cfelseif qLoginCheckEmail.RecordCount>
 					<cfset errorBean.addError('This email address is already in use.', 'emailAddress')>
 				</cfif>
 				
@@ -170,7 +170,7 @@
 						<cfqueryparam value="#password#" cfsqltype="cf_sql_varchar">,
 						<cfqueryparam value="#salt#" cfsqltype="cf_sql_varchar">)
 				</cfquery>
-				<cfquery name="qGetAccount">
+				<cfquery name="qLoginGetAccount">
 					SELECT id, first_name, last_name, email, password, salt
 					FROM ACCOUNTS
 					WHERE email = <cfqueryparam value="#trim(form.emailAddress)#" cfsqltype="cf_sql_varchar">
@@ -179,23 +179,23 @@
 					INSERT INTO	STUDENTS (
 						accounts_id, student_id)
 					VALUES (
-						<cfqueryparam value="#qGetAccount.id#" cfsqltype="cf_sql_integer">,
+						<cfqueryparam value="#qLoginGetAccount.id#" cfsqltype="cf_sql_integer">,
 						<cfqueryparam value="#trim(form.studentId)#" cfsqltype="cf_sql_integer">
 					)
 				</cfquery>
-				<cfquery name="qGetStudent">
-					SELECT student_id
+				<cfquery name="qLoginGetStudent">
+					SELECT accounts_id, student_id
 					FROM STUDENTS
-					WHERE accounts_id = <cfqueryparam value="#qGetAccount.id#" cfsqltype="cf_sql_integer">
+					WHERE accounts_id = <cfqueryparam value="#qLoginGetAccount.id#" cfsqltype="cf_sql_integer">
 				</cfquery>
 				
 				<!--- Log in the user in if the account was created successfully --->
-				<cfif qGetStudent.RecordCount>
-					<cfloginuser name="#qGetAccount.first_name# #qGetAccount.last_name#" password="#form.password#" roles="student">
-					<cfset session.loginId="#qGetAccount.id#">
-					<cfset session.accountId="#qGetStudent.accounts_id#">
-					<cfset session.studentId="#qGetStudent.student_id#">
-					<cfset session.studentName="#qGetAccount.first_name# #qGetAccount.last_name#">
+				<cfif qLoginGetStudent.RecordCount>
+					<cfloginuser name="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#" password="#form.password#" roles="student">
+					<cfset session.loginId="#qLoginGetAccount.id#">
+					<cfset session.accountId="#qLoginGetStudent.accounts_id#">
+					<cfset session.studentId="#qLoginGetStudent.student_id#">
+					<cfset session.studentName="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#">
 				<cfelse>
 					<cfset errorBean.addError('Unable to create account.', 'emailAddress')>
 				</cfif>
