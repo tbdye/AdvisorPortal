@@ -38,10 +38,10 @@
 						<cfform>
 							<table>
 								<tr>
-									<td colspan="2"><strong>Find a student by ID number</strong></td>
+									<td colspan="2"><strong>Find a student by name, student ID, or email address</strong></td>
 								</tr>
 								<tr>
-									<td width="120px"><cfinput type="text" id="studentId" name="studentId"></td>
+									<td width="120px"><cfinput type="text" id="searchTerm" name="searchTerm"></td>
 									<td><cfinput type="submit" name="selectButton" value="Search"></td>								
 								</tr>							
 							</table>
@@ -58,7 +58,7 @@
 								</cfloop>
 								</ul>
 							</div>
-						<cfelseif isDefined("qAdvisorGetStudent")>
+						<cfelseif isDefined("qAdvisorGetStudent") && qAdvisorGetStudent.RecordCount>
 							<table>
 								<tr>
 									<th>Name</th>
