@@ -19,7 +19,7 @@
 	SELECT id, course_number, title, min_credit, max_credit
 	FROM COURSES
 	WHERE use_catalog = 1
-	AND course_number = <cfqueryparam value="#trim(form.courseNumber)#" cfsqltype="cf_sql_varchar">
+	AND course_number LIKE <cfqueryparam value="#trim(form.courseNumber)#%" cfsqltype="cf_sql_varchar">
 </cfquery>
 
 <!--- Handle student ID search results. --->
