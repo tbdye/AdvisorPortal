@@ -47,7 +47,7 @@
 							</table>
 						</cfform>
 												
-						<a href="?search=all" title="view all students">View all students</a>
+						<a href="?search=all" title="view all accounts">View all accounts</a>
 						
 			
 						<cfif errorBean.hasErrors() && isDefined("url.user")>

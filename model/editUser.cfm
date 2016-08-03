@@ -30,7 +30,7 @@
 									<tr>
 										<td colspan="2">
 											<div id="form-errors">
-												<cfif errorBean.hasErrors() && isDefined("form.createButton")>
+												<cfif errorBean.hasErrors()>
 													<ul>
 														<cfloop array="#errorBean.getErrors()#" index="error">
 															<cfoutput><li>#error.message#</li></cfoutput>
@@ -43,17 +43,6 @@
 									<cfif IsValid("integer", qUserGetAccount.f_accounts_id)>
 										<tr>
 											<h3>Role</h3>
-											<cfset default1="no">
-											<cfset default2="no">
-											<cfset default3="no">
-											<cfif IsValid("integer", qUserGetAccount.administrator) && qUserGetAccount.administrator>
-												<cfset default3="yes">
-											<cfelseif IsValid("integer", qUserGetAccount.editor) && qUserGetAccount.editor>
-												<cfset default2="yes">
-											<cfelseif IsValid("integer", qUserGetAccount.f_accounts_id)>
-												<cfset default1="yes">
-											</cfif>
-											
 											<cfinput type="radio" id="advisor" name="role" value="1" checked="#default1#">
 											<cfoutput><label for="advisor">Advisor</label></cfoutput><br>
 											<cfinput type="radio" id="editor" name="role" value="2" checked="#default2#">

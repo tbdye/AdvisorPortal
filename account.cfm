@@ -84,7 +84,7 @@
 	</cfif>
 	
 	<cfif !len(trim(form.newPass))>
-		<cfset errorBean.addError('A new password is required.', 'newPass')>
+		<cfset errorBean.addError('The new password cannot be blank.', 'newPass')>
 	<cfelseif trim(form.newPass) NEQ trim(form.newPass2)>
 		<cfset errorBean.addError('The passwords do not match.', 'newPass')>
 	</cfif>

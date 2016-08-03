@@ -123,7 +123,7 @@
 				</cfif>
 				
 				<cfif !len(trim(form.password))>
-					<cfset errorBean.addError('A password is required.', 'password')>
+					<cfset errorBean.addError('The password cannot be blank.', 'password')>
 				<cfelseif trim(form.password) NEQ trim(form.password2)>
 					<cfset errorBean.addError('The passwords do not match.', 'password')>
 				</cfif>
