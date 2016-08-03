@@ -42,7 +42,7 @@
 				
 				<!--- Find the account, if exists --->
 				<cfquery name="qLoginGetAccount">
-					SELECT id, first_name, last_name, email, password, salt
+					SELECT id, active, first_name, last_name, email, password, salt
 					FROM ACCOUNTS
 					WHERE email = <cfqueryparam value="#trim(form.emailAddress)#" cfsqltype="cf_sql_varchar">
 				</cfquery>
@@ -51,6 +51,11 @@
 				<cfif !qLoginGetAccount.RecordCount || qLoginGetAccount.password NEQ Hash(form.password & qLoginGetAccount.salt, "SHA-512")>
 					<!--- The user login credentials were incorrect, so stop here --->
 					<cfset errorBean.addError('User or password were incorrect; please try again', 'email')>
+					<cfinclude template="model/login.cfm">
+					<cfreturn>
+				<cfelseif !qLoginGetAccount.active>
+					<!--- The user account is deactivated, so stop here --->
+					<cfset errorBean.addError('The account could not be loaded; please contact the administrator.', 'email')>
 					<cfinclude template="model/login.cfm">
 					<cfreturn>
 				<cfelse>

@@ -65,6 +65,7 @@
 									<th>Student ID</th>
 									<th>Email</th>
 									<th>Role</th>
+									<th>Status</th>
 								</tr>
 								<cfloop query="qAdminSearchAccount">
 									<tr>
@@ -85,6 +86,15 @@
 												<cfset role="None">
 											</cfif>
 											<cfoutput>#role#</cfoutput>
+										</td>
+										<td>
+											<cfset status="">
+											<cfif qAdminSearchAccount.active>
+												<cfset status="Active">
+											<cfelse>
+												<cfset status="Inactive">
+											</cfif>
+											<cfoutput>#status#</cfoutput>
 										</td>
 									</tr>
 								</cfloop>

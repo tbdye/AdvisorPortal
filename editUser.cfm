@@ -6,7 +6,7 @@
 <cfset errorBean=createObject('cfc.errorBean').init()>
 
 <cfquery name="qUserGetAccount">
-	SELECT a.id, a.email, a.first_name, a.last_name,
+	SELECT a.id, a.active, a.email, a.first_name, a.last_name,
 			s.accounts_id AS s_accounts_id, s.student_id,
 			f.accounts_id AS f_accounts_id, f.editor, f.administrator
 	FROM accounts a
@@ -17,15 +17,23 @@
 	WHERE a.id = <cfqueryparam value="#URLDecode(url.edit)#" cfsqltype="cf_sql_integer">
 </cfquery>
 
-<cfset default1="no">
-<cfset default2="no">
-<cfset default3="no">
+<cfset status1="no">
+<cfset status2="no">
+<cfif qUserGetAccount.active>
+	<cfset status1="yes">
+<cfelse>
+	<cfset status2="yes">
+</cfif>
+
+<cfset role1="no">
+<cfset role2="no">
+<cfset role3="no">
 <cfif IsValid("integer", qUserGetAccount.administrator) && qUserGetAccount.administrator>
-	<cfset default3="yes">
+	<cfset role3="yes">
 <cfelseif IsValid("integer", qUserGetAccount.editor) && qUserGetAccount.editor>
-	<cfset default2="yes">
+	<cfset role2="yes">
 <cfelseif IsValid("integer", qUserGetAccount.f_accounts_id)>
-	<cfset default1="yes">
+	<cfset role1="yes">
 </cfif>
 
 <cfif isDefined("form.saveButton")>
@@ -35,9 +43,29 @@
 		<cfset errorBean.addError('Cannot use this form to make changes to your own account.', 'loginId')>
 	</cfif>
 	
+	<!--- Evaluate update for account activation status --->
+	<cfif isDefined("form.status") && !errorBean.hasErrors()>
+		<cfif (status1 EQ "yes" && form.status NEQ 1) || (status2 EQ "yes" && form.status NEQ 2)>
+			<!--- Update faculty role --->
+			<cfif form.status EQ 1>
+				<cfquery>
+					UPDATE ACCOUNTS
+					SET active = 1
+					WHERE id = <cfqueryparam value="#qUserGetAccount.id#" cfsqltype="cf_sql_integer">
+				</cfquery>
+			<cfelse>
+				<cfquery>
+					UPDATE ACCOUNTS
+					SET active = 0
+					WHERE id = <cfqueryparam value="#qUserGetAccount.id#" cfsqltype="cf_sql_integer">
+				</cfquery>
+			</cfif>
+		</cfif>
+	</cfif>
+	
 	<!--- Evaluate update for faculty role --->
 	<cfif isDefined("form.role") && !errorBean.hasErrors()>
-		<cfif (default1 EQ "yes" && form.role NEQ 1) || (default2 EQ "yes" && form.role NEQ 2) || (default3 EQ "yes" && form.role NEQ 3)>
+		<cfif (role1 EQ "yes" && form.role NEQ 1) || (role2 EQ "yes" && form.role NEQ 2) || (role3 EQ "yes" && form.role NEQ 3)>
 			
 			<!--- Update faculty role --->
 			<cfif form.role EQ 1>

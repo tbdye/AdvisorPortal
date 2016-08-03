@@ -22,7 +22,7 @@
 	<!--- Find the account, if exists --->
 	<cfquery name="qAdminSearchAccount">
 		SELECT a.first_name, a.last_name, a.first_name + ' ' + a.last_name AS full_name,
-				a.email, a.id, s.student_id, s.accounts_id AS s_accounts_id,
+				a.email, a.active, a.id, s.student_id, s.accounts_id AS s_accounts_id,
 				f.accounts_id AS f_accounts_id, f.editor, f.administrator
 		FROM accounts a
 		FULL JOIN students s
@@ -58,7 +58,7 @@
 <cfelseif isDefined("url.search") && url.search EQ 'all'>
 	<cfquery name="qAdminSearchAccount">
 		SELECT a.first_name + ' ' + a.last_name AS full_name, a.email,
-				a.id, s.student_id, s.accounts_id AS s_accounts_id,
+				a.id, a.active, s.student_id, s.accounts_id AS s_accounts_id,
 				f.accounts_id AS f_accounts_id, f.editor, f.administrator
 		FROM accounts a
 		FULL JOIN students s

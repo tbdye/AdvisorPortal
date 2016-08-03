@@ -40,14 +40,21 @@
 											</div>											
 										</td>
 									</tr>
+									<tr>
+										<h3>Status</h3>
+										<cfinput type="radio" id="active" name="status" value="1" checked="#status1#">
+										<cfoutput><label for="active">Account is available for use.</label></cfoutput><br>
+										<cfinput type="radio" id="inactive" name="status" value="0" checked="#status2#">
+										<cfoutput><label for="inactive">Account is deactivated.</label></cfoutput><br>
+									</tr>
 									<cfif IsValid("integer", qUserGetAccount.f_accounts_id)>
 										<tr>
 											<h3>Role</h3>
-											<cfinput type="radio" id="advisor" name="role" value="1" checked="#default1#">
+											<cfinput type="radio" id="advisor" name="role" value="1" checked="#role1#">
 											<cfoutput><label for="advisor">Advisor</label></cfoutput><br>
-											<cfinput type="radio" id="editor" name="role" value="2" checked="#default2#">
+											<cfinput type="radio" id="editor" name="role" value="2" checked="#role2#">
 											<cfoutput><label for="editor">Editor</label></cfoutput><br>
-											<cfinput type="radio" id="administrator" name="role" value="3" checked="#default3#">
+											<cfinput type="radio" id="administrator" name="role" value="3" checked="#role3#">
 											<cfoutput><label for="administrator">Administrator</label></cfoutput>
 										</tr>
 									</cfif>
