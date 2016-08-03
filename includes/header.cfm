@@ -24,7 +24,7 @@
 		    	<ul>
 					<li><a href="logout.cfm" title="Log out">Log out</a></li>
 					<li><a href="help.cfm" title="Help">Help</a></li>
-					<li><a href="account.cfm" title="Account Settings"><cfoutput>Hello, #session.loginName#</cfoutput>!</a></li>
+					<li><a href="account.cfm" title="Account Settings"><cfoutput>Hello, #session.loginName#!</cfoutput></a></li>
 				</ul>
 			</cfif>
 	    </div>
@@ -37,7 +37,7 @@
 				<select name="mini-nav-list" id="mini-nav-list">				
 					<cfif attributes.includeNavBar>
 						<cfif IsUserInRole("advisor")>
-							<option value="advisor.cfm">Advise Student</option>
+							<option value="advisor.cfm">Advising</option>
 						</cfif>
 						
 						<cfif IsUserInRole("student") || isDefined("session.studentId")>
@@ -46,14 +46,8 @@
 							<option value="degrees.cfm">Degree Plans</option>
 						</cfif>
 						
-						<cfif IsUserInRole("editor")>
-							<option value="editCourses.cfm">Edit Courses</option>
-							<option value="editSchools.cfm">Edit Schools</option>
-							<option value="editDegrees.cfm">Edit Degrees</option>							
-						</cfif>
-						
 						<cfif IsUserInRole("administrator")>
-							<option value="editUsers.cfm">Edit Users</option>
+							<option value="admin.cfm">Administration</option>
 						</cfif>
 				    </cfif>					
 					
@@ -62,7 +56,7 @@
 			<ul id="top-navigation">
 				<cfif attributes.includeNavBar>
 					<cfif IsUserInRole("advisor")>
-						<li><a href="advisor.cfm" title="Advise student">Advise Student</a></li>
+						<li><a href="advisor.cfm" title="Advising">Advising</a></li>
 					</cfif>
 					
 					<cfif IsUserInRole("student") || isDefined("session.studentId")>
@@ -71,14 +65,8 @@
 						<li><a href="degrees.cfm" title="Degree Plans">Degree Plans</a></li>
 					</cfif>
 					
-					<cfif IsUserInRole("editor")>
-						<li><a href="editCourses.cfm" title="Edit Courses">Edit Courses</a></li>
-						<li><a href="editSchools.cfm" title="Edit Schools">Edit Schools</a></li>
-						<li><a href="editDegrees.cfm" title="Edit Degrees">Edit Degrees</a></li>
-					</cfif>
-					
 					<cfif IsUserInRole("administrator")>
-						<li><a href="editUsers.cfm" title="Edit Users">Edit Users</a></li>
+						<li><a href="admin.cfm" title="Administration">Administration</a></li>
 					</cfif>
 			    </cfif>
 			</ul>

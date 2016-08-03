@@ -5,13 +5,13 @@
 
 <cfmodule template="../includes/header.cfm"
 
-	pagetitle="Advisor Services Portal - Advise Student">
+	pagetitle="Advisor Services Portal - Advising">
 				
 	<div class="resize-box">
 		
 	    <article id="content-article" role="article">
 	        <header>
-	            <h1>Advise Student</h1>
+	            <h1>Advising</h1>
 	        </header>
 
 			<div class="breadcrumb">
@@ -23,7 +23,14 @@
 	                <span property="dc:title" content="Advising" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
-						<h3>Select a student to advise</h3>
+						<cfif IsUserInRole("editor")>
+							<h2>Manage Portal</h2>
+							<a href="manageDegrees.cfm" title="Manage Degrees">Manage Degrees</a><br>
+							<a href="manageSchools.cfm" title="Manage Schools">Manage Schools</a><br>
+						</cfif>
+						
+						<br>
+						<h2>Select a student to advise</h2>
 						
 						<cfif errorBean.hasErrors() && isDefined("form.selectButton")>
 							<div id="form-errors">

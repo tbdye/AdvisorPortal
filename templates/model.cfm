@@ -1,17 +1,17 @@
-<!--- Thomas Dye, July 2016 --->
+<!--- Thomas Dye, August 2016 --->
 <cfif !isDefined("errorBean")>
 	<cflocation url="../index.cfm">
 </cfif>
 
 <cfmodule template="../includes/header.cfm"
 
-	pagetitle="Advisor Services Portal - Administration">
+	pagetitle="Advisor Services Portal - [pagename]">
 	
 	<div class="resize-box">
 		
 	    <article id="content-article" role="article">
 	        <header>
-	            <h1>Administration</h1>
+	            <h1>Advising Services Portal</h1>
 	        </header>
 
 			<div class="breadcrumb">
@@ -20,17 +20,10 @@
 
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
-	                <span property="dc:title" content="Administration" class="rdf-meta element-hidden"></span>
+	                <span property="dc:title" content="[pagetype]" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
-				    	<h2>Manage Portal</h2>
-						<a href="manageCourses.cfm" title="Manage Courses">Manage Courses</a><br>
-						<a href="manageDegrees.cfm" title="Manage Degrees">Manage Degrees</a><br>
-						<a href="manageDepartments.cfm" title="Manage Departments">Manage Departments</a><br>
-						<a href="manageSchools.cfm" title="Manage Schools">Manage Schools</a><br>
-						<a href="manageUsers.cfm" title="Manage Users">Manage Users</a><br>
-
-
+				    	empty content
 
 	                </div>
 	            </div>

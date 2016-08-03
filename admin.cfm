@@ -5,5 +5,6 @@
 
 <cfset errorBean=createObject('cfc.errorBean').init()>
 
+<!--- Display page --->
 <cfinclude template="model/admin.cfm">
 <cfreturn>

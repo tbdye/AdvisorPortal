@@ -3,22 +3,22 @@
 </cfif>
 
 <cfmodule template="../includes/header.cfm"
-	pagetitle="Advisor Services Portal - Account settings">
+	pagetitle="Advisor Services Portal - Account Settings">
 	
 	<div class="resize-box">
 	
 		<article id="content-article" role="article">
 			<header>
-	            <h1>Account settings</h1>
+	            <h1>Account Settings</h1>
 	        </header>
 
 			<div class="breadcrumb">
-				<a href="index.cfm">Home</a> &raquo; <a href="account.cfm">Account settings</a> 
+				<a href="index.cfm">Home</a> &raquo; <a href="account.cfm">Account Settings</a> 
 			</div>
 
 			<div id="page-content" class="page-plus-side">
 	            <div class="content">
-	                <span property="dc:title" content="Account settings" class="rdf-meta element-hidden"></span>
+	                <span property="dc:title" content="Account Settings" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
 						<h2>Update login</h2>
@@ -120,7 +120,7 @@
 										<td width="160px">Current name:</td>
 										<td><cfoutput>#qAccountGetAccount.first_name# #qAccountGetAccount.last_name#</cfoutput></td>
 									</tr>
-									<cfif IsUserInRole("")>
+									<cfif IsUserInRole("student")>
 										<tr>
 											<td>Current student ID:</td>
 											<td><cfoutput>#qAccountGetAccount.student_id#</cfoutput></td>
@@ -149,7 +149,7 @@
 						</div>
 			        </div>
 	            </div>
-	            <br>
+	            <p/>
 	        </div>
 		</article>
 		
@@ -157,7 +157,7 @@
 		    <div class="region region-sidebar">			
                 <div class="content">
                 	<p>
-                		<strong>Account settings</strong>                		
+                		<strong>Account Settings</strong>                		
                 	</p>
 					<p>Provide some instructions on how the account section works and initial steps to get started using the Advisor Services Portal.</p>
             	</div>
