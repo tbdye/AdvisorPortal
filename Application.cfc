@@ -175,8 +175,9 @@
 				
 				<cfquery>
 					INSERT INTO	ACCOUNTS (
-						email, first_name, last_name, password, salt)
+						active, email, first_name, last_name, password, salt)
 					VALUES (
+						1,
 						<cfqueryparam value="#emailAddress#" cfsqltype="cf_sql_varchar">,
 						<cfqueryparam value="#firstName#" cfsqltype="cf_sql_varchar">,
 						<cfqueryparam value="#lastName#" cfsqltype="cf_sql_varchar">,

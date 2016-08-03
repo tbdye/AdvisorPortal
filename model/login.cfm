@@ -34,7 +34,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td width="120px"><label for="emailAddress">Email:</label></td>
+										<td width="130px"><label for="emailAddress">Email:</label></td>
 										<td><cfinput type="text" id="emailAddress" name="emailAddress"></td>
 									</tr>
 									<tr>
@@ -75,7 +75,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td width="120px"><label for="firstName">First name:</label></td>
+										<td width="130px"><label for="firstName">First name:</label></td>
 										<td><cfinput type="text" id="firstName" name="firstName"></td>
 									</tr>
 									<tr>

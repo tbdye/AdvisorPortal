@@ -25,7 +25,7 @@
 	                <div class="content">
 				    	<h2>Select an account</h2>
 						
-						<cfif errorBean.hasErrors()>
+						<cfif errorBean.hasErrors() && isDefined("form.searchButton")>
 							<div id="form-errors">
 								<ul>
 									<cfloop array="#errorBean.getErrors()#" index="error">
@@ -46,10 +46,13 @@
 								</tr>							
 							</table>
 						</cfform>
-												
-						<a href="?search=all" title="view all accounts">View all accounts</a>
 						
-			
+						<cfif isDefined("url.search")>
+							<a href="manageUsers.cfm" title="hide">Hide all accounts</a>
+						<cfelse>
+							<a href="?search=all" title="view all accounts">View all accounts</a>
+						</cfif>
+
 						<cfif errorBean.hasErrors() && isDefined("url.user")>
 							<div id="form-errors">		
 								<ul>
@@ -101,6 +104,65 @@
 							</table>
 						<cfelse>	
 							<p>No account selected.</p>
+							
+							<h2>Create faculty account</h2>
+						
+							<div id="createForm">
+								<cfform>
+									<table>
+										<tr>
+											<td colspan="2">
+												<div id="form-errors">
+													<cfif errorBean.hasErrors() && isDefined("form.createFacultyButton")>
+														<ul>
+															<cfloop array="#errorBean.getErrors()#" index="error">
+																<cfoutput><li>#error.message#</li></cfoutput>
+															</cfloop>
+														</ul>
+													</cfif>
+												</div>											
+											</td>
+										</tr>
+										<tr>
+											<td width="130px">Role:</td>
+											<td>
+												<cfinput type="radio" id="advisor" name="role" value="1" checked="yes">
+												<cfoutput><label for="advisor"> Advisor</label></cfoutput><br>
+												<cfinput type="radio" id="editor" name="role" value="2">
+												<cfoutput><label for="editor">Editor</label></cfoutput><br>
+												<cfinput type="radio" id="administrator" name="role" value="3">
+												<cfoutput><label for="administrator">Administrator</label></cfoutput>
+											</td>
+										</tr>
+										<tr>
+											<td><label for="firstName">First name:</label></td>
+											<td><cfinput type="text" id="firstName" name="firstName"></td>
+										</tr>
+										<tr>
+											<td><label for="lastName">Last name:</label></td>
+											<td><cfinput type="text" id="lastName" name="lastName"></td>
+										</tr>
+										<tr>
+											<td><label for="emailAddress">Email address:</label></td>
+											<td><cfinput type="text" id="emailAddress" name="emailAddress"></td>
+										</tr>
+										<tr>
+											<td><label for="password">Password:</label></td>
+											<td><cfinput type="password" id="password" name="password"></td>
+										</tr>
+										<tr>
+											<td><label for="password2">Confirm password:</label></td>
+											<td><cfinput type="password" id="password2" name="password2"></td>
+										</tr>
+										<tr>
+											<td></td>
+											<td>
+												<cfinput type="submit" name="createFacultyButton" value="Create an account">										
+											</td>
+										</tr>
+									</table>
+								</cfform>
+							</div>
 						</cfif>
 						
 						<p/>

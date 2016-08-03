@@ -5,7 +5,7 @@
 
 <cfset errorBean=createObject('cfc.errorBean').init()>
 
-<!--- Define form action for "Select" button. --->
+<!--- Define form action for "Search" button --->
 <cfif isDefined("form.searchButton")>
 	
 	<!--- Perform simple validation on form fields --->
@@ -66,6 +66,97 @@
 		FULL JOIN faculty f
 		ON a.id = f.accounts_id
 	</cfquery>
+	<cfinclude template="model/manageUsers.cfm">
+	<cfreturn>
+	
+<!---Define form action for "Create an account" button--->
+<cfelseif isDefined("form.createFacultyButton")>
+	
+	<!--- Perform simple validation on form fields --->
+	<cfif !len(trim(form.firstName))>
+		<cfset errorBean.addError('A first name is required.', 'firstName')>
+	</cfif>
+	
+	<cfif !len(trim(form.lastName))>
+		<cfset errorBean.addError('A last name is required.', 'lastName')>
+	</cfif>
+	
+	<cfif !len(trim(form.emailAddress))>
+		<cfset errorBean.addError('An email address is required.', 'emailAddress')>
+	<cfelseif !IsValid("email", trim(form.emailAddress))>
+		<cfset errorBean.addError('The email address is not valid.', 'emailAddress')>
+	</cfif>
+	
+	<cfif !len(trim(form.password))>
+		<cfset errorBean.addError('The password cannot be blank.', 'password')>
+	<cfelseif trim(form.password) NEQ trim(form.password2)>
+		<cfset errorBean.addError('The passwords do not match.', 'password')>
+	</cfif>
+	
+	<!--- Stop here if errors were detected --->
+	<cfif errorBean.hasErrors()>
+		<cfinclude template="model/manageUsers.cfm">
+		<cfreturn>
+	</cfif>
+	
+	<!--- Perform uniqueness validation on form fields --->
+	<cfquery name="qAdminCheckEmail">
+		SELECT email
+		FROM ACCOUNTS
+		WHERE email = <cfqueryparam value="#trim(form.emailAddress)#" cfsqltype="cf_sql_varchar">
+	</cfquery>
+	
+	<cfif qAdminCheckEmail.RecordCount>
+		<cfset errorBean.addError('This email address is already in use.', 'emailAddress')>
+	</cfif>
+	
+	<!--- Stop here if errors were detected --->
+	<cfif errorBean.hasErrors()>
+		<cfinclude template="model/manageUsers.cfm">
+		<cfreturn>
+	</cfif>
+	
+	<!--- Looks good, so create faculty account --->
+	<cfif len(trim(form.password))>
+		<cfset salt=Hash(GenerateSecretKey("AES"), "SHA-512")>
+		<cfset password=Hash(trim(form.password) & salt, "SHA-512")>
+	</cfif>
+	
+	<cfset emailAddress=canonicalize(trim(form.emailAddress), true, true)>
+	<cfset firstName=canonicalize(trim(form.firstName), true, true)>
+	<cfset lastName=canonicalize(trim(form.lastName), true, true)>
+	
+	<cfquery>
+		INSERT INTO	ACCOUNTS (
+			active, email, first_name, last_name, password, salt)
+		VALUES (
+			1,
+			<cfqueryparam value="#emailAddress#" cfsqltype="cf_sql_varchar">,
+			<cfqueryparam value="#firstName#" cfsqltype="cf_sql_varchar">,
+			<cfqueryparam value="#lastName#" cfsqltype="cf_sql_varchar">,
+			<cfqueryparam value="#password#" cfsqltype="cf_sql_varchar">,
+			<cfqueryparam value="#salt#" cfsqltype="cf_sql_varchar">)
+	</cfquery>
+	<cfquery name="qAdminGetAccount">
+		SELECT id
+		FROM ACCOUNTS
+		WHERE email = <cfqueryparam value="#trim(form.emailAddress)#" cfsqltype="cf_sql_varchar">
+	</cfquery>
+	<cfquery>
+		INSERT INTO	FACULTY (
+			accounts_id, editor, administrator)
+		VALUES (
+			<cfqueryparam value="#qAdminGetAccount.id#" cfsqltype="cf_sql_integer">,
+			<cfif form.role EQ 3>
+				0, 1	
+			<cfelseif form.role EQ 2>
+				1, 0
+			<cfelse>
+				0, 0
+			</cfif>
+		)
+	</cfquery>
+	
 	<cfinclude template="model/manageUsers.cfm">
 	<cfreturn>
 
