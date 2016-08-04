@@ -55,7 +55,7 @@
 									<cfif isDefined("url.add") || isDefined("qCoursesGetCourse") && qCoursesGetCourse.RecordCount>
 										<td colspan="2"><a href="courses.cfm" title="Clear search">Clear search</a></td>
 									<cfelse>
-										<td colspan="2"><a href="https://www.everettcc.edu/catalog/" title="Search entire course catalog" target="_blank">Search entire course catalog</a></td>
+										<td colspan="2"><a href="https://www.everettcc.edu/catalog/" title="View official course catalog" target="_blank">View official course catalog</a></td>
 									</cfif>
 								</tr>
 							</table>

@@ -18,6 +18,7 @@
 <cfset session.loginName="#qAccountGetAccount.first_name# #qAccountGetAccount.last_name#">
 
 <cfif isDefined("form.buttonUpdateEmail")>
+	
 	<!--- Perform simple validation on form fields --->
 	<cfif !len(trim(form.password))>
 		<cfset errorBean.addError('Please enter your password.', 'password')>

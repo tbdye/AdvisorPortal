@@ -25,38 +25,49 @@
 	                <div class="content">
 						<cfif IsUserInRole("editor")>
 							<h2>Manage Portal</h2>
+							<a href="manageColleges.cfm" title="Manage Colleges">Manage Colleges</a><br>
+							<a href="manageCourses.cfm" title="Manage Courses">Manage Courses</a><br>
 							<a href="manageDegrees.cfm" title="Manage Degrees">Manage Degrees</a><br>
-							<a href="manageSchools.cfm" title="Manage Schools">Manage Schools</a><br>
 						</cfif>
-						
-						<br>
+
 						<h2>Select a student to advise</h2>
-						
-						<cfif errorBean.hasErrors() && isDefined("form.selectButton")>
-							<div id="form-errors">
-								<ul>
-									<cfloop array="#errorBean.getErrors()#" index="error">
-										<cfoutput><li>#error.message#</li></cfoutput>
-									</cfloop>
-								</ul>
-							</div>
-						</cfif>								
-						
+
 						<cfform>
 							<table>
+								<tr>
+									<td colspan="2">
+										<cfif errorBean.hasErrors() && isDefined("form.selectButton")>
+											<div id="form-errors">
+												<ul>
+													<cfloop array="#errorBean.getErrors()#" index="error">
+														<cfoutput><li>#error.message#</li></cfoutput>
+													</cfloop>
+												</ul>
+											</div>
+										</cfif>
+									</td>
+									<td></td>
+								</tr>
 								<tr>
 									<td colspan="2"><strong>Find a student by name, student ID, or email address</strong></td>
 								</tr>
 								<tr>
 									<td width="120px"><cfinput type="text" id="searchTerm" name="searchTerm"></td>
 									<td><cfinput type="submit" name="selectButton" value="Search"></td>								
-								</tr>							
+								</tr>
+								<tr>
+									<td colspan="2">
+										<cfif isDefined("url.search") || isDefined("qAdvisorGetStudent") && qAdvisorGetStudent.RecordCount>
+											<a href="advisor.cfm" title="hide all students">Hide all students</a>
+										<cfelse>
+											<a href="?search=all" title="view all students">View all students</a>
+										</cfif>
+									</td>
+									<td></td>
+								</tr>						
 							</table>
 						</cfform>
-												
-						<a href="?search=all" title="view all students">View all students</a>
-						
-			
+
 						<cfif errorBean.hasErrors() && isDefined("url.advise")>
 							<div id="form-errors">		
 								<ul>
@@ -66,6 +77,7 @@
 								</ul>
 							</div>
 						<cfelseif isDefined("qAdvisorGetStudent") && qAdvisorGetStudent.RecordCount>
+							<h2>Search results</h2>
 							<table>
 								<tr>
 									<th>Name</th>

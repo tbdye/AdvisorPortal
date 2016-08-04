@@ -24,10 +24,10 @@
 	
 	                <div class="content">
 				    	<h2>Manage Portal</h2>
+						<a href="manageColleges.cfm" title="Manage Colleges">Manage Colleges</a><br>
 						<a href="manageCourses.cfm" title="Manage Courses">Manage Courses</a><br>
 						<a href="manageDegrees.cfm" title="Manage Degrees">Manage Degrees</a><br>
 						<a href="manageDepartments.cfm" title="Manage Departments">Manage Departments</a><br>
-						<a href="manageSchools.cfm" title="Manage Schools">Manage Schools</a><br>
 						<a href="manageUsers.cfm" title="Manage Users">Manage Users</a><br>
 
 

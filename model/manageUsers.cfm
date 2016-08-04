@@ -24,44 +24,43 @@
 	
 	                <div class="content">
 				    	<h2>Select an account</h2>
-						
-						<cfif errorBean.hasErrors() && isDefined("form.searchButton")>
-							<div id="form-errors">
-								<ul>
-									<cfloop array="#errorBean.getErrors()#" index="error">
-										<cfoutput><li>#error.message#</li></cfoutput>
-									</cfloop>
-								</ul>
-							</div>
-						</cfif>								
-						
 						<cfform>
 							<table>
+								<cfif errorBean.hasErrors() && isDefined("form.searchButton")>
+									<tr>
+										<td colspan="2">
+											<div id="form-errors">
+												<ul>
+													<cfloop array="#errorBean.getErrors()#" index="error">
+														<cfoutput><li>#error.message#</li></cfoutput>
+													</cfloop>
+												</ul>
+											</div>
+										</td>
+										<td></td>
+									</tr>
+								</cfif>	
 								<tr>
 									<td colspan="2"><strong>Find an account by name, student ID, or email address</strong></td>
 								</tr>
 								<tr>
 									<td width="120px"><cfinput type="text" id="searchTerm" name="searchTerm"></td>
 									<td><cfinput type="submit" name="searchButton" value="Search"></td>								
-								</tr>							
+								</tr>
+								<tr>
+									<td colspan="2">
+										<cfif isDefined("url.search") || isDefined("qAdminSearchAccount") && qAdminSearchAccount.RecordCount>
+											<a href="manageUsers.cfm" title="hide">Hide all accounts</a>
+										<cfelse>
+											<a href="?search=all" title="view all accounts">View all accounts</a>
+										</cfif>
+									</td>
+									<td></td>
+								</tr>						
 							</table>
 						</cfform>
-						
-						<cfif isDefined("url.search")>
-							<a href="manageUsers.cfm" title="hide">Hide all accounts</a>
-						<cfelse>
-							<a href="?search=all" title="view all accounts">View all accounts</a>
-						</cfif>
 
-						<cfif errorBean.hasErrors() && isDefined("url.user")>
-							<div id="form-errors">		
-								<ul>
-								<cfloop array="#errorBean.getErrors()#" index="error">
-									<cfoutput><li>#error.message#</li></cfoutput>
-								</cfloop>
-								</ul>
-							</div>
-						<cfelseif isDefined("qAdminSearchAccount") && qAdminSearchAccount.RecordCount>
+						<cfif isDefined("qAdminSearchAccount") && qAdminSearchAccount.RecordCount>
 							<table>
 								<tr>
 									<th>Name</th>
