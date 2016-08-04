@@ -1,30 +1,91 @@
-<!--- Thomas Dye, July 2016 --->
+<!--- Thomas Dye, August 2016 --->
 <cfif !(isDefined("session.studentId") || IsUserInRole("student")) >
 	<cflocation url="index.cfm">
 </cfif>
 
 <cfset errorBean=createObject('cfc.errorBean').init()>
 
-<!--- Always display courses completed by the student. --->
-<cfquery name="qCoursesGetStudentCourses">
-	SELECT c.course_number, c.title, s.id AS completed_id, s.credit
-	FROM STUDENTS_COMPLETEDCOURSES s
-	JOIN COURSES c
-	ON c.id = s.courses_id
-	WHERE students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">
-</cfquery>
-
-<!--- Define form action for "Add" button. --->
-<cfif isDefined("form.addButton")>
-	<cfinclude template="courses/formAddButton.cfm">
+<!--- Define form action for "Search" button. --->
+<cfif isDefined("form.searchButton")>
+	<!--- Perform simple validation on form fields --->
+	<cfif !len(trim(form.searchTerm))>
+		<cfset errorBean.addError('A course number is required.', 'courseNumber')>
+	</cfif>
+	
+	<!--- Stop here if errors were detected --->
+	<cfif errorBean.hasErrors()>
+		<cfinclude template="model/courses.cfm">
+		<cfreturn>
+	</cfif>
+	
+	<!--- Find the course, if exists --->
+	<cfquery name="qCoursesGetCourse">
+		SELECT id, course_number, title, min_credit, max_credit
+		FROM COURSES
+		WHERE use_catalog = 1
+		AND course_number LIKE <cfqueryparam value="#trim(form.searchTerm)#%" cfsqltype="cf_sql_varchar">
+	</cfquery>
+	
+	<!--- Handle student ID search results. --->
+	<cfif !qCoursesGetCourse.RecordCount>
+		<cfset errorBean.addError('No results.', 'courseNumber')>
+	</cfif>
+	
+	<cfinclude template="model/courses.cfm">
+	<cfreturn>
 </cfif>
 
 <!--- Add course. --->	
 <cfif isDefined("url.add") && isDefined("url.id") && IsNumeric("#URLDecode(url.id)#")>
 
 	<!--- Add a course with eligibility requirements --->
-	<cfif isDefined("form.verifyButton")>
-		<cfinclude template="courses/formVerifyButton.cfm">
+	<cfif isDefined("form.addCourseButton")>
+		<cfquery name="qCoursesGetCourse">
+			SELECT id, min_credit, max_credit
+			FROM COURSES
+			WHERE id = <cfqueryparam value="#URLDecode(url.id)#" cfsqltype="cf_sql_integer">
+			AND course_number = <cfqueryparam value="#URLDecode(url.add)#" cfsqltype="cf_sql_varchar">
+		</cfquery>
+		
+		<!--- Validate form data --->
+		<cfif isDefined("form.courseCredit")>
+			<cfif !len(trim(form.courseCredit))>
+				<cfset errorBean.addError('The course credit field cannot be left blank.', 'courseCredit')>
+			<cfelseif !IsNumeric("#trim(form.courseCredit)#")>
+				<cfset errorBean.addError('Credits must be entered in as a decimal number.', 'courseCredit')>
+			<cfelseif trim(form.courseCredit) LT qCoursesGetCourse.min_credit || trim(form.courseCredit) GT qCoursesGetCourse.max_credit>
+				<cfset errorBean.addError('Credit must be between #qCoursesGetCourse.min_credit# and #qCoursesGetCourse.max_credit#.', 'courseCredit')>
+			</cfif>
+		</cfif>
+		<cfif isDefined("numOfPrereqGroups")>
+			<cfif numOfPrereqGroups && !isDefined("prereq")>
+				<cfset errorBean.addError('A prerequisite option must be selected.', 'prereq')>
+			</cfif>
+		</cfif>
+		
+		<!--- Add course --->
+		<cfif !errorBean.HasErrors()>
+			<cfset credit="">
+		
+			<cfif isDefined("form.courseCredit")>
+				<cfset credit="#form.courseCredit#">
+			<cfelse>
+				<cfset credit="#qCoursesGetCourse.max_credit#">
+			</cfif>
+		
+			<!--- Add course to student for when eligibility check was necessary. --->
+			<cfquery>
+				INSERT INTO	STUDENTS_COMPLETEDCOURSES (
+					students_accounts_id, courses_id, credit)
+				VALUES (
+					<cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">,
+					<cfqueryparam value="#qCoursesGetCourse.id#" cfsqltype="cf_sql_integer">,
+					<cfqueryparam value="#credit#" cfsqltype="cf_sql_decimal">)
+			</cfquery>
+			
+			<!--- Done, reset page --->
+			<cflocation url="courses.cfm">
+		</cfif>
 	</cfif>
 	
 	<!--- Validate the url variables to ensure the course exists --->
@@ -163,6 +224,14 @@
 	<cflocation url="courses.cfm">
 </cfif>
 
-<!--- Always display student's courses from qCoursesGetStudentCourses --->
+<!--- Display courses completed by the student. --->
+<cfquery name="qCoursesGetStudentCourses">
+	SELECT c.course_number, c.title, s.id AS completed_id, s.credit
+	FROM STUDENTS_COMPLETEDCOURSES s
+	JOIN COURSES c
+	ON c.id = s.courses_id
+	WHERE students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">
+</cfquery>
+
 <cfinclude template="model/courses.cfm">
 <cfreturn>

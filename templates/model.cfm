@@ -11,7 +11,7 @@
 		
 	    <article id="content-article" role="article">
 	        <header>
-	            <h1>Advising Services Portal</h1>
+	            <h1>[pagename]</h1>
 	        </header>
 
 			<div class="breadcrumb">
@@ -25,6 +25,7 @@
 	                <div class="content">
 				    	empty content
 
+						<p/>
 	                </div>
 	            </div>
 	        </div>
