@@ -66,12 +66,24 @@
 				    			<tr>
 				    				<th width="240px">College name</th>
 				    				<th width="120px">College city</th>
+				    				<th>Status</th>
 				    				<th></th>
 				    			</tr>
 				    			<cfloop query="qManageGetColleges">
 				    				<tr>
 					    				<td><cfoutput>#qManageGetColleges.college_name#</cfoutput></td>
 					    				<td><cfoutput>#qManageGetColleges.college_city#</cfoutput></td>
+					    				<cfif IsUserInRole("administrator")>
+					    					<td>
+						    					<cfset status="">
+												<cfif qManageGetColleges.use_catalog>
+													<cfset status="Active">
+												<cfelse>
+													<cfset status="Inactive">
+												</cfif>
+												<cfoutput>#status#</cfoutput>
+						    				</td>
+					    				</cfif>
 					    				<td><a href="editCollege.cfm?edit=<cfoutput>#URLEncodedFormat(qManageGetColleges.id)#</cfoutput>" title="<cfoutput>#qManageGetColleges.college_name#, #qManageGetColleges.college_city#</cfoutput>">Edit</a></td>
 					    			</tr>
 				    			</cfloop>

@@ -7,12 +7,9 @@
 
 <!--- Display the list of available colleges --->
 <cfquery name="qManageGetColleges">
-	<cfif IsUserInRole("administrator")>
-		SELECT id, college_name, college_city, college_website, use_catalog
-		FROM COLLEGES
-	<cfelse>
-		SELECT id, college_name, college_city, college_website
-		FROM COLLEGES
+	SELECT id, college_name, college_city, college_website, use_catalog
+	FROM COLLEGES
+	<cfif !IsUserInRole("administrator")>
 		WHERE use_catalog = 1
 	</cfif>
 </cfquery>
@@ -21,11 +18,11 @@
 	
 	<!--- Perform simple validation on form fields --->
 	<cfif !len(trim(form.collegeName))>
-		<cfset errorBean.addError('Please supply the college name.', 'collegeName')>
+		<cfset errorBean.addError('A college name is required.', 'collegeName')>
 	</cfif>
 	
 	<cfif !len(trim(form.collegeCity))>
-		<cfset errorBean.addError('Please supply the college city.', 'collegeCity')>
+		<cfset errorBean.addError('A city name is required.', 'collegeCity')>
 	</cfif>
 	
 	<!--- Stop here if errors were detected --->

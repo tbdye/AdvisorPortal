@@ -5,6 +5,7 @@
 
 <cfset errorBean=createObject('cfc.errorBean').init()>
 
+<!--- Prepare basic contents of the page --->
 <cfquery name="qUserGetAccount">
 	SELECT a.id, a.active, a.email, a.first_name, a.last_name,
 			s.accounts_id AS s_accounts_id, s.student_id,
@@ -17,6 +18,12 @@
 	WHERE a.id = <cfqueryparam value="#URLDecode(url.edit)#" cfsqltype="cf_sql_integer">
 </cfquery>
 
+<!--- Back out if the user ID is not valid --->
+<cfif !qUserGetAccount.RecordCount>
+	<cflocation url="manageUsers.cfm">
+</cfif>
+
+<!--- Set defaults for form data --->
 <cfset status1="no">
 <cfset status2="no">
 <cfif qUserGetAccount.active>
@@ -36,6 +43,7 @@
 	<cfset role1="yes">
 </cfif>
 
+<!--- Define the "Save" button action --->
 <cfif isDefined("form.saveButton")>
 	
 	<!--- Prevent changes to own account --->
