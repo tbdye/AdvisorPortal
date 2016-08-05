@@ -57,7 +57,7 @@
 											<td><label for="collegeAvailability">Availability:</label></td>
 											<td>
 												<cfinput type="radio" id="active" name="collegeAvailability" value="1" checked="#status1#">
-												<cfoutput><label for="active"> College is available to list.</label></cfoutput><br>
+												<cfoutput><label for="active"> College is available to users.</label></cfoutput><br>
 												<cfinput type="radio" id="inactive" name="collegeAvailability" value="0" checked="#status2#">
 												<cfoutput><label for="inactive">College is hidden.</label></cfoutput><br>
 											</td>
@@ -92,15 +92,15 @@
 									</cfif>
 									<tr>
 										<h4>Requirements by course</h4>
-										<th>EvCC Class</th>
-										<th>Equivalency</th>
+										<th>EvCC Equivalent</th>
+										<th>Required Course</th>
 										<th></th>
 									</tr>
 									<cfloop query="qEditGetAdmissionCourses">
 										<tr>
 											<td><cfoutput>#qEditGetAdmissionCourses.course_number#</cfoutput></td>
 											<td><cfoutput>#qEditGetAdmissionCourses.foreign_course_number#</cfoutput></td>
-											<td><a href="&remove=<cfoutput>#URLEncodedFormat(qEditGetCollege.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionCourses.course_number#</cfoutput>">Remove</a></td>
+											<td><a href="?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>&section=courses&remove=<cfoutput>#URLEncodedFormat(qEditGetAdmissionCourses.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionCourses.course_number#</cfoutput>">Remove</a></td>
 										</tr>
 									</cfloop>
 									<tr>
@@ -143,13 +143,13 @@
 										<tr>
 											<td><cfoutput>#qEditGetAdmissionDepartments.department_name#</cfoutput></td>
 											<td><cfoutput>#qEditGetAdmissionDepartments.credit#</cfoutput></td>
-											<td><a href="&remove=<cfoutput>#URLEncodedFormat(qEditGetCollege.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionDepartment.department_name#</cfoutput>">Remove</a></td>
+											<td><a href="?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>&section=departments&remove=<cfoutput>#URLEncodedFormat(qEditGetAdmissionDepartments.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionDepartments.department_name#</cfoutput>">Remove</a></td>
 										</tr>
 									</cfloop>
 									<tr>
 										<td>
-											<cfselect name="localDepartment" query="qEditGetDepartments" display="department_name" queryPosition="below">
-												<option value = "0">Select a department</option>
+											<cfselect name="localDepartment" query="qEditGetDepartments" display="department_name" value="id" queryPosition="below">
+												<option value="0">Select a department</option> <!--- ToDo:  This line fails in Lucee.  Find out why. --->
 											</cfselect>
 										</td>
 										<td><cfinput type="text" id="departmentCredits" name="departmentCredits"></td>
@@ -190,13 +190,13 @@
 										<tr>
 											<td><cfoutput>#qEditGetAdmissionCodekeys.description#</cfoutput></td>
 											<td><cfoutput>#qEditGetAdmissionCodekeys.credit#</cfoutput></td>
-											<td><a href="&remove=<cfoutput>#URLEncodedFormat(qEditGetCollege.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionCodekeys.description#</cfoutput>">Remove</a></td>
+											<td><a href="?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>&section=codekeys&remove=<cfoutput>#URLEncodedFormat(qEditGetAdmissionCodekeys.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionCodekeys.description#</cfoutput>">Remove</a></td>
 										</tr>
 									</cfloop>
 									<tr>
 										<td>
-											<cfselect name="localCodekey" query="qEditGetCodekeys" display="description" queryPosition="below">
-												<option value = "0">Select a discipline</option>
+											<cfselect name="localCodekey" query="qEditGetCodekeys" display="description" value="id" queryPosition="below">
+												<option value="0">Select a discipline</option>
 											</cfselect>
 										</td>
 										<td><cfinput type="text" id="codekeyCredits" name="codekeyCredits"></td>
