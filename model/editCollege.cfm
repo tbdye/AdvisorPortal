@@ -148,8 +148,8 @@
 									</cfloop>
 									<tr>
 										<td>
-											<cfselect name="localDepartment" query="qEditGetDepartments" display="department_name" value="id" queryPosition="below">
-												<option value="0">Select a department</option> <!--- ToDo:  This line fails in Lucee.  Find out why. --->
+											<cfselect name="localDepartment" query="qEditGetSelectDepartments" display="department_name" value="id" queryPosition="below">
+												<option value="0">Select a department</option>
 											</cfselect>
 										</td>
 										<td><cfinput type="text" id="departmentCredits" name="departmentCredits"></td>
@@ -195,7 +195,7 @@
 									</cfloop>
 									<tr>
 										<td>
-											<cfselect name="localCodekey" query="qEditGetCodekeys" display="description" value="id" queryPosition="below">
+											<cfselect name="localCodekey" query="qEditGetSelectCodekeys" display="description" value="id" queryPosition="below">
 												<option value="0">Select a discipline</option>
 											</cfselect>
 										</td>

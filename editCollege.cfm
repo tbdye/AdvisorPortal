@@ -20,43 +20,98 @@
 	<cflocation url="manageColleges.cfm">
 </cfif>
 
-<!--- Delete college admission course requirement --->
+<!--- Delete college admission requirement --->
 <cfif isDefined("url.section") && isDefined("url.remove")>
 	
-	<!--- Perform simple validation on url variables --->
-	<cfif URLDecode(url.section) NEQ "courses" || !IsNumeric("#URLDecode(url.remove)#")>
-		<cflocation url="manageColleges.cfm">
+	<!--- Handle deletion of course requirements --->
+	<cfif URLDecode(url.section) EQ "courses" && IsNumeric("#URLDecode(url.remove)#")>
+
+		<!--- Ensure the supplied course ID is available to remove --->
+		<cfquery name="qEditCheckCourse">
+			SELECT courses_id
+			FROM COLLEGE_ADMISSION_COURSES
+			WHERE colleges_id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
+			AND courses_id = <cfqueryparam value="#URLDecode(url.remove)#" cfsqltype="cf_sql_integer">
+		</cfquery>
+		
+		<!--- Stop here if the course is not valid. --->
+		<cfif qEditCheckCourse.RecordCount>
+			
+			<!--- Looks good, so update colleges --->
+			<cfquery>
+				DELETE
+				FROM COLLEGE_ADMISSION_COURSES
+				WHERE colleges_id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
+				AND courses_id = <cfqueryparam value="#qEditCheckCourse.courses_id#" cfsqltype="cf_sql_integer">
+			</cfquery>
+			
+			<!--- Refresh page --->
+			<cflocation url="editCollege.cfm?edit=#URLEncodedFormat(qEditGetCollege.id)#">
+		</cfif>
 	</cfif>
 	
-	<!--- Ensure the supplied course ID is present --->
-	<cfquery name="qEditCheckCourse">
-		SELECT courses_id
-		FROM COLLEGES_ADMISSION_COURSES
-		WHERE colleges_id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
-		AND courses_id = <cfqueryparam value="#URLDecode(url.remove)#" cfsqltype="cf_sql_integer">
-	</cfquery>
-	
-	<!--- Stop here if the course is not valid. --->
-	<cfif !qEditCheckCourse.RecordCount>
-		<cflocation url="manageColleges.cfm">
+	<!--- Handle deletion of department requirements --->
+	<cfif URLDecode(url.section) EQ "departments" && IsNumeric("#URLDecode(url.remove)#")>
+
+		<!--- Ensure the supplied department ID is available to remove --->
+		<cfquery name="qEditCheckDepartment">
+			SELECT departments_id
+			FROM COLLEGE_ADMISSION_DEPARTMENTS
+			WHERE colleges_id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
+			AND departments_id = <cfqueryparam value="#URLDecode(url.remove)#" cfsqltype="cf_sql_integer">
+		</cfquery>
+		
+		<!--- Stop here if the department is not valid. --->
+		<cfif qEditCheckDepartment.RecordCount>
+			
+			<!--- Looks good, so update colleges --->
+			<cfquery>
+				DELETE
+				FROM COLLEGE_ADMISSION_DEPARTMENTS
+				WHERE colleges_id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
+				AND departments_id = <cfqueryparam value="#qEditCheckDepartment.departments_id#" cfsqltype="cf_sql_integer">
+			</cfquery>
+			
+			<!--- Refresh page --->
+			<cflocation url="editCollege.cfm?edit=#URLEncodedFormat(qEditGetCollege.id)#">
+		</cfif>
 	</cfif>
 	
-	<!--- Looks good, so update colleges --->
-	<cfquery>
-		DELETE
-		FROM COLLEGES_ADMISSION_COURSES
-		WHERE colleges_id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
-		AND courses_id = <cfqueryparam value="#URLDecode(url.remove)#" cfsqltype="cf_sql_integer">
-	</cfquery>
+	<!--- Handle deletion of codekey requirements --->
+	<cfif URLDecode(url.section) EQ "codekeys" && IsNumeric("#URLDecode(url.remove)#")>
+
+		<!--- Ensure the supplied codekey ID is available to remove --->
+		<cfquery name="qEditCheckCodekey">
+			SELECT codekeys_id
+			FROM COLLEGE_ADMISSION_CODEKEYS
+			WHERE colleges_id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
+			AND codekeys_id = <cfqueryparam value="#URLDecode(url.remove)#" cfsqltype="cf_sql_integer">
+		</cfquery>
+		
+		<!--- Stop here if the codekey is not valid. --->
+		<cfif qEditCheckCodekey.RecordCount>
+			
+			<!--- Looks good, so update colleges --->
+			<cfquery>
+				DELETE
+				FROM COLLEGE_ADMISSION_CODEKEYS
+				WHERE colleges_id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
+				AND codekeys_id = <cfqueryparam value="#qEditCheckCodekey.codekeys_id#" cfsqltype="cf_sql_integer">
+			</cfquery>
+			
+			<!--- Refresh page --->
+			<cflocation url="editCollege.cfm?edit=#URLEncodedFormat(qEditGetCollege.id)#">
+		</cfif>
+	</cfif>
 	
-	<!--- Refresh page --->
-	<cflocation url="editCollege.cfm?edit=#URLEncodedFormat(qEditGetCollege.id)#">
+	<!--- Something went wrong with url validation, so bail --->
+	<cflocation url="manageColleges.cfm">
 </cfif>
 
 <!--- Prepare admission requirements contents --->
 <cfquery name="qEditGetAdmissionCourses">
 	SELECT a.foreign_course_number, c.id, c.course_number
-	FROM COLLEGES_ADMISSION_COURSES a
+	FROM COLLEGE_ADMISSION_COURSES a
 	JOIN COURSES c
 	ON a.courses_id = c.id
 	WHERE a.colleges_id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
@@ -70,12 +125,6 @@
 	WHERE a.colleges_id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
 </cfquery>
 
-<cfquery name="qEditGetDepartments">
-	SELECT id, department_name
-	FROM DEPARTMENTS
-	ORDER BY department_name ASC
-</cfquery>
-
 <cfquery name="qEditGetAdmissionCodekeys">
 	SELECT a.credit, c.id, c.description
 	FROM COLLEGE_ADMISSION_CODEKEYS a
@@ -84,7 +133,13 @@
 	WHERE a.colleges_id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
 </cfquery>
 
-<cfquery name="qEditGetCodekeys">
+<cfquery name="qEditGetSelectDepartments">
+	SELECT id, department_name
+	FROM DEPARTMENTS
+	ORDER BY department_name ASC
+</cfquery>
+
+<cfquery name="qEditGetSelectCodekeys">
 	SELECT id, description
 	FROM CODEKEYS
 </cfquery>
@@ -200,15 +255,32 @@
 	
 	<!--- Find the course, if exists --->
 	<cfquery name="qEditGetCourse">
-		SELECT id, course_number
+		SELECT id
 		FROM COURSES
 		WHERE use_catalog = 1
 		AND course_number = <cfqueryparam value="#trim(form.localCourse)#" cfsqltype="cf_sql_varchar">
 	</cfquery>
 	
-	<!--- Handle student ID search results. --->
 	<cfif !qEditGetCourse.RecordCount>
 		<cfset errorBean.addError('The EvCC course could not be found.', 'localCourse')>
+	</cfif>
+	
+	<!--- Stop here if errors were detected --->
+	<cfif errorBean.hasErrors()>
+		<cfinclude template="model/editCollege.cfm">
+		<cfreturn>
+	</cfif>
+	
+	<!--- Ensure no duplicates --->
+	<cfquery name="qEditCheckCourse">
+		SELECT courses_id
+		FROM COLLEGE_ADMISSION_COURSES
+		WHERE colleges_id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
+		AND courses_id = <cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">
+	</cfquery>
+	
+	<cfif qEditCheckCourse.RecordCount>
+		<cfset errorBean.addError('This EvCC course is already an admission requirement.', 'localCourse')>
 	</cfif>
 	
 	<!--- Stop here if errors were detected --->
@@ -221,7 +293,7 @@
 	<cfset foreignCourse=canonicalize(trim(form.foreignCourse), true, true)>
 	
 	<cfquery>
-		INSERT INTO COLLEGES_ADMISSION_COURSES (
+		INSERT INTO COLLEGE_ADMISSION_COURSES (
 			colleges_id, courses_id, foreign_course_number
 		) VALUES (
 			<cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">,
@@ -258,13 +330,49 @@
 		<cfreturn>
 	</cfif>
 	
+	<!--- Find the department, if exists --->
+	<cfquery name="qEditGetDepartment">
+		SELECT id
+		FROM DEPARTMENTS
+		WHERE use_catalog = 1
+		AND id = <cfqueryparam value="#trim(form.localDepartment)#" cfsqltype="cf_sql_integer">
+	</cfquery>
+
+	<cfif !qEditGetDepartment.RecordCount>
+		<cfset errorBean.addError('The EvCC department could not be found.', 'localDepartment')>
+	</cfif>
+	
+	<!--- Stop here if errors were detected --->
+	<cfif errorBean.hasErrors()>
+		<cfinclude template="model/editCollege.cfm">
+		<cfreturn>
+	</cfif>
+	
+	<!--- Ensure no duplicates --->
+	<cfquery name="qEditCheckDepartment">
+		SELECT departments_id
+		FROM COLLEGE_ADMISSION_DEPARTMENTS
+		WHERE colleges_id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
+		AND departments_id = <cfqueryparam value="#qEditGetDepartment.id#" cfsqltype="cf_sql_integer">
+	</cfquery>
+	
+	<cfif qEditCheckDepartment.RecordCount>
+		<cfset errorBean.addError('This EvCC department is already an admission requirement.', 'localDepartment')>
+	</cfif>
+	
+	<!--- Stop here if errors were detected --->
+	<cfif errorBean.hasErrors()>
+		<cfinclude template="model/editCollege.cfm">
+		<cfreturn>
+	</cfif>
+	
 	<!--- Looks good, so update colleges --->
 	<cfquery>
 		INSERT INTO COLLEGE_ADMISSION_DEPARTMENTS (
 			colleges_id, departments_id, credit
 		) VALUES (
 			<cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">,
-			<cfqueryparam value="#form.localDepartment#" cfsqltype="cf_sql_integer">,
+			<cfqueryparam value="#qEditGetDepartment.id#" cfsqltype="cf_sql_integer">,
 			<cfqueryparam value="#form.departmentCredits#" cfsqltype="cf_sql_decimal">
 		)
 	</cfquery>
@@ -278,7 +386,7 @@
 <!--- Define the Requirements by academic discipline "add" button action --->
 <cfif isDefined("form.addCodekeyReq")>
 	
-		<!--- Perform simple validation on form fields --->
+	<!--- Perform simple validation on form fields --->
 	<cfif form.localCodekey EQ 0>
 		<cfset errorBean.addError('Please select a discipline.', 'localCodekey')>
 	</cfif>
@@ -297,13 +405,48 @@
 		<cfreturn>
 	</cfif>
 	
+	<!--- Find the codekey, if exists --->
+	<cfquery name="qEditGetCodekey">
+		SELECT id
+		FROM CODEKEYS
+		WHERE id = <cfqueryparam value="#trim(form.localCodekey)#" cfsqltype="cf_sql_integer">
+	</cfquery>
+
+	<cfif !qEditGetCodekey.RecordCount>
+		<cfset errorBean.addError('The EvCC discipline could not be found.', 'localCodekey')>
+	</cfif>
+	
+	<!--- Stop here if errors were detected --->
+	<cfif errorBean.hasErrors()>
+		<cfinclude template="model/editCollege.cfm">
+		<cfreturn>
+	</cfif>
+	
+	<!--- Ensure no duplicates --->
+	<cfquery name="qEditCheckCodekey">
+		SELECT codekeys_id
+		FROM COLLEGE_ADMISSION_CODEKEYS
+		WHERE colleges_id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
+		AND codekeys_id = <cfqueryparam value="#qEditGetCodekey.id#" cfsqltype="cf_sql_integer">
+	</cfquery>
+	
+	<cfif qEditCheckCodekey.RecordCount>
+		<cfset errorBean.addError('This EvCC discipline is already an admission requirement.', 'localCodekey')>
+	</cfif>
+	
+	<!--- Stop here if errors were detected --->
+	<cfif errorBean.hasErrors()>
+		<cfinclude template="model/editCollege.cfm">
+		<cfreturn>
+	</cfif>
+	
 	<!--- Looks good, so update colleges --->
 	<cfquery>
 		INSERT INTO COLLEGE_ADMISSION_CODEKEYS (
 			colleges_id, codekeys_id, credit
 		) VALUES (
 			<cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">,
-			<cfqueryparam value="#form.localCodekey#" cfsqltype="cf_sql_integer">,
+			<cfqueryparam value="#qEditGetCodekey.id#" cfsqltype="cf_sql_integer">,
 			<cfqueryparam value="#form.codekeyCredits#" cfsqltype="cf_sql_decimal">
 		)
 	</cfquery>
