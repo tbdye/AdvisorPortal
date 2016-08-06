@@ -1,4 +1,5 @@
-<!--- Thomas Dye, July 2016 --->
+<!--- Application Controller --->
+<!--- Thomas Dye, August 2016 --->
 <cfcomponent>
 	<cfset this.name='AdvisorPortal'>
 	<cfset this.datasource='advisorPortal'>
@@ -10,6 +11,7 @@
 	<cfset this.sessionCookie.httpOnly=true>
 	<cfset this.sessionCookie.timeout='10'>
 	<cfset this.sessionCookie.disableupdate=true>
+	<cfset this.mappings['cfcMapping'] = "/AdvisorPortal/cfc" />
 	
 	<!--- Intercept all page requests by website users --->
 	<cffunction name="onRequest">
@@ -17,7 +19,7 @@
 
 		<!--- Display the login form if users aren't logged in. --->
 		<cflogin>
-			<cfset errorBean=createObject('cfc.errorBean').init()>
+			<cfset messageBean=createObject('cfc.messageBean').init()>
 			<cfset StructClear(session)>
 			
 			<!--- Define form action for "Log in" button. --->
@@ -25,18 +27,18 @@
 				
 				<!--- Perform simple validation on form fields --->
 				<cfif !len(trim(form.emailAddress))>
-					<cfset errorBean.addError('An email address is required.', 'emailAddress')>
+					<cfset messageBean.addError('An email address is required.', 'emailAddress')>
 				<cfelseif !IsValid("email", trim(form.emailAddress))>
-					<cfset errorBean.addError('The email address is not valid.', 'emailAddress')>
+					<cfset messageBean.addError('The email address is not valid.', 'emailAddress')>
 				</cfif>
 				
 				<cfif !len(trim(form.password))>
-					<cfset errorBean.addError('A password is required.', 'password')>
+					<cfset messageBean.addError('A password is required.', 'password')>
 				</cfif>
 				
 				<!--- Stop here if errors were detected --->
-				<cfif errorBean.hasErrors()>
-					<cfinclude template="model/login.cfm">
+				<cfif messageBean.hasErrors()>
+					<cfinclude template="login.cfm">
 					<cfreturn>
 				</cfif>
 				
@@ -50,13 +52,13 @@
 				<!--- Check password.  If does not match, fail.  Otherwise, evaluate student or faculty account --->
 				<cfif !qLoginGetAccount.RecordCount || qLoginGetAccount.password NEQ Hash(form.password & qLoginGetAccount.salt, "SHA-512")>
 					<!--- The user login credentials were incorrect, so stop here --->
-					<cfset errorBean.addError('User or password were incorrect; please try again', 'email')>
-					<cfinclude template="model/login.cfm">
+					<cfset messageBean.addError('User or password were incorrect; please try again', 'email')>
+					<cfinclude template="login.cfm">
 					<cfreturn>
 				<cfelseif !qLoginGetAccount.active>
 					<!--- The user account is deactivated, so stop here --->
-					<cfset errorBean.addError('The account could not be loaded; please contact the administrator.', 'email')>
-					<cfinclude template="model/login.cfm">
+					<cfset messageBean.addError('The account could not be loaded; please contact the administrator.', 'email')>
+					<cfinclude template="login.cfm">
 					<cfreturn>
 				<cfelse>
 					<cfquery name="qLoginGetStudent">
@@ -96,8 +98,8 @@
 				    		<cfset session.loginName="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#">
 				    	<cfelse>
 				    		<!--- An account record exists, but a faculty record does not, so stop here --->
-				    		<cfset errorBean.addError('The account could not be loaded; please contact the administrator.', 'accounts_id')>
-				    		<cfinclude template="model/login.cfm">
+				    		<cfset messageBean.addError('The account could not be loaded; please contact the administrator.', 'accounts_id')>
+				    		<cfinclude template="login.cfm">
 							<cfreturn>
 				    	</cfif>
 				    </cfif>
@@ -108,34 +110,34 @@
 				
 				<!--- Perform simple validation on form fields --->
 				<cfif !len(trim(form.firstName))>
-					<cfset errorBean.addError('A first name is required.', 'firstName')>
+					<cfset messageBean.addError('A first name is required.', 'firstName')>
 				</cfif>
 				
 				<cfif !len(trim(form.lastName))>
-					<cfset errorBean.addError('A last name is required.', 'lastName')>
+					<cfset messageBean.addError('A last name is required.', 'lastName')>
 				</cfif>
 				
 				<cfif !len(trim(form.studentId))>
-					<cfset errorBean.addError('A student ID number is required.', 'studentId')>
+					<cfset messageBean.addError('A student ID number is required.', 'studentId')>
 				<cfelseif !IsValid("integer", trim(form.studentId))>
-					<cfset errorBean.addError('Enter the student ID as a number with no spaces', 'studentId')>
+					<cfset messageBean.addError('Enter the student ID as a number with no spaces', 'studentId')>
 				</cfif>
 				
 				<cfif !len(trim(form.emailAddress))>
-					<cfset errorBean.addError('An email address is required.', 'emailAddress')>
+					<cfset messageBean.addError('An email address is required.', 'emailAddress')>
 				<cfelseif !IsValid("email", trim(form.emailAddress))>
-					<cfset errorBean.addError('The email address is not valid.', 'emailAddress')>
+					<cfset messageBean.addError('The email address is not valid.', 'emailAddress')>
 				</cfif>
 				
 				<cfif !len(trim(form.password))>
-					<cfset errorBean.addError('The password cannot be blank.', 'password')>
+					<cfset messageBean.addError('The password cannot be blank.', 'password')>
 				<cfelseif trim(form.password) NEQ trim(form.password2)>
-					<cfset errorBean.addError('The passwords do not match.', 'password')>
+					<cfset messageBean.addError('The passwords do not match.', 'password')>
 				</cfif>
 				
 				<!--- Stop here if errors were detected --->
-				<cfif errorBean.hasErrors()>
-					<cfinclude template="model/login.cfm">
+				<cfif messageBean.hasErrors()>
+					<cfinclude template="login.cfm">
 					<cfreturn>
 				</cfif>
 				
@@ -152,14 +154,14 @@
 				</cfquery>
 				
 				<cfif qLoginCheckStudentId.RecordCount>
-					<cfset errorBean.addError('This student ID is already in use.', 'studentId')>
+					<cfset messageBean.addError('This student ID is already in use.', 'studentId')>
 				<cfelseif qLoginCheckEmail.RecordCount>
-					<cfset errorBean.addError('This email address is already in use.', 'emailAddress')>
+					<cfset messageBean.addError('This email address is already in use.', 'emailAddress')>
 				</cfif>
 				
 				<!--- Stop here if errors were detected --->
-				<cfif errorBean.hasErrors()>
-					<cfinclude template="model/login.cfm">
+				<cfif messageBean.hasErrors()>
+					<cfinclude template="login.cfm">
 					<cfreturn>
 				</cfif>
 				
@@ -212,12 +214,12 @@
 					<cfset session.studentId="#qLoginGetStudent.student_id#">
 					<cfset session.studentName="#qLoginGetAccount.first_name# #qLoginGetAccount.last_name#">
 				<cfelse>
-					<cfset errorBean.addError('Unable to create account.', 'emailAddress')>
+					<cfset messageBean.addError('Unable to create account.', 'emailAddress')>
 				</cfif>
 			
 			<!--- Display default landing page. --->
 			<cfelse>
-				<cfinclude template="model/login.cfm">
+				<cfinclude template="login.cfm">
 				<cfreturn>
 			</cfif>
 		</cflogin>
