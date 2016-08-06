@@ -1,41 +1,34 @@
-<!--- Dashboard Model --->
+<!--- Manage Degree Model --->
 <!--- Thomas Dye, August 2016 --->
 <cfif !isDefined("messageBean")>
 	<cflocation url="..">
 </cfif>
 
-<cfmodule template="../../header.cfm"
+<cfmodule template="../../../../../header.cfm"
 
-	pagetitle="Advisor Services Portal - Dashboard">
+	pagetitle="Advisor Services Portal - Manage Degrees">
 	
 	<div class="resize-box">
 		
 	    <article id="content-article" role="article">
 	        <header>
-	            <cfif IsUserInRole("advisor")>
-					<h1>Dashboard for <cfoutput>#session.studentName#</cfoutput></h1>
-				<cfelse>
-					<h1>Dashboard</h1>
-				</cfif>
+	            <h1>Manage Degrees</h1>
 	        </header>
 
 			<div class="breadcrumb">
-				<a href="">Home</a>
+				<a href="../../..">Home</a>
+				&raquo; <a href="../..">Manage Colleges</a>
+				&raquo; <a href="../?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>"><cfoutput>#qEditGetCollege.college_name#</cfoutput></a>
+				&raquo; <a href="?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>">Manage Degrees</a>
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
-	                <span property="dc:title" content="Dashboard" class="rdf-meta element-hidden"></span>
+	                <span property="dc:title" content="Manage Degrees" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
-				    	<cfif !isDefined("qGetPlan")>
-							<h2>Getting started</h2>
-							<a href="../courses/" title="Completed courses">Completed courses</a>
-							<p>or</p>
-							<a href="../degrees/" title="Degree plans">Degree plans</a>
-						<cfelse>
-							
-						</cfif>
+				    	empty content
+
 						<p/>
 	                </div>
 	            </div>
@@ -54,4 +47,4 @@
 		    </div>
 		</aside>
 	
-<cfmodule template="../../footer.cfm">
+<cfmodule template="../../../../../footer.cfm">

@@ -1,4 +1,3 @@
-<!--- Dashboard Model --->
 <!--- Thomas Dye, August 2016 --->
 <cfif !isDefined("messageBean")>
 	<cflocation url="..">
@@ -6,17 +5,13 @@
 
 <cfmodule template="../../header.cfm"
 
-	pagetitle="Advisor Services Portal - Dashboard">
+	pagetitle="Advisor Services Portal - [pagename]">
 	
 	<div class="resize-box">
 		
 	    <article id="content-article" role="article">
 	        <header>
-	            <cfif IsUserInRole("advisor")>
-					<h1>Dashboard for <cfoutput>#session.studentName#</cfoutput></h1>
-				<cfelse>
-					<h1>Dashboard</h1>
-				</cfif>
+	            <h1>[pagename]</h1>
 	        </header>
 
 			<div class="breadcrumb">
@@ -25,17 +20,11 @@
 
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
-	                <span property="dc:title" content="Dashboard" class="rdf-meta element-hidden"></span>
+	                <span property="dc:title" content="[pagetype]" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
-				    	<cfif !isDefined("qGetPlan")>
-							<h2>Getting started</h2>
-							<a href="../courses/" title="Completed courses">Completed courses</a>
-							<p>or</p>
-							<a href="../degrees/" title="Degree plans">Degree plans</a>
-						<cfelse>
-							
-						</cfif>
+				    	empty content
+
 						<p/>
 	                </div>
 	            </div>

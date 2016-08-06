@@ -1,10 +1,11 @@
-<!--- Dashboard Controller --->
+<!--- Template Controller --->
 <!--- Thomas Dye, August 2016 --->
-<cfif !(isDefined("session.studentId") || IsUserInRole("student")) >
+<cfif IsUserInRole("role") >
 	<cflocation url="..">
 </cfif>
 
 <cfset messageBean=createObject('#this.mappings['cfcMapping']#.messageBean').init()>
 
-<cfinclude template="model/dashboard.cfm">
+<!--- Load page --->
+<cfinclude template="model/template.cfm">
 <cfreturn>

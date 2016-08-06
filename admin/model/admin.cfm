@@ -1,4 +1,4 @@
-<!--- Dashboard Model --->
+<!--- Admin Model --->
 <!--- Thomas Dye, August 2016 --->
 <cfif !isDefined("messageBean")>
 	<cflocation url="..">
@@ -6,17 +6,13 @@
 
 <cfmodule template="../../header.cfm"
 
-	pagetitle="Advisor Services Portal - Dashboard">
+	pagetitle="Advisor Services Portal - Administration">
 	
 	<div class="resize-box">
 		
 	    <article id="content-article" role="article">
 	        <header>
-	            <cfif IsUserInRole("advisor")>
-					<h1>Dashboard for <cfoutput>#session.studentName#</cfoutput></h1>
-				<cfelse>
-					<h1>Dashboard</h1>
-				</cfif>
+	            <h1>Administration</h1>
 	        </header>
 
 			<div class="breadcrumb">
@@ -25,18 +21,17 @@
 
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
-	                <span property="dc:title" content="Dashboard" class="rdf-meta element-hidden"></span>
+	                <span property="dc:title" content="Administration" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
-				    	<cfif !isDefined("qGetPlan")>
-							<h2>Getting started</h2>
-							<a href="../courses/" title="Completed courses">Completed courses</a>
-							<p>or</p>
-							<a href="../degrees/" title="Degree plans">Degree plans</a>
-						<cfelse>
-							
-						</cfif>
-						<p/>
+				    	<h2>Manage Portal</h2>
+						<a href="../faculty/manage-colleges" title="Manage Colleges">Manage Colleges</a><br>
+						<a href="../faculty/manage-courses" title="Manage Courses">Manage Courses</a><br>
+						<a href="../faculty/manage-departments" title="Manage Departments">Manage Departments</a><br>
+						<a href="manage-users" title="Manage Users">Manage Users</a><br>
+
+
+
 	                </div>
 	            </div>
 	        </div>
