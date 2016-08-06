@@ -4,7 +4,13 @@
 <cfparam name="attributes.includeUserNavBar" default="true"> 
 <cfparam name="attributes.includeNavBar" default="true">
 
-<cfset path="/AdvisorPortal/">
+<cfset path=ListToArray(GetCurrentTemplatePath(), "\") />
+<cfif ArrayLen(path) LTE 1>
+	<cfset path="/">
+<cfelse>
+	<cfset folderName=path[DecrementValue(ArrayLen(path))] />
+	<cfset path="/#folderName#/">
+</cfif>
 
 <!doctype html>
 <html>
