@@ -1,9 +1,7 @@
 <!--- Footer Model --->
 <!--- Thomas Dye, August 2016 --->
 
-<cfset path=ListToArray(GetCurrentTemplatePath(), "\") />
-<cfset folderName=path[DecrementValue(ArrayLen(path))] />
-<cfset path="/#folderName#/">
+<cfset path="/AdvisorPortal/">
 
 	</div>
 	<!-- //CONTENT -->
