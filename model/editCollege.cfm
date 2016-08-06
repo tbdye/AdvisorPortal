@@ -15,7 +15,9 @@
 	        </header>
 
 			<div class="breadcrumb">
-				<a href="index.cfm">Home</a> &raquo; <a href="manageColleges.cfm">Manage Colleges</a> &raquo; Edit College
+				<a href="index.cfm">Home</a>
+				&raquo; <a href="manageColleges.cfm">Manage Colleges</a>
+				&raquo; <a href="editCollege.cfm?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>"><cfoutput>#qEditGetCollege.college_name#</cfoutput></a>
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
@@ -72,6 +74,9 @@
 								</table>
 							</cfform>
 						</div>
+						
+						<h3>Degrees</h3>
+						<a href="manageDegrees.cfm?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>" title="View Degrees">View Degrees</a>
 						
 						<h3>Admission Requirements</h3>
 						<div id="createForm">
