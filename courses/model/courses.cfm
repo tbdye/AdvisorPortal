@@ -14,7 +14,7 @@
 	        <header>
 	            <!--- Alter page header depending if in an adivisng session or not. --->
 				<cfif IsUserInRole("advisor")>
-					<h1>Completed courses for <cfoutput>#session.studentName#</cfoutput></h1>
+					<h1>Completed Courses for <cfoutput>#session.studentName#</cfoutput></h1>
 				<cfelse>
 					<h1>Completed Courses</h1>
 				</cfif>
@@ -22,7 +22,7 @@
 
 			<div class="breadcrumb">
 				<a href="../dashboard/">Home</a>
-				&raquo; <a href="">Completed Courses</a>
+				&raquo; Completed Courses
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
@@ -47,7 +47,7 @@
 									</tr>
 								</cfif>
 								<tr>
-									<td colspan="2"><strong>Find a course by course number</strong></td>
+									<td colspan="2">Find a course by course number</td>
 								</tr>
 								<tr>
 									<td width="120px"><cfinput type="text" id="searchTerm" name="searchTerm"></td>

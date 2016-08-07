@@ -20,24 +20,34 @@
 	        </header>
 
 			<div class="breadcrumb">
-				<a href="">Home</a>
+				<a href="">Home</a> &raquo;			
+		            <cfif IsUserInRole("advisor")>
+						Dashboard for <cfoutput>#session.studentName#</cfoutput>
+					<cfelse>
+						Dashboard
+					</cfif>
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
 	                <span property="dc:title" content="Dashboard" class="rdf-meta element-hidden"></span>
 	
-	                <div class="content">
-				    	<cfif !isDefined("qGetPlan")>
-							<h2>Getting started</h2>
-							<a href="../courses/" title="Completed courses">Completed courses</a>
-							<p>or</p>
-							<a href="../degrees/" title="Degree plans">Degree plans</a>
-						<cfelse>
-							
-						</cfif>
+                	<cfif !isDefined("qGetPlan")>
+						<h2>Get Started</h2>
+						<a href="../courses/" title="Enter your completed courses">Enter your completed courses</a>
+						<p>or</p>
+						<a href="../degrees/" title="Manage your degree plans">Manage your degree plans</a>
+					<cfelse>
+						
+					</cfif>
+					<p/>
+                
+	        		<cfif isDefined("session.studentId")>
 						<p/>
-	                </div>
+						<p><a href="?advise=end" title="End advising session">Stop advising <cfoutput>#session.studentName#</cfoutput></a></p>
+					<cfelse>
+						<p/>
+					</cfif>
 	            </div>
 	        </div>
 	    </article>                   

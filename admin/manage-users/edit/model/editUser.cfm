@@ -18,7 +18,7 @@
 			<div class="breadcrumb">
 				<a href="../..">Home</a>
 				&raquo; <a href="..">Manage Users</a>
-				&raquo; <a href="?edit=<cfoutput>#URLDecode(url.edit)#</cfoutput>">Edit User</a>
+				&raquo; Edit User
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">

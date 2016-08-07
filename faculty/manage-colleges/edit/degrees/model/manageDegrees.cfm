@@ -19,7 +19,7 @@
 				<a href="../../..">Home</a>
 				&raquo; <a href="../..">Manage Colleges</a>
 				&raquo; <a href="../?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>"><cfoutput>#qEditGetCollege.college_name#</cfoutput></a>
-				&raquo; <a href="?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>">Manage Degrees</a>
+				&raquo; Manage Degrees
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
@@ -27,12 +27,13 @@
 	                <span property="dc:title" content="Manage Degrees" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
-				    	empty content
-
-						<p/>
+				    	<p>empty add content<p/>
+				    	<hr>
+				    	<p>empty content<p/>
 	                </div>
 	            </div>
 	        </div>
+	        
 	    </article>                   
 
 		<aside id="content-sidebar">

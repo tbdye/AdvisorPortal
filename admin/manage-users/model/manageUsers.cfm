@@ -17,96 +17,14 @@
 
 			<div class="breadcrumb">
 				<a href="..">Home</a>
-				&raquo; <a href="">Manage Users</a> 
+				&raquo; Manage Users
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
 	                <span property="dc:title" content="Administration" class="rdf-meta element-hidden"></span>
-	
-	                <div class="content">
-				    	<h2>Select an account</h2>
-						<cfform>
-							<table>
-								<cfif messageBean.hasErrors() && isDefined("form.searchButton")>
-									<tr>
-										<td colspan="2">
-											<div id="form-errors">
-												<ul>
-													<cfloop array="#messageBean.getErrors()#" index="error">
-														<cfoutput><li>#error.message#</li></cfoutput>
-													</cfloop>
-												</ul>
-											</div>
-										</td>
-										<td></td>
-									</tr>
-								</cfif>	
-								<tr>
-									<td colspan="2"><strong>Find an account by name, student ID, or email address</strong></td>
-								</tr>
-								<tr>
-									<td width="120px"><cfinput type="text" id="searchTerm" name="searchTerm"></td>
-									<td><cfinput type="submit" name="searchButton" value="Search"></td>								
-								</tr>
-								<tr>
-									<td colspan="2">
-										<cfif isDefined("url.search") || isDefined("qAdminSearchAccount") && qAdminSearchAccount.RecordCount>
-											<a href="" title="hide">Hide all accounts</a>
-										<cfelse>
-											<a href="?search=all" title="view all accounts">View all accounts</a>
-										</cfif>
-									</td>
-									<td></td>
-								</tr>						
-							</table>
-						</cfform>
-
-						<cfif isDefined("qAdminSearchAccount") && qAdminSearchAccount.RecordCount>
-							<table>
-								<tr>
-									<th>Name</th>
-									<th>Student ID</th>
-									<th>Email</th>
-									<th>Role</th>
-									<th>Status</th>
-								</tr>
-								<cfloop query="qAdminSearchAccount">
-									<tr>
-										<td><a href="edit/?edit=<cfoutput>#URLEncodedFormat(qAdminSearchAccount.id)#</cfoutput>" title="<cfoutput>#qAdminSearchAccount.full_name#</cfoutput>"><cfoutput>#qAdminSearchAccount.full_name#</cfoutput></a></td>
-										<td><cfoutput>#qAdminSearchAccount.student_id#</cfoutput></td>
-										<td><cfoutput>#qAdminSearchAccount.email#</cfoutput></td>
-										<td>
-											<cfset role="">
-											<cfif IsValid("integer", qAdminSearchAccount.administrator) && qAdminSearchAccount.administrator>
-												<cfset role="Administrator">
-											<cfelseif IsValid("integer", qAdminSearchAccount.editor) && qAdminSearchAccount.editor>
-												<cfset role="Editor">
-											<cfelseif IsValid("integer", qAdminSearchAccount.f_accounts_id)>
-												<cfset role="Advisor">
-											<cfelseif IsValid("integer", qAdminSearchAccount.s_accounts_id)>
-												<cfset role="Student">
-											<cfelse>
-												<cfset role="None">
-											</cfif>
-											<cfoutput>#role#</cfoutput>
-										</td>
-										<td>
-											<cfset status="">
-											<cfif qAdminSearchAccount.active>
-												<cfset status="Active">
-											<cfelse>
-												<cfset status="Inactive">
-											</cfif>
-											<cfoutput>#status#</cfoutput>
-										</td>
-									</tr>
-								</cfloop>
-							</table>
-						<cfelse>	
-							<p>No account selected.</p>
-							
-							<h2>Create faculty account</h2>
+    
+							<h2>Add a user</h2>
 						
 							<div id="createForm">
 								<cfform>
@@ -158,12 +76,96 @@
 										<tr>
 											<td></td>
 											<td>
-												<cfinput type="submit" name="createFacultyButton" value="Create an account">										
+												<cfinput type="submit" name="createFacultyButton" value="Add user">										
 											</td>
 										</tr>
 									</table>
 								</cfform>
 							</div>
+	
+						<hr/>
+	
+				    	<h2>Select a user</h2>
+						<cfform>
+							<table>
+								<cfif messageBean.hasErrors() && isDefined("form.searchButton")>
+									<tr>
+										<td colspan="2">
+											<div id="form-errors">
+												<ul>
+													<cfloop array="#messageBean.getErrors()#" index="error">
+														<cfoutput><li>#error.message#</li></cfoutput>
+													</cfloop>
+												</ul>
+											</div>
+										</td>
+										<td></td>
+									</tr>
+								</cfif>	
+								<tr>
+									<td colspan="2">Find an user by name, student ID, or email address</td>
+								</tr>
+								<tr>
+									<td width="120px"><cfinput type="text" id="searchTerm" name="searchTerm"></td>
+									<td><cfinput type="submit" name="searchButton" value="Search"></td>								
+								</tr>
+								<tr>
+									<td colspan="2">
+										<cfif isDefined("url.search") || isDefined("qAdminSearchAccount") && qAdminSearchAccount.RecordCount>
+											<a href="" title="hide all users">Hide all users</a>
+										<cfelse>
+											<a href="?search=all" title="view all users">View all users</a>
+										</cfif>
+									</td>
+									<td></td>
+								</tr>						
+							</table>
+						</cfform>
+
+						<cfif isDefined("qAdminSearchAccount") && qAdminSearchAccount.RecordCount>
+							<table>
+								<tr>
+									<th>Name</th>
+									<th>Student ID</th>
+									<th>Email</th>
+									<th>Role</th>
+									<th>Status</th>
+								</tr>
+								<cfloop query="qAdminSearchAccount">
+									<tr>
+										<td><a href="edit/?edit=<cfoutput>#URLEncodedFormat(qAdminSearchAccount.id)#</cfoutput>" title="<cfoutput>#qAdminSearchAccount.full_name#</cfoutput>"><cfoutput>#qAdminSearchAccount.full_name#</cfoutput></a></td>
+										<td><cfoutput>#qAdminSearchAccount.student_id#</cfoutput></td>
+										<td><cfoutput>#qAdminSearchAccount.email#</cfoutput></td>
+										<td>
+											<cfset role="">
+											<cfif IsValid("integer", qAdminSearchAccount.administrator) && qAdminSearchAccount.administrator>
+												<cfset role="Administrator">
+											<cfelseif IsValid("integer", qAdminSearchAccount.editor) && qAdminSearchAccount.editor>
+												<cfset role="Editor">
+											<cfelseif IsValid("integer", qAdminSearchAccount.f_accounts_id)>
+												<cfset role="Advisor">
+											<cfelseif IsValid("integer", qAdminSearchAccount.s_accounts_id)>
+												<cfset role="Student">
+											<cfelse>
+												<cfset role="None">
+											</cfif>
+											<cfoutput>#role#</cfoutput>
+										</td>
+										<td>
+											<cfset status="">
+											<cfif qAdminSearchAccount.active>
+												<cfset status="Active">
+											<cfelse>
+												<cfset status="Inactive">
+											</cfif>
+											<cfoutput>#status#</cfoutput>
+										</td>
+									</tr>
+								</cfloop>
+							</table>
+						<cfelse>	
+							<p>No users selected.</p>
+							
 						</cfif>
 						
 						<p/>

@@ -6,13 +6,13 @@
 
 <cfmodule template="../../header.cfm"
 
-	pagetitle="Advisor Services Portal - Advising">
+	pagetitle="Advisor Services Portal - Advise Student">
 				
 	<div class="resize-box">
 		
 	    <article id="content-article" role="article">
 	        <header>
-	            <h1>Advising</h1>
+	            <h1>Advise Student</h1>
 	        </header>
 
 			<div class="breadcrumb">
@@ -25,11 +25,13 @@
 	
 	                <div class="content">
 						<cfif IsUserInRole("editor")>
-							<h2>Manage Portal</h2>
-							<a href="manage-colleges" title="Manage Colleges">Manage Colleges</a><br>
-							<a href="manage-courses" title="Manage Courses">Manage Courses</a><br>
-							<a href="manage-departments" title="Manage Departments">Manage Departments</a><br>
+							<h2>Manage</h2>
+							<a href="manage-colleges" title="Colleges">Colleges</a><br>
+							<a href="manage-courses" title="Courses">Courses</a><br>
+							<a href="manage-departments" title="Departments">Departments</a><br>
 						</cfif>
+
+						<hr/>
 
 						<h2>Select a student to advise</h2>
 						<cfform>
@@ -49,7 +51,7 @@
 									</tr>
 								</cfif>
 								<tr>
-									<td colspan="2"><strong>Find a student by name, student ID, or email address</strong></td>
+									<td colspan="2">Find a student by name, student ID, or email address</td>
 								</tr>
 								<tr>
 									<td width="120px"><cfinput type="text" id="searchTerm" name="searchTerm"></td>
@@ -96,6 +98,7 @@
 							</table>
 						<cfelse>
 							<cfif isDefined("session.studentId")>
+								<p/>
 								<p><a href="?advise=end" title="End advising session">Stop advising <cfoutput>#session.studentName#</cfoutput></a></p>
 							<cfelse>
 								<p>No student selected.</p>

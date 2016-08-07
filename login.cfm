@@ -12,9 +12,12 @@
 	            <h1>Advising Services Portal</h1>
 	        </header>
 
+			<div class="breadcrumb">Log in
+			</div>	
+
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
-	                <span property="dc:title" content="Advising" class="rdf-meta element-hidden"></span>
+	                <span property="dc:title" content="Login" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
 				    	<h2>Please log in</h2>                		                		                	

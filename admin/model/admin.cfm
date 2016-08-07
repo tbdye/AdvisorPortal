@@ -12,23 +12,23 @@
 		
 	    <article id="content-article" role="article">
 	        <header>
-	            <h1>Administration</h1>
+	            <h1>Site Settings</h1>
 	        </header>
 
 			<div class="breadcrumb">
-				<a href="">Home</a>
+				<a href="">Home</a> &raquo; Site Settings
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
-	                <span property="dc:title" content="Administration" class="rdf-meta element-hidden"></span>
+	                <span property="dc:title" content="Site Settings" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
-				    	<h2>Manage Portal</h2>
-						<a href="../faculty/manage-colleges" title="Manage Colleges">Manage Colleges</a><br>
-						<a href="../faculty/manage-courses" title="Manage Courses">Manage Courses</a><br>
-						<a href="../faculty/manage-departments" title="Manage Departments">Manage Departments</a><br>
-						<a href="manage-users" title="Manage Users">Manage Users</a><br>
+				    	<h2>Manage</h2>
+						<a href="../faculty/manage-colleges" title="Manage Colleges">Colleges</a><br>
+						<a href="../faculty/manage-courses" title="Manage Courses">Courses</a><br>
+						<a href="../faculty/manage-departments" title="Manage Departments">Departments</a><br>
+						<a href="manage-users" title="Manage Users">Users</a><br>
 
 
 

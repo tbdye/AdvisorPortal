@@ -16,8 +16,7 @@
 	        </header>
 
 			<div class="breadcrumb">
-				<a href="..">Home</a>
-				&raquo; <a href="">Manage Colleges</a> 
+				<a href="..">Home</a> &raquo; Manage Colleges
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
@@ -44,15 +43,15 @@
 										</tr>
 									</cfif>
 				    				<tr>
-				    					<td width="120px"><label for="collegeName">College name:</label></td>
+				    					<td width="90px"><label for="collegeName">Name:</label></td>
 				    					<td><cfinput type="text" id="collegeName" name="collegeName"></td>
 				    				</tr>
 				    				<tr>
-				    					<td><label for="collegeCity">College city:</label></td>
+				    					<td><label for="collegeCity">City:</label></td>
 				    					<td><cfinput type="text" id="collegeCity" name="collegeCity"></td>
 				    				</tr>
 				    				<tr>
-				    					<td><label for="collegeWebsite">College website:</label></td>
+				    					<td><label for="collegeWebsite">Website:</label></td>
 				    					<td><cfinput type="text" id="collegeWebsite" name="collegeWebsite"></td>
 				    				</tr>
 				    				<tr>
@@ -62,21 +61,24 @@
 				    			</table>
 				    		</cfform>
 				    	</cfif>
+				    	
+				    	<hr>
+				    	
 				    	<cfif isDefined("qManageGetColleges") && qManageGetColleges.RecordCount>
 				    		<h2>Select a college</h2>
 				    		<table>
 				    			<tr>
-				    				<th width="240px">College name</th>
-				    				<th width="120px">College city</th>
+				    				<th width="240px">Name</th>
+				    				<th width="120px">City</th>
 				    				<th>Status</th>
 				    				<th></th>
 				    			</tr>
 				    			<cfloop query="qManageGetColleges">
 				    				<tr>
-					    				<td><cfoutput>#qManageGetColleges.college_name#</cfoutput></td>
-					    				<td><cfoutput>#qManageGetColleges.college_city#</cfoutput></td>
+					    				<td width="60%"><a href="edit/?edit=<cfoutput>#URLEncodedFormat(qManageGetColleges.id)#</cfoutput>" title="<cfoutput>#qManageGetColleges.college_name#, #qManageGetColleges.college_city#</cfoutput>"><cfoutput>#qManageGetColleges.college_name#</cfoutput></a></td>
+					    				<td width="30%"><cfoutput>#qManageGetColleges.college_city#</cfoutput></td>
 					    				<cfif IsUserInRole("administrator")>
-					    					<td>
+					    					<td width="10%">
 						    					<cfset status="">
 												<cfif qManageGetColleges.use_catalog>
 													<cfset status="Active">
@@ -86,7 +88,6 @@
 												<cfoutput>#status#</cfoutput>
 						    				</td>
 					    				</cfif>
-					    				<td><a href="edit/?edit=<cfoutput>#URLEncodedFormat(qManageGetColleges.id)#</cfoutput>" title="<cfoutput>#qManageGetColleges.college_name#, #qManageGetColleges.college_city#</cfoutput>">Edit</a></td>
 					    			</tr>
 				    			</cfloop>
 				    		</table>

@@ -12,7 +12,7 @@
 		
 	    <article id="content-article" role="article">
 	        <header>
-	            <h1>Edit College</h1>
+	            <h1>Edit <cfoutput>#qEditGetCollege.college_name#</cfoutput></h1>
 	        </header>
 
 			<div class="breadcrumb">
@@ -26,7 +26,7 @@
 	                <span property="dc:title" content="Edit Colleges" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
-				    	<h3><cfoutput>#qEditGetCollege.college_name# - #qEditGetCollege.college_city#</cfoutput></h3>
+				    	<h2><cfoutput>#qEditGetCollege.college_name# - #qEditGetCollege.college_city#</cfoutput></h2>
 						<div id="createForm">
 							<cfform>
 								<table>
@@ -44,7 +44,7 @@
 										</tr>
 									</cfif>
 									<tr>
-										<td width="80px"><label for="collegeName">Name:</label></td>
+										<td width="90px"><label for="collegeName">Name:</label></td>
 										<td><cfinput type="text" size="#len(qEditGetCollege.college_name)#" id="collegeName" name="collegeName" value="#qEditGetCollege.college_name#"></td>
 									</tr>
 									<tr>
@@ -60,28 +60,33 @@
 											<td><label for="collegeAvailability">Availability:</label></td>
 											<td>
 												<cfinput type="radio" id="active" name="collegeAvailability" value="1" checked="#status1#">
-												<cfoutput><label for="active"> College is available to users.</label></cfoutput><br>
+												<cfoutput><label for="active"> available</label></cfoutput> </br>
 												<cfinput type="radio" id="inactive" name="collegeAvailability" value="0" checked="#status2#">
-												<cfoutput><label for="inactive">College is hidden.</label></cfoutput><br>
+												<cfoutput><label for="inactive"> hidden</label></cfoutput><br>
 											</td>
 										</tr>
 									</cfif>
 									<tr>
 										<td></td>
 										<td>
-											<cfinput type="submit" name="updateButton" value="Update">										
+											<cfinput type="submit" name="updateButton" value="Update college">										
 										</td>
 									</tr>
 								</table>
 							</cfform>
 						</div>
 						
-						<h3>Degrees</h3>
-						<a href="degrees/?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>" title="View Degrees">View Degrees</a>
+						<hr>
 						
-						<h3>Admission Requirements</h3>
+						<h2>Degrees</h2>
+						<a href="degrees/?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>" title="View Degrees">View Degrees</a><p/>
+		
+						<h2>Admission Requirements</h2>
+
+						<!---------------------Requirements by course---------------------------->				
 						<div id="createForm">
-							<table>
+							<h3>By course</h3>
+							<table width="100%">
 								<cfform>
 									<cfif messageBean.hasErrors() && isDefined("form.addCourseReq")>
 										<tr>
@@ -96,34 +101,31 @@
 											</td>
 										</tr>
 									</cfif>
-									<tr>
-										<h4>Requirements by course</h4>
-										<th>EvCC Equivalent</th>
-										<th>Required Course</th>
-										<th></th>
-									</tr>
+										<tr>
+											<th>EvCC Equivalent</th>
+											<th>Required Course</th>
+											<th></th>
+										</tr>
 									<cfloop query="qEditGetAdmissionCourses">
 										<tr>
-											<td><cfoutput>#qEditGetAdmissionCourses.course_number#</cfoutput></td>
-											<td><cfoutput>#qEditGetAdmissionCourses.foreign_course_number#</cfoutput></td>
-											<td><a href="?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>&section=courses&remove=<cfoutput>#URLEncodedFormat(qEditGetAdmissionCourses.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionCourses.course_number#</cfoutput>">Remove</a></td>
+											<td width="55%"><cfoutput>#qEditGetAdmissionCourses.course_number#</cfoutput></td>
+											<td width="35%"><cfoutput>#qEditGetAdmissionCourses.foreign_course_number#</cfoutput></td>
+											<td width="10%"><a href="?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>&section=courses&remove=<cfoutput>#URLEncodedFormat(qEditGetAdmissionCourses.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionCourses.course_number#</cfoutput>">Remove</a></td>
 										</tr>
 									</cfloop>
 									<tr>
 										<td><cfinput type="text" id="localCourse" name="localCourse"></td>
 										<td><cfinput type="text" id="foreignCourse" name="foreignCourse"></td>
-										<td></td>
-									</tr>
-									<tr>
 										<td><cfinput type="submit" name="addCourseReq" value="Add"></td>
-										<td></td>
-										<td></td>
 									</tr>
 								</cfform>
 							</table>
 						</div>
 						
+						<!---------------------Requirements by department ---------------------------->		
+												
 						<div id="createForm">
+							<h3>By department</h3>
 							<table>
 								<cfform>
 									<cfif messageBean.hasErrors() && isDefined("form.addDepartmentReq")>
@@ -140,36 +142,31 @@
 										</tr>
 									</cfif>
 									<tr>
-										<h4>Requirements by department</h4>
 										<th>EvCC Department</th>
 										<th>Credit required</th>
 										<th></th>
 									</tr>
 									<cfloop query="qEditGetAdmissionDepartments">
 										<tr>
-											<td><cfoutput>#qEditGetAdmissionDepartments.department_name#</cfoutput></td>
-											<td><cfoutput>#qEditGetAdmissionDepartments.credit#</cfoutput></td>
-											<td><a href="?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>&section=departments&remove=<cfoutput>#URLEncodedFormat(qEditGetAdmissionDepartments.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionDepartments.department_name#</cfoutput>">Remove</a></td>
+											<td width="55%"><cfoutput>#qEditGetAdmissionDepartments.department_name#</cfoutput></td>
+											<td width="35%"><cfoutput>#qEditGetAdmissionDepartments.credit#</cfoutput></td>
+											<td width="10%"><a href="?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>&section=departments&remove=<cfoutput>#URLEncodedFormat(qEditGetAdmissionDepartments.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionDepartments.department_name#</cfoutput>">Remove</a></td>
 										</tr>
 									</cfloop>
 									<tr>
 										<td>
-											<cfselect name="localDepartment" query="qEditGetSelectDepartments" display="department_name" value="id" queryPosition="below">
+											<cfselect name="localDepartment" query="qEditGetSelectDepartments" display="department_name" value="id" queryPosition="below" >
 												<option value="0">Select a department</option>
 											</cfselect>
 										</td>
 										<td><cfinput type="text" id="departmentCredits" name="departmentCredits"></td>
-										<td></td>
-									</tr>
-									<tr>
 										<td><cfinput type="submit" name="addDepartmentReq" value="Add"></td>
-										<td></td>
-										<td></td>
 									</tr>
 								</cfform>
 							</table>
 						</div>
 						
+						<!---------------------Requirements by discipline ---------------------------->
 						<div id="createForm">
 							<table>
 								<cfform>
@@ -187,16 +184,16 @@
 										</tr>
 									</cfif>
 									<tr>
-										<h4>Requirements by adademic discipline</h4>
+										<h3>By academic discipline</h3>
 										<th>EvCC Codekey</th>
 										<th>Credit required</th>
 										<th></th>
 									</tr>
 									<cfloop query="qEditGetAdmissionCodekeys">
 										<tr>
-											<td><cfoutput>#qEditGetAdmissionCodekeys.description#</cfoutput></td>
-											<td><cfoutput>#qEditGetAdmissionCodekeys.credit#</cfoutput></td>
-											<td><a href="?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>&section=codekeys&remove=<cfoutput>#URLEncodedFormat(qEditGetAdmissionCodekeys.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionCodekeys.description#</cfoutput>">Remove</a></td>
+											<td width="55%"><cfoutput>#qEditGetAdmissionCodekeys.description#</cfoutput></td>
+											<td width="35%"><cfoutput>#qEditGetAdmissionCodekeys.credit#</cfoutput></td>
+											<td width="10%"><a href="?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>&section=codekeys&remove=<cfoutput>#URLEncodedFormat(qEditGetAdmissionCodekeys.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionCodekeys.description#</cfoutput>">Remove</a></td>
 										</tr>
 									</cfloop>
 									<tr>
@@ -206,12 +203,7 @@
 											</cfselect>
 										</td>
 										<td><cfinput type="text" id="codekeyCredits" name="codekeyCredits"></td>
-										<td></td>
-									</tr>
-									<tr>
 										<td><cfinput type="submit" name="addCodekeyReq" value="Add"></td>
-										<td></td>
-										<td></td>
 									</tr>
 								</cfform>
 							</table>

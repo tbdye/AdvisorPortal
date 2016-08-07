@@ -65,7 +65,7 @@
 			<ul id="top-navigation">
 				<cfif attributes.includeNavBar>
 					<cfif IsUserInRole("advisor")>
-						<li><a href="<cfoutput>#path#</cfoutput>faculty/" title="Advising">Advising</a></li>
+						<li><a href="<cfoutput>#path#</cfoutput>faculty/" title="Advising">Advise Student</a></li>
 					</cfif>
 					
 					<cfif IsUserInRole("student") || isDefined("session.studentId")>
@@ -75,7 +75,7 @@
 					</cfif>
 					
 					<cfif IsUserInRole("administrator")>
-						<li><a href="<cfoutput>#path#</cfoutput>admin/" title="Administration">Administration</a></li>
+						<li><a href="<cfoutput>#path#</cfoutput>admin/" title="Administration">Site Settings</a></li>
 					</cfif>
 			    </cfif>
 			</ul>

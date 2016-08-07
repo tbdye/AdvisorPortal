@@ -16,7 +16,7 @@
 
 			<div class="breadcrumb">
 				<a href="..">Home</a>
-				&raquo; <a href="">Account Settings</a> 
+				&raquo; Account Settings
 			</div>
 
 			<div id="page-content" class="page-plus-side">

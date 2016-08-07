@@ -181,10 +181,10 @@ h2 {
     font-size: 1.8em;
 }
 h3 {
-    font-size: 1.5em;
+    font-size: 1.3em;
 }
 h4 {
-    font-size: 1.35em;
+    font-size: 1.3em;
 }
 h5 {
     font-size: 1.2em;
@@ -1002,14 +1002,24 @@ embed {
     margin-top: 9px;
 }
 #page-content h2,
-#page-content h3,
 #page-content h4 {
-    margin: 18px 0 3px 0;
+    margin: 15px 0 3px 0;
     color: #444;
     font-weight: bold;
     letter-spacing: -1px;
     line-height: 1em;
 }
+
+#page-content h3
+{
+    margin: 10px 0 3px 0;
+    color: #444;
+    letter-spacing: -1px;
+    line-height: 1em;
+    padding:3px;
+    background: #eee;
+}
+
 #page-content p,
 #page-content table,
 #page-content ol,
