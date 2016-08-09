@@ -81,7 +81,7 @@
 						<h2>Degrees</h2>
 						<a href="../degrees/?college=<cfoutput>#qEditGetCollege.id#</cfoutput>" title="View Degrees">View Degrees</a><p/>
 		
-						<h2>Admission Requirements</h2>
+						<h2>Admission requirements</h2>
 
 						<!---------------------Requirements by course---------------------------->				
 						<div id="createForm">
@@ -90,7 +90,7 @@
 								<cfform>
 									<cfif messageBean.hasErrors() && isDefined("form.addCourseReq")>
 										<tr>
-											<td colspan="2">
+											<td colspan="3">
 												<div id="form-errors">
 													<ul>
 														<cfloop array="#messageBean.getErrors()#" index="error">
@@ -130,7 +130,7 @@
 								<cfform>
 									<cfif messageBean.hasErrors() && isDefined("form.addDepartmentReq")>
 										<tr>
-											<td colspan="2">
+											<td colspan="3">
 												<div id="form-errors">
 													<ul>
 														<cfloop array="#messageBean.getErrors()#" index="error">
@@ -143,7 +143,7 @@
 									</cfif>
 									<tr>
 										<th>EvCC Department</th>
-										<th>Credit required</th>
+										<th>Credit Required</th>
 										<th></th>
 									</tr>
 									<cfloop query="qEditGetAdmissionDepartments">
@@ -172,7 +172,7 @@
 								<cfform>
 									<cfif messageBean.hasErrors() && isDefined("form.addCodekeyReq")>
 										<tr>
-											<td colspan="2">
+											<td colspan="3">
 												<div id="form-errors">
 													<ul>
 														<cfloop array="#messageBean.getErrors()#" index="error">
@@ -186,7 +186,7 @@
 									<tr>
 										<h3>By academic discipline</h3>
 										<th>EvCC Codekey</th>
-										<th>Credit required</th>
+										<th>Credit Required</th>
 										<th></th>
 									</tr>
 									<cfloop query="qEditGetAdmissionCodekeys">
