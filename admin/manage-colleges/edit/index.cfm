@@ -1,6 +1,6 @@
 <!--- Edit College Controller --->
 <!--- Thomas Dye, August 2016 --->
-<cfif !IsUserInRole("editor") || !IsDefined("url.edit")>
+<cfif !IsUserInRole("editor") || !IsDefined("url.college")>
 	<cflocation url="..">
 </cfif>
 
@@ -10,10 +10,7 @@
 <cfquery name="qEditGetCollege">
 	SELECT id, college_name, college_city, college_website, use_catalog
 	FROM COLLEGES
-	WHERE id = <cfqueryparam value="#URLDecode(url.edit)#" cfsqltype="cf_sql_integer">
-	<cfif !IsUserInRole("administrator")>
-		AND use_catalog = 1
-	</cfif>
+	WHERE id = <cfqueryparam value="#URLDecode(url.college)#" cfsqltype="cf_sql_integer">
 </cfquery>
 
 <!--- Back out if the college ID is not valid --->
@@ -47,7 +44,7 @@
 			</cfquery>
 			
 			<!--- Refresh page --->
-			<cflocation url="?edit=#URLEncodedFormat(qEditGetCollege.id)#">
+			<cflocation url="?college=#URLEncodedFormat(qEditGetCollege.id)#">
 		</cfif>
 	</cfif>
 	
@@ -74,7 +71,7 @@
 			</cfquery>
 			
 			<!--- Refresh page --->
-			<cflocation url="?edit=#URLEncodedFormat(qEditGetCollege.id)#">
+			<cflocation url="?college=#URLEncodedFormat(qEditGetCollege.id)#">
 		</cfif>
 	</cfif>
 	
@@ -101,7 +98,7 @@
 			</cfquery>
 			
 			<!--- Refresh page --->
-			<cflocation url="?edit=#URLEncodedFormat(qEditGetCollege.id)#">
+			<cflocation url="?college=#URLEncodedFormat(qEditGetCollege.id)#">
 		</cfif>
 	</cfif>
 	
@@ -232,7 +229,7 @@
 
 	<!--- Refresh page if there were no errors --->
 	<cfif !messageBean.hasErrors()>
-		<cflocation url="?edit=#URLEncodedFormat(qEditGetCollege.id)#">
+		<cflocation url="?college=#URLEncodedFormat(qEditGetCollege.id)#">
 	</cfif>
 </cfif>
 
@@ -305,7 +302,7 @@
 	
 	<!--- Refresh page if there were no errors --->
 	<cfif !messageBean.hasErrors()>
-		<cflocation url="?edit=#URLEncodedFormat(qEditGetCollege.id)#">
+		<cflocation url="?college=#URLEncodedFormat(qEditGetCollege.id)#">
 	</cfif>
 </cfif>
 
@@ -380,7 +377,7 @@
 	
 	<!--- Refresh page if there were no errors --->
 	<cfif !messageBean.hasErrors()>
-		<cflocation url="?edit=#URLEncodedFormat(qEditGetCollege.id)#">
+		<cflocation url="?college=#URLEncodedFormat(qEditGetCollege.id)#">
 	</cfif>
 </cfif>
 
@@ -454,10 +451,10 @@
 	
 	<!--- Refresh page if there were no errors --->
 	<cfif !messageBean.hasErrors()>
-		<cflocation url="?edit=#URLEncodedFormat(qEditGetCollege.id)#">
+		<cflocation url="?college=#URLEncodedFormat(qEditGetCollege.id)#">
 	</cfif>
 </cfif>
 
-<!--- Display errors if they exist --->
+<!--- Display page without errors --->
 <cfinclude template="model/editCollege.cfm">
 <cfreturn>

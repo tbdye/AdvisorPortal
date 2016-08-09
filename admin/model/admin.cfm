@@ -16,7 +16,8 @@
 	        </header>
 
 			<div class="breadcrumb">
-				<a href="">Home</a> &raquo; Site Settings
+				<a href="">Home</a>
+				&raquo; Site Settings
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
@@ -25,10 +26,12 @@
 	
 	                <div class="content">
 				    	<h2>Manage</h2>
-						<a href="../faculty/manage-colleges" title="Manage Colleges">Colleges</a><br>
-						<a href="../faculty/manage-courses" title="Manage Courses">Courses</a><br>
-						<a href="../faculty/manage-departments" title="Manage Departments">Departments</a><br>
-						<a href="manage-users" title="Manage Users">Users</a><br>
+						<a href="manage-colleges" title="Manage Colleges">Colleges</a><br>
+						<a href="manage-courses" title="Manage Courses">Courses</a><br>
+						<a href="manage-departments" title="Manage Departments">Departments</a><br>
+						<cfif IsUserInRole("administrator")>
+							<a href="manage-users" title="Manage Users">Users</a><br>
+						</cfif>
 
 
 

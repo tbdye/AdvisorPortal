@@ -41,13 +41,7 @@
 						
 					</cfif>
 					<p/>
-                
-	        		<cfif isDefined("session.studentId")>
-						<p/>
-						<p><a href="?advise=end" title="End advising session">Stop advising <cfoutput>#session.studentName#</cfoutput></a></p>
-					<cfelse>
-						<p/>
-					</cfif>
+
 	            </div>
 	        </div>
 	    </article>                   

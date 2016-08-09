@@ -4,6 +4,7 @@
 <cfparam name="attributes.includeUserNavBar" default="true"> 
 <cfparam name="attributes.includeNavBar" default="true">
 
+<!--- Find application path to ensure CSS and links work --->
 <cfset path=ListToArray(GetCurrentTemplatePath(), "\") />
 <cfif ArrayLen(path) LTE 1>
 	<cfset path="/">
@@ -55,8 +56,8 @@
 							<option value="<cfoutput>#path#</cfoutput>degrees/">Degree Plans</option>
 						</cfif>
 						
-						<cfif IsUserInRole("administrator")>
-							<option value="<cfoutput>#path#</cfoutput>admin/">Administration</option>
+						<cfif IsUserInRole("editor")>
+							<option value="<cfoutput>#path#</cfoutput>admin/">Site Settings</option>
 						</cfif>
 				    </cfif>					
 					
@@ -74,7 +75,7 @@
 						<li><a href="<cfoutput>#path#</cfoutput>degrees/" title="Degree Plans">Degree Plans</a></li>
 					</cfif>
 					
-					<cfif IsUserInRole("administrator")>
+					<cfif IsUserInRole("editor")>
 						<li><a href="<cfoutput>#path#</cfoutput>admin/" title="Administration">Site Settings</a></li>
 					</cfif>
 			    </cfif>

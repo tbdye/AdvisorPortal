@@ -18,12 +18,12 @@
 			<div class="breadcrumb">
 				<a href="../..">Home</a>
 				&raquo; <a href="..">Manage Colleges</a>
-				&raquo; <a href="?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>"><cfoutput>#qEditGetCollege.college_name#</cfoutput></a>
+				&raquo; <cfoutput>#qEditGetCollege.college_name#</cfoutput>
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
-	                <span property="dc:title" content="Edit Colleges" class="rdf-meta element-hidden"></span>
+	                <span property="dc:title" content="Edit College" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
 				    	<h2><cfoutput>#qEditGetCollege.college_name# - #qEditGetCollege.college_city#</cfoutput></h2>
@@ -79,7 +79,7 @@
 						<hr>
 						
 						<h2>Degrees</h2>
-						<a href="degrees/?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>" title="View Degrees">View Degrees</a><p/>
+						<a href="../degrees/?college=<cfoutput>#qEditGetCollege.id#</cfoutput>" title="View Degrees">View Degrees</a><p/>
 		
 						<h2>Admission Requirements</h2>
 
@@ -110,7 +110,7 @@
 										<tr>
 											<td width="55%"><cfoutput>#qEditGetAdmissionCourses.course_number#</cfoutput></td>
 											<td width="35%"><cfoutput>#qEditGetAdmissionCourses.foreign_course_number#</cfoutput></td>
-											<td width="10%"><a href="?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>&section=courses&remove=<cfoutput>#URLEncodedFormat(qEditGetAdmissionCourses.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionCourses.course_number#</cfoutput>">Remove</a></td>
+											<td width="10%"><a href="?college=<cfoutput>#qEditGetCollege.id#</cfoutput>&section=courses&remove=<cfoutput>#URLEncodedFormat(qEditGetAdmissionCourses.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionCourses.course_number#</cfoutput>">Remove</a></td>
 										</tr>
 									</cfloop>
 									<tr>
@@ -150,7 +150,7 @@
 										<tr>
 											<td width="55%"><cfoutput>#qEditGetAdmissionDepartments.department_name#</cfoutput></td>
 											<td width="35%"><cfoutput>#qEditGetAdmissionDepartments.credit#</cfoutput></td>
-											<td width="10%"><a href="?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>&section=departments&remove=<cfoutput>#URLEncodedFormat(qEditGetAdmissionDepartments.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionDepartments.department_name#</cfoutput>">Remove</a></td>
+											<td width="10%"><a href="?college=<cfoutput>#qEditGetCollege.id#</cfoutput>&section=departments&remove=<cfoutput>#URLEncodedFormat(qEditGetAdmissionDepartments.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionDepartments.department_name#</cfoutput>">Remove</a></td>
 										</tr>
 									</cfloop>
 									<tr>
@@ -193,7 +193,7 @@
 										<tr>
 											<td width="55%"><cfoutput>#qEditGetAdmissionCodekeys.description#</cfoutput></td>
 											<td width="35%"><cfoutput>#qEditGetAdmissionCodekeys.credit#</cfoutput></td>
-											<td width="10%"><a href="?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>&section=codekeys&remove=<cfoutput>#URLEncodedFormat(qEditGetAdmissionCodekeys.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionCodekeys.description#</cfoutput>">Remove</a></td>
+											<td width="10%"><a href="?college=<cfoutput>#qEditGetCollege.id#</cfoutput>&section=codekeys&remove=<cfoutput>#URLEncodedFormat(qEditGetAdmissionCodekeys.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionCodekeys.description#</cfoutput>">Remove</a></td>
 										</tr>
 									</cfloop>
 									<tr>

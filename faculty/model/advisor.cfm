@@ -17,6 +17,7 @@
 
 			<div class="breadcrumb">
 				<a href="">Home</a>
+				&raquo; Advise Student
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
@@ -24,15 +25,6 @@
 	                <span property="dc:title" content="Advising" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
-						<cfif IsUserInRole("editor")>
-							<h2>Manage</h2>
-							<a href="manage-colleges" title="Colleges">Colleges</a><br>
-							<a href="manage-courses" title="Courses">Courses</a><br>
-							<a href="manage-departments" title="Departments">Departments</a><br>
-						</cfif>
-
-						<hr/>
-
 						<h2>Select a student to advise</h2>
 						<cfform>
 							<table>

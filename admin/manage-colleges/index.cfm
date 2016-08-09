@@ -10,9 +10,6 @@
 <cfquery name="qManageGetColleges">
 	SELECT id, college_name, college_city, college_website, use_catalog
 	FROM COLLEGES
-	<cfif !IsUserInRole("administrator")>
-		WHERE use_catalog = 1
-	</cfif>
 </cfquery>
 
 <cfif isDefined("form.addCollegeButton")>
@@ -51,7 +48,7 @@
 			<cfelse>
 				NULL,
 			</cfif>
-			1)
+			0)
 	</cfquery>
 	
 	<!--- Refresh the page --->

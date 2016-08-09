@@ -1,4 +1,4 @@
-<!--- Manage Degree Model --->
+<!--- Edit Degree Model --->
 <!--- Thomas Dye, August 2016 --->
 <cfif !isDefined("messageBean")>
 	<cflocation url="..">
@@ -6,34 +6,34 @@
 
 <cfmodule template="../../../../../header.cfm"
 
-	pagetitle="Advisor Services Portal - Manage Degrees">
+	pagetitle="Advisor Services Portal - Edit Degree">
 	
 	<div class="resize-box">
 		
 	    <article id="content-article" role="article">
 	        <header>
-	            <h1>Manage Degrees</h1>
+	            <h1>Edit <cfoutput>#qEditGetDegree.degree_name#</cfoutput></h1>
 	        </header>
 
 			<div class="breadcrumb">
 				<a href="../../..">Home</a>
 				&raquo; <a href="../..">Manage Colleges</a>
-				&raquo; <a href="../?edit=<cfoutput>#qEditGetCollege.id#</cfoutput>"><cfoutput>#qEditGetCollege.college_name#</cfoutput></a>
-				&raquo; Manage Degrees
+				&raquo; <a href="../../edit/?college=<cfoutput>#qEditGetCollege.id#</cfoutput>"><cfoutput>#qEditGetCollege.college_name#</cfoutput></a>
+				&raquo; <a href="../?college=<cfoutput>#qEditGetCollege.id#</cfoutput>"><cfoutput>Manage Degrees</cfoutput></a>
+				&raquo; <cfoutput>#qEditGetDegree.degree_name#</cfoutput>
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
-	                <span property="dc:title" content="Manage Degrees" class="rdf-meta element-hidden"></span>
+	                <span property="dc:title" content="Edit Degree" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
-				    	<p>empty add content<p/>
-				    	<hr>
-				    	<p>empty content<p/>
+	                	Empty content
+	                	
+						<p/>
 	                </div>
 	            </div>
 	        </div>
-	        
 	    </article>                   
 
 		<aside id="content-sidebar">
