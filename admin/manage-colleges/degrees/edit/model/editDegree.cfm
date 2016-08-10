@@ -85,7 +85,7 @@
                 		<table>
                 			<cfform>
                 				<tr>
-                					<td colspan="3"><cftextarea name="admCourseReqNote" rows="5" cols="80"><cfoutput>#qEditGetDegreeNotes.admission_courses_note#</cfoutput></cftextarea></td>
+                					<td colspan="3"><textarea name="admCourseReqNote" rows="5" cols="80"><cfoutput>#qEditGetDegreeNotes.admission_courses_note#</cfoutput></textarea></td>
                 				</tr>
                 				<tr>
                 					<td><cfinput type="submit" name="updateAdmCourseReqNoteButton" value="Update"></td>
@@ -132,7 +132,7 @@
 	                	<table>
                 			<cfform>
                 				<tr>
-                					<td colspan="3"><cftextarea name="admCodekeyReqNote" rows="5" cols="80"><cfoutput>#qEditGetDegreeNotes.admission_codekeys_note#</cfoutput></cftextarea></td>
+                					<td colspan="3"><textarea name="admCodekeyReqNote" rows="5" cols="80"><cfoutput>#qEditGetDegreeNotes.admission_codekeys_note#</cfoutput></textarea></td>
                 				</tr>
                 				<tr>
                 					<td><cfinput type="submit" name="updateAdmCodekeyReqNoteButton" value="Update"></td>
@@ -186,7 +186,7 @@
                 		<table>
                 			<cfform>
                 				<tr>
-                					<td colspan="3"><cftextarea name="grdCourseReqNote" rows="5" cols="80"><cfoutput>#qEditGetDegreeNotes.graduation_courses_note#</cfoutput></cftextarea></td>
+                					<td colspan="3"><textarea name="grdCourseReqNote" rows="5" cols="80"><cfoutput>#qEditGetDegreeNotes.graduation_courses_note#</cfoutput></textarea></td>
                 				</tr>
                 				<tr>
                 					<td><cfinput type="submit" name="updateGrdCourseReqNoteButton" value="Update"></td>
@@ -233,7 +233,7 @@
 	                	<table>
                 			<cfform>
                 				<tr>
-                					<td colspan="3"><cftextarea name="grdCodekeyReqNote" rows="5" cols="80"><cfoutput>#qEditGetDegreeNotes.graduation_codekeys_note#</cfoutput></cftextarea></td>
+                					<td colspan="3"><textarea name="grdCodekeyReqNote" rows="5" cols="80"><cfoutput>#qEditGetDegreeNotes.graduation_codekeys_note#</cfoutput></textarea></td>
                 				</tr>
                 				<tr>
                 					<td><cfinput type="submit" name="updateGrdCodekeyReqNoteButton" value="Update"></td>
@@ -286,7 +286,7 @@
 	                	<table>
                 			<cfform>
                 				<tr>
-                					<td colspan="3"><cftextarea name="degreeGeneralNote" rows="5" cols="80"><cfoutput>#qEditGetDegreeNotes.general_note#</cfoutput></cftextarea></td>
+                					<td colspan="3"><textarea name="degreeGeneralNote" rows="5" cols="80"><cfoutput>#qEditGetDegreeNotes.general_note#</cfoutput></textarea></td>
                 				</tr>
                 				<tr>
                 					<td><cfinput type="submit" name="updateDegreeGeneralNoteButton" value="Update"></td>
