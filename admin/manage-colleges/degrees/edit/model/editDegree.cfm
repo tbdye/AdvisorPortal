@@ -31,7 +31,7 @@
 	                	<h2>Edit degree</h2>
 	                	<cfform>
 	                		<table>
-	                			<cfif messageBean.hasErrors() && isDefined("form.updateButton")>
+	                			<cfif messageBean.hasErrors() && isDefined("form.updateDegreeButton")>
 									<tr>
 										<td colspan="2">
 											<div id="form-errors">
@@ -51,7 +51,7 @@
 							<tr>
 								<td><label for="degreeDepartment">Department:</label></td>
 								<td>
-									<cfselect name="degreeDepartment" query="qEditGetAllDepartments" display="department_name" value="id" queryPosition="below">
+									<cfselect name="degreeDepartment" query="qEditGetAllDepartments" display="department_name" value="id" selected="#qEditGetDegree.departments_id#" queryPosition="below">
 										<option value="0">Select a department</option>
 									</cfselect>
 								</td>
@@ -112,7 +112,7 @@
 							<cfloop query="qEditGetAdmissionCourses">
 								<cfform>
 									<tr>
-										<cfinput type="hidden" name="admCoursesId" value="<cfoutput>#qEditGetAdmissionCourses.id#</cfoutput>">
+										<cfinput type="hidden" name="admCoursesId" value="#qEditGetAdmissionCourses.id#">
 										<td width="55%"><cfoutput>#qEditGetAdmissionCourses.course_number#</cfoutput></td>
 										<td width="35%"><cfoutput>#qEditGetAdmissionCourses.foreign_course_number#</cfoutput></td>
 										<td width="10%"><cfinput type="submit" name="delAdmCourseReq" value="Remove"></td>
@@ -159,7 +159,7 @@
 							<cfloop query="qEditGetAdmissionCodekeys">
 								<cfform>
 									<tr>
-										<cfinput type="hidden" name="admCodekeysId" value="<cfoutput>#qEditGetAdmissionCodekeys.id#</cfoutput>">
+										<cfinput type="hidden" name="admCodekeysId" value="#qEditGetAdmissionCodekeys.id#">
 										<td width="55%"><cfoutput>#qEditGetAdmissionCodekeys.description#</cfoutput></td>
 										<td width="35%"><cfoutput>#qEditGetAdmissionCodekeys.credit#</cfoutput></td>
 										<td width="10%"><cfinput type="submit" name="delAdmCodekeyReq" value="Remove"></td>
@@ -213,7 +213,7 @@
 							<cfloop query="qEditGetGraduationCourses">
 								<cfform>
 									<tr>
-										<cfinput type="hidden" name="grdCoursesId" value="<cfoutput>#qEditGetGraduationCourses.id#</cfoutput>">
+										<cfinput type="hidden" name="grdCoursesId" value="#qEditGetGraduationCourses.id#">
 										<td width="55%"><cfoutput>#qEditGetGraduationCourses.course_number#</cfoutput></td>
 										<td width="35%"><cfoutput>#qEditGetGraduationCourses.foreign_course_number#</cfoutput></td>
 										<td width="10%"><cfinput type="submit" name="delGrdCourseReq" value="Remove"></td>
@@ -260,7 +260,7 @@
 							<cfloop query="qEditGetGraduationCodekeys">
 								<cfform>
 									<tr>
-										<cfinput type="hidden" name="grdCodekeysId" value="<cfoutput>#qEditGetGraduationCodekeys.id#</cfoutput>">
+										<cfinput type="hidden" name="grdCodekeysId" value="#qEditGetGraduationCodekeys.id#">
 										<td width="55%"><cfoutput>#qEditGetGraduationCodekeys.description#</cfoutput></td>
 										<td width="35%"><cfoutput>#qEditGetGraduationCodekeys.credit#</cfoutput></td>
 										<td width="10%"><cfinput type="submit" name="delGrdCodekeyReq" value="Remove"></td>

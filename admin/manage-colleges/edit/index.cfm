@@ -214,7 +214,7 @@
 	<!--- Evaluate update for availability status --->
 	<cfif isDefined("form.collegeAvailability") && !messageBean.hasErrors()>
 		<cfif (status1 EQ "yes" && form.collegeAvailability NEQ 1) || (status2 EQ "yes" && form.collegeAvailability NEQ 2)>
-			<!--- Update faculty role --->
+			<!--- Update availability --->
 			<cfquery>
 				UPDATE COLLEGES
 				<cfif form.collegeAvailability EQ 1>
