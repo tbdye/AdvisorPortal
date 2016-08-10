@@ -105,8 +105,8 @@
 								</tr>
 							</cfif>
 							<tr>
-								<th>EvCC Equivalent</th>
-								<th>Required Course</th>
+								<th>EvCC Course</th>
+								<th>Equivalent Course</th>
 								<th></th>
 							</tr>
 							<cfloop query="qEditGetAdmissionCourses">
@@ -181,7 +181,7 @@
 	                	
 	                	<hr>
 	                		
-	                	<h2>Graduation requirements</h2>
+	                	<h2>Optional graduation requirements</h2>
 	                	<h3>By course</h3>
                 		<table>
                 			<cfform>
@@ -206,8 +206,8 @@
 								</tr>
 							</cfif>
 							<tr>
-								<th>EvCC Equivalent</th>
-								<th>Required Course</th>
+								<th>EvCC Course</th>
+								<th>Equivalent Course</th>
 								<th></th>
 							</tr>
 							<cfloop query="qEditGetGraduationCourses">
