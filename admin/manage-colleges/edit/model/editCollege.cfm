@@ -88,31 +88,42 @@
 							<h3>By course</h3>
 							<table width="100%">
 								<cfform>
-									<cfif messageBean.hasErrors() && isDefined("form.addCourseReq")>
+	                				<tr>
+	                					<td colspan="3"><textarea name="courseReqNote" rows="5" cols="80"><cfoutput>#qEditGetCollegeNotes.courses_note#</cfoutput></textarea></td>
+	                				</tr>
+	                				<tr>
+	                					<td><cfinput type="submit" name="updateCourseReqNoteButton" value="Update"></td>
+	                				</tr>
+	                			</cfform>
+								<cfif messageBean.hasErrors() && isDefined("form.addCourseReq")>
+									<tr>
+										<td colspan="3">
+											<div id="form-errors">
+												<ul>
+													<cfloop array="#messageBean.getErrors()#" index="error">
+														<cfoutput><li>#error.message#</li></cfoutput>
+													</cfloop>
+												</ul>
+											</div>											
+										</td>
+									</tr>
+								</cfif>
+								<tr>
+									<th>EvCC Equivalent</th>
+									<th>Required Course</th>
+									<th></th>
+								</tr>
+								<cfloop query="qEditGetAdmissionCourses">
+									<cfform>
 										<tr>
-											<td colspan="3">
-												<div id="form-errors">
-													<ul>
-														<cfloop array="#messageBean.getErrors()#" index="error">
-															<cfoutput><li>#error.message#</li></cfoutput>
-														</cfloop>
-													</ul>
-												</div>											
-											</td>
-										</tr>
-									</cfif>
-										<tr>
-											<th>EvCC Equivalent</th>
-											<th>Required Course</th>
-											<th></th>
-										</tr>
-									<cfloop query="qEditGetAdmissionCourses">
-										<tr>
+											<cfinput type="hidden" name="coursesId" value="#qEditGetAdmissionCourses.id#">
 											<td width="55%"><cfoutput>#qEditGetAdmissionCourses.course_number#</cfoutput></td>
 											<td width="35%"><cfoutput>#qEditGetAdmissionCourses.foreign_course_number#</cfoutput></td>
-											<td width="10%"><a href="?college=<cfoutput>#qEditGetCollege.id#</cfoutput>&section=courses&remove=<cfoutput>#URLEncodedFormat(qEditGetAdmissionCourses.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionCourses.course_number#</cfoutput>">Remove</a></td>
+											<td width="10%"><cfinput type="submit" name="delCourseReq" value="Remove"></td>
 										</tr>
-									</cfloop>
+									</cfform>
+								</cfloop>
+								<cfform>
 									<tr>
 										<td><cfinput type="text" id="localCourse" name="localCourse"></td>
 										<td><cfinput type="text" id="foreignCourse" name="foreignCourse"></td>
@@ -128,31 +139,42 @@
 							<h3>By department</h3>
 							<table>
 								<cfform>
-									<cfif messageBean.hasErrors() && isDefined("form.addDepartmentReq")>
-										<tr>
-											<td colspan="3">
-												<div id="form-errors">
-													<ul>
-														<cfloop array="#messageBean.getErrors()#" index="error">
-															<cfoutput><li>#error.message#</li></cfoutput>
-														</cfloop>
-													</ul>
-												</div>											
-											</td>
-										</tr>
-									</cfif>
+	                				<tr>
+	                					<td colspan="3"><textarea name="departmentReqNote" rows="5" cols="80"><cfoutput>#qEditGetCollegeNotes.departments_note#</cfoutput></textarea></td>
+	                				</tr>
+	                				<tr>
+	                					<td><cfinput type="submit" name="updateDepartmentReqNoteButton" value="Update"></td>
+	                				</tr>
+	                			</cfform>
+								<cfif messageBean.hasErrors() && isDefined("form.addDepartmentReq")>
 									<tr>
-										<th>EvCC Department</th>
-										<th>Credit Required</th>
-										<th></th>
+										<td colspan="3">
+											<div id="form-errors">
+												<ul>
+													<cfloop array="#messageBean.getErrors()#" index="error">
+														<cfoutput><li>#error.message#</li></cfoutput>
+													</cfloop>
+												</ul>
+											</div>											
+										</td>
 									</tr>
-									<cfloop query="qEditGetAdmissionDepartments">
+								</cfif>
+								<tr>
+									<th>EvCC Department</th>
+									<th>Credit Required</th>
+									<th></th>
+								</tr>
+								<cfloop query="qEditGetAdmissionDepartments">
+									<cfform>
 										<tr>
+											<cfinput type="hidden" name="departmentsId" value="#qEditGetAdmissionDepartments.id#">
 											<td width="55%"><cfoutput>#qEditGetAdmissionDepartments.department_name#</cfoutput></td>
 											<td width="35%"><cfoutput>#qEditGetAdmissionDepartments.credit#</cfoutput></td>
-											<td width="10%"><a href="?college=<cfoutput>#qEditGetCollege.id#</cfoutput>&section=departments&remove=<cfoutput>#URLEncodedFormat(qEditGetAdmissionDepartments.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionDepartments.department_name#</cfoutput>">Remove</a></td>
+											<td width="10%"><cfinput type="submit" name="delDepartmentReq" value="Remove"></td>
 										</tr>
-									</cfloop>
+									</cfform>
+								</cfloop>
+								<cfform>
 									<tr>
 										<td>
 											<cfselect name="localDepartment" query="qEditGetSelectDepartments" display="department_name" value="id" queryPosition="below" >
@@ -170,32 +192,43 @@
 						<div id="createForm">
 							<table>
 								<cfform>
-									<cfif messageBean.hasErrors() && isDefined("form.addCodekeyReq")>
-										<tr>
-											<td colspan="3">
-												<div id="form-errors">
-													<ul>
-														<cfloop array="#messageBean.getErrors()#" index="error">
-															<cfoutput><li>#error.message#</li></cfoutput>
-														</cfloop>
-													</ul>
-												</div>											
-											</td>
-										</tr>
-									</cfif>
+	                				<tr>
+	                					<td colspan="3"><textarea name="codekeyReqNote" rows="5" cols="80"><cfoutput>#qEditGetCollegeNotes.codekeys_note#</cfoutput></textarea></td>
+	                				</tr>
+	                				<tr>
+	                					<td><cfinput type="submit" name="updateCodekeyReqNoteButton" value="Update"></td>
+	                				</tr>
+	                			</cfform>
+								<cfif messageBean.hasErrors() && isDefined("form.addCodekeyReq")>
 									<tr>
-										<h3>By academic discipline</h3>
-										<th>EvCC Codekey</th>
-										<th>Credit Required</th>
-										<th></th>
+										<td colspan="3">
+											<div id="form-errors">
+												<ul>
+													<cfloop array="#messageBean.getErrors()#" index="error">
+														<cfoutput><li>#error.message#</li></cfoutput>
+													</cfloop>
+												</ul>
+											</div>											
+										</td>
 									</tr>
-									<cfloop query="qEditGetAdmissionCodekeys">
+								</cfif>
+								<tr>
+									<h3>By academic discipline</h3>
+									<th>EvCC Codekey</th>
+									<th>Credit Required</th>
+									<th></th>
+								</tr>
+								<cfloop query="qEditGetAdmissionCodekeys">
+									<cfform>
 										<tr>
+											<cfinput type="hidden" name="codekeysId" value="#qEditGetAdmissionCodekeys.id#">
 											<td width="55%"><cfoutput>#qEditGetAdmissionCodekeys.description#</cfoutput></td>
 											<td width="35%"><cfoutput>#qEditGetAdmissionCodekeys.credit#</cfoutput></td>
-											<td width="10%"><a href="?college=<cfoutput>#qEditGetCollege.id#</cfoutput>&section=codekeys&remove=<cfoutput>#URLEncodedFormat(qEditGetAdmissionCodekeys.id)#</cfoutput>" title="<cfoutput>Remove #qEditGetAdmissionCodekeys.description#</cfoutput>">Remove</a></td>
+											<td width="10%"><cfinput type="submit" name="delCodekeyReq" value="Remove"></td>
 										</tr>
-									</cfloop>
+									</cfform>
+								</cfloop>
+								<cfform>
 									<tr>
 										<td>
 											<cfselect name="localCodekey" query="qEditGetSelectCodekeys" display="description" value="id" queryPosition="below">
