@@ -91,6 +91,7 @@
 
 <!--- End the advising session. --->
 <cfelseif isDefined('url.advise') && url.advise EQ 'end'>
+	<cfset StructDelete(session, "accountId")>
 	<cfset StructDelete(session, "studentId")>
 	<cfset StructDelete(session, "studentName")>
 	<cflocation url="..">
