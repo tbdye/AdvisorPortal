@@ -53,7 +53,7 @@
 						<cfif IsUserInRole("student") || isDefined("session.studentId")>
 							<option value="<cfoutput>#path#</cfoutput>dashboard/">Student Dashboard</option>
 							<option value="<cfoutput>#path#</cfoutput>courses/">Completed Courses</option>
-							<option value="<cfoutput>#path#</cfoutput>degrees/">Degree Plans</option>
+							<option value="<cfoutput>#path#</cfoutput>plans/">Degree Plans</option>
 						</cfif>
 						
 						<cfif IsUserInRole("editor")>
@@ -72,7 +72,7 @@
 					<cfif IsUserInRole("student") || isDefined("session.studentId")>
 						<li><a href="<cfoutput>#path#</cfoutput>dashboard/" title="Dashboard">Student Dashboard</a></li>
 						<li><a href="<cfoutput>#path#</cfoutput>courses/" title="Completed Courses">Completed Courses</a></li>
-						<li><a href="<cfoutput>#path#</cfoutput>degrees/" title="Degree Plans">Degree Plans</a></li>
+						<li><a href="<cfoutput>#path#</cfoutput>plans/" title="Degree Plans">Degree Plans</a></li>
 					</cfif>
 					
 					<cfif IsUserInRole("editor")>

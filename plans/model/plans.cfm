@@ -35,7 +35,7 @@
 					
 					<!--- Display completed courses --->
 					<h2>Select a saved degree plan</h2>
-					<cfif qDegreesGetStudentPlans.RecordCount>
+					<cfif qPlansGetStudentPlans.RecordCount>
 						<table>
 							<tr>
 								<th>Plan details</th>
@@ -44,15 +44,15 @@
 								<th></th>
 								<th></th>
 							</tr>
-							<cfloop query="qCoursesGetStudentCourses">
+							<!---<cfloop query="qPlansGetStudentCourses">
 								<tr>
-									<td><cfoutput>#qDegreesGetStudentPlans.plan_name#</cfoutput></td>
-									<td><cfoutput>#qDegreesGetStudentPlans.time_created#</cfoutput></td>
-									<td><cfoutput>#qDegreesGetStudentPlans.time_updated#</cfoutput></td>
-									<td><cfoutput><a href="?delete=#URLEncodedFormat(qDegreesGetStudentPlans.plan_name)#&id=#URLEncodedFormat(qDegreesGetStudentPlans.id)#" title="Delete">Delete</a></cfoutput></td>
-									<td><cfoutput><a href="?copy=#URLEncodedFormat(qDegreesGetStudentPlans.plan_name)#&id=#URLEncodedFormat(qDegreesGetStudentPlans.id)#" title="Copy">Copy</a></cfoutput></td>
+									<td><cfoutput>#qPlansGetStudentPlans.plan_name#</cfoutput></td>
+									<td><cfoutput>#qPlansGetStudentPlans.time_created#</cfoutput></td>
+									<td><cfoutput>#qPlansGetStudentPlans.time_updated#</cfoutput></td>
+									<td><cfoutput><a href="?delete=#URLEncodedFormat(qPlansGetStudentPlans.plan_name)#&id=#URLEncodedFormat(qPlansGetStudentPlans.id)#" title="Delete">Delete</a></cfoutput></td>
+									<td><cfoutput><a href="?copy=#URLEncodedFormat(qPlansGetStudentPlans.plan_name)#&id=#URLEncodedFormat(qPlansGetStudentPlans.id)#" title="Copy">Copy</a></cfoutput></td>
 								</tr>
-							</cfloop>
+							</cfloop>--->
 						</table>
 					<cfelse>
 						<p>No degree plans created yet.</p>

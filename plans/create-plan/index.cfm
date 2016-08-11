@@ -57,7 +57,7 @@
 	<cfset StructDelete(session, "aDepartments")>
 	
 	<!--- Redirect to the edit plan page for user confirmation --->
-	<cflocation url="../edit-plan/?plan=#URLEncodedFormat(qGetPlan.id)#">
+	<cflocation url="../edit/?plan=#URLEncodedFormat(qGetPlan.id)#">
 </cfif>
 
 <!--- Prepare filter lists --->
