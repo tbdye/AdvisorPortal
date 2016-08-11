@@ -6,14 +6,14 @@
 
 <cfset messageBean=createObject('#this.mappings['cfcMapping']#.messageBean').init()>
 
-<cfquery name="qGetAllDepartments">
+<cfquery name="qSearchGetAllDepartments">
 	SELECT id, department_name
 	FROM DEPARTMENTS
 	WHERE use_catalog = 1
 	ORDER BY department_name
 </cfquery>
 
-<cfquery name="qGetPopularDepartments">
+<cfquery name="qSearchGetPopularDepartments">
 	SELECT d.id, d.department_name, r.rank
 	FROM DEPARTMENTS d
 	JOIN DEPARTMENT_RANKINGS r
@@ -22,20 +22,51 @@
 	ORDER BY r.rank DESC
 </cfquery>
 
-<cfquery name="qGetAllColleges">
+<cfquery name="qSearchGetAllColleges">
 	SELECT id, college_name, college_city
 	FROM COLLEGES
 	WHERE use_catalog = 1
 	ORDER BY college_name
 </cfquery>
 
-<cfquery name="qGetPopularColleges">
+<cfquery name="qSearchGetPopularColleges">
 	SELECT c.id, c.college_name, c.college_city, r.rank
 	FROM COLLEGES c
 	JOIN COLLEGE_RANKINGS r
 	ON c.id = r.colleges_id
 	WHERE c.use_catalog = 1
 	ORDER BY r.rank DESC
+</cfquery>
+
+<cfquery name="qSearchGetFilteredDegrees">
+	SELECT d.id, d.degree_name, d.degree_type, c.college_name, c.college_city
+	FROM DEGREES d
+	JOIN COLLEGES c
+	ON d.colleges_id = c.id
+	WHERE d.use_catalog = 1
+	AND c.use_catalog = 1
+	<cfif isDefined("session.aDepartments")>
+		AND departments_id IN (SELECT departments_id FROM DEGREES WHERE
+		<cfloop from="1" to="#arrayLen(session.aDepartments)#" index="i">
+			<cfif #i# EQ 1>
+				departments_id = #session.aDepartments[i]#
+			<cfelse>
+				OR departments_id = #session.aDepartments[i]#
+			</cfif>
+		</cfloop>
+		)
+	</cfif>
+	<cfif isDefined("session.aColleges")>
+		AND colleges_id IN (SELECT colleges_id FROM DEGREES WHERE
+		<cfloop from="1" to="#arrayLen(session.aColleges)#" index="i">
+			<cfif #i# EQ 1>
+				 colleges_id = #session.aColleges[i]#
+			<cfelse>
+				OR colleges_id = #session.aColleges[i]#
+			</cfif>
+		</cfloop>
+		)
+	</cfif>
 </cfquery>
 
 <cfif isDefined("form.filterDepartmentsButton")>
