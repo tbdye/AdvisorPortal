@@ -46,7 +46,7 @@
 	</cfif>
 	
 	<!--- Refresh the page --->
-	<cflocation url="">
+	<cflocation url=".">
 </cfif>
 
 <cfif isDefined("form.filterDepartmentsButton")>
@@ -57,7 +57,7 @@
 	</cfif>
 	
 	<!--- Refresh the page --->
-	<cflocation url="">
+	<cflocation url=".">
 </cfif>
 
 <cfquery name="qSearchGetFilteredDegrees">
