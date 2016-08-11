@@ -31,7 +31,7 @@
 					
 					<h2>Add a degree plan</h2>
 					<p>Provide some instructions on how the degree plans section works and initial steps to get started using the Advisor Services Portal.</p>
-					<a href="search/" title="Search for a degree">Search for a degree</a>
+					<a href="create-plan/" title="Create a new degree plan">Create a new degree plan</a>
 					
 					<!--- Display completed courses --->
 					<h2>Select a saved degree plan</h2>

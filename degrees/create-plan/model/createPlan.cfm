@@ -1,4 +1,4 @@
-<!--- Degrees Search Model --->
+<!--- Create Plan Model --->
 <!--- Thomas Dye, August 2016 --->
 <cfif !isDefined("messageBean")>
 	<cflocation url="..">
@@ -6,24 +6,24 @@
 
 <cfmodule template="../../../header.cfm">
 
-<pagetitle="Advisor Services Portal - Degree Search">
+<pagetitle="Advisor Services Portal - Create Plan">
 
 	<div class="resize-box">
 		
 	    <article id="content-article" role="article">
 	        <header>
-				<h1>Degree Search</h1>
+				<h1>Create Plan</h1>
 			</header>
 
 			<div class="breadcrumb">
 				<a href="../../dashboard/">Home</a>
 				&raquo; <a href="..">Degree Plans</a>
-				&raquo; Degree Search
+				&raquo; Create Plan
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
-	                <span property="dc:title" content="Degree Search" class="rdf-meta element-hidden"></span>
+	                <span property="dc:title" content="Create Plan" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
 						<h2>Degree search</h2>
@@ -59,6 +59,7 @@
 												</td>
 												<td>
 													<cfinput type="hidden" name="degreeId" value="#qSearchGetFilteredDegrees.id#">
+													<cfinput type="hidden" name="degreeName" value="#qSearchGetFilteredDegrees.degree_name#">
 													<cfinput type="submit" name="addDegreeButton" value="Select">
 												</td>
 											</tr>
