@@ -38,6 +38,14 @@
 	ORDER BY r.rank DESC
 </cfquery>
 
+<cfif isDefined("form.searchButton")>
+	<cfif isDefined("form.searchTerm") && len(trim(form.searchTerm))>
+		<cfset session.searchFilter = form.searchTerm>
+	<cfelse>
+		<cfset StructDelete(session, "searchFilter")>
+	</cfif>
+</cfif>
+
 <cfif isDefined("form.filterCollegesButton")>
 	<cfif isDefined("form.filterCollege")>
 		<cfset session.aColleges = ListToArray(form.filterCollege)>
@@ -68,16 +76,8 @@
 	FULL JOIN DEGREE_RANKINGS r ON d.id = r.degrees_id
 	WHERE d.use_catalog = 1
 	AND c.use_catalog = 1
-	<cfif isDefined("session.aDepartments")>
-		AND departments_id IN (SELECT departments_id FROM DEGREES WHERE
-		<cfloop from="1" to="#arrayLen(session.aDepartments)#" index="i">
-			<cfif #i# EQ 1>
-				departments_id = #session.aDepartments[i]#
-			<cfelse>
-				OR departments_id = #session.aDepartments[i]#
-			</cfif>
-		</cfloop>
-		)
+	<cfif isDefined("session.searchFilter")>
+		AND d.degree_name LIKE <cfqueryparam value="%#trim(session.searchFilter)#%" cfsqltype="cf_sql_varchar">
 	</cfif>
 	<cfif isDefined("session.aColleges")>
 		AND colleges_id IN (SELECT colleges_id FROM DEGREES WHERE
@@ -90,8 +90,16 @@
 		</cfloop>
 		)
 	</cfif>
-	<cfif isDefined("form.searchButton")>
-		AND d.degree_name LIKE <cfqueryparam value="%#trim(form.searchTerm)#%" cfsqltype="cf_sql_varchar">
+	<cfif isDefined("session.aDepartments")>
+		AND departments_id IN (SELECT departments_id FROM DEGREES WHERE
+		<cfloop from="1" to="#arrayLen(session.aDepartments)#" index="i">
+			<cfif #i# EQ 1>
+				departments_id = #session.aDepartments[i]#
+			<cfelse>
+				OR departments_id = #session.aDepartments[i]#
+			</cfif>
+		</cfloop>
+		)
 	</cfif>
 	ORDER BY r.rank DESC
 </cfquery>

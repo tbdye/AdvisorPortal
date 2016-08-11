@@ -28,33 +28,26 @@
 	                <div class="content">
 						<h2>Degree search</h2>
 						<table>
-							<cfif messageBean.hasErrors() && isDefined("form.searchButton")>
-								<tr>
-									<td colspan="2">
-										<div id="form-errors">
-											<ul>
-												<cfloop array="#messageBean.getErrors()#" index="error">
-													<cfoutput><li>#error.message#</li></cfoutput>
-												</cfloop>
-											</ul>
-										</div>
-									</td>
-									<td></td>
-								</tr>
-							</cfif>
 							<cfform>
 								<tr>
 									<td colspan="2">Search by degree name</td>
 								</tr>
 								<tr>
-									<td width="120px"><cfinput type="text" id="searchTerm" name="searchTerm"></td>
+									
+									<td width="120px">
+										<cfif isDefined("session.searchFilter")>
+											<cfinput type="text" id="searchTerm" name="searchTerm" value="#session.searchFilter#">
+										<cfelse>
+											<cfinput type="text" id="searchTerm" name="searchTerm">
+										</cfif>
+									</td>
 									<td><cfinput type="submit" name="searchButton" value="Search"></td>								
 								</tr>
 							</cfform>			
 						</table>
 
 						<table>
-							<cfif isDefined("form.searchButton") || isDefined("session.aColleges") || isDefined("session.aDepartments")>
+							<cfif isDefined("session.searchFilter") || isDefined("session.aColleges") || isDefined("session.aDepartments")>
 								<cfif qSearchGetFilteredDegrees.RecordCount>
 									<cfloop query="qSearchGetFilteredDegrees">
 										<cfform>
