@@ -6,22 +6,6 @@
 
 <cfset messageBean=createObject('#this.mappings['cfcMapping']#.messageBean').init()>
 
-<cfquery name="qSearchGetAllDepartments">
-	SELECT id, department_name
-	FROM DEPARTMENTS
-	WHERE use_catalog = 1
-	ORDER BY department_name
-</cfquery>
-
-<cfquery name="qSearchGetPopularDepartments">
-	SELECT d.id, d.department_name, r.rank
-	FROM DEPARTMENTS d
-	JOIN DEPARTMENT_RANKINGS r
-	ON d.id = r.departments_id
-	WHERE d.use_catalog = 1
-	ORDER BY r.rank DESC
-</cfquery>
-
 <cfquery name="qSearchGetAllColleges">
 	SELECT id, college_name, college_city
 	FROM COLLEGES
@@ -38,11 +22,50 @@
 	ORDER BY r.rank DESC
 </cfquery>
 
+<cfquery name="qSearchGetAllDepartments">
+	SELECT id, department_name
+	FROM DEPARTMENTS
+	WHERE use_catalog = 1
+	ORDER BY department_name
+</cfquery>
+
+<cfquery name="qSearchGetPopularDepartments">
+	SELECT d.id, d.department_name, r.rank
+	FROM DEPARTMENTS d
+	JOIN DEPARTMENT_RANKINGS r
+	ON d.id = r.departments_id
+	WHERE d.use_catalog = 1
+	ORDER BY r.rank DESC
+</cfquery>
+
+<cfif isDefined("form.filterCollegesButton")>
+	<cfif isDefined("form.filterCollege")>
+		<cfset session.aColleges = ListToArray(form.filterCollege)>
+	<cfelse>
+		<cfset StructDelete(session, "aColleges")>
+	</cfif>
+	
+	<!--- Refresh the page --->
+	<cflocation url="">
+</cfif>
+
+<cfif isDefined("form.filterDepartmentsButton")>
+	<cfif isDefined("form.filterDepartment")>
+		<cfset session.aDepartments = ListToArray(form.filterDepartment)>
+	<cfelse>
+		<cfset StructDelete(session, "aDepartments")>
+	</cfif>
+	
+	<!--- Refresh the page --->
+	<cflocation url="">
+</cfif>
+
 <cfquery name="qSearchGetFilteredDegrees">
 	SELECT d.id, d.degree_name, d.degree_type, c.college_name, c.college_city
 	FROM DEGREES d
 	JOIN COLLEGES c
 	ON d.colleges_id = c.id
+	FULL JOIN DEGREE_RANKINGS r ON d.id = r.degrees_id
 	WHERE d.use_catalog = 1
 	AND c.use_catalog = 1
 	<cfif isDefined("session.aDepartments")>
@@ -67,29 +90,11 @@
 		</cfloop>
 		)
 	</cfif>
+	<cfif isDefined("form.searchButton")>
+		AND d.degree_name LIKE <cfqueryparam value="%#trim(form.searchTerm)#%" cfsqltype="cf_sql_varchar">
+	</cfif>
+	ORDER BY r.rank DESC
 </cfquery>
-
-<cfif isDefined("form.filterDepartmentsButton")>
-	<cfif isDefined("form.filterDepartment")>
-		<cfset session.aDepartments = ListToArray(form.filterDepartment)>
-	<cfelse>
-		<cfset StructDelete(session, "aDepartments")>
-	</cfif>
-	
-	<!--- Refresh the page --->
-	<cflocation url="">
-</cfif>
-
-<cfif isDefined("form.filterCollegesButton")>
-	<cfif isDefined("form.filterCollege")>
-		<cfset session.aColleges = ListToArray(form.filterCollege)>
-	<cfelse>
-		<cfset StructDelete(session, "aColleges")>
-	</cfif>
-	
-	<!--- Refresh the page --->
-	<cflocation url="">
-</cfif>
 
 <!--- Load page --->
 <cfinclude template="model/degreeSearch.cfm">

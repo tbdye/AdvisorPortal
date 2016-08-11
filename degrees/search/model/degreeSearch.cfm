@@ -26,34 +26,132 @@
 	                <span property="dc:title" content="Degree Search" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
-						<h2>Degrees</h2>
+						<h2>Degree search</h2>
 						<table>
-							<cfif !(isDefined("session.aColleges") || isDefined("session.aDepartments"))>
+							<cfif messageBean.hasErrors() && isDefined("form.searchButton")>
 								<tr>
-									<td>Please select at least one filter.</td>
+									<td colspan="2">
+										<div id="form-errors">
+											<ul>
+												<cfloop array="#messageBean.getErrors()#" index="error">
+													<cfoutput><li>#error.message#</li></cfoutput>
+												</cfloop>
+											</ul>
+										</div>
+									</td>
 									<td></td>
 								</tr>
-							<cfelse>
-								<cfloop query="qSearchGetFilteredDegrees">
-									<cfform>
-										<tr>
-											<td>
-												<cfoutput><a href="?view=#qSearchGetFilteredDegrees.id#" title="#qSearchGetFilteredDegrees.degree_name#">#qSearchGetFilteredDegrees.degree_name#</a></cfoutput><br>
-												<cfoutput>#qSearchGetFilteredDegrees.college_name# - #qSearchGetFilteredDegrees.college_city#</cfoutput><br>
-												<cfoutput>#qSearchGetFilteredDegrees.degree_type#</cfoutput>
-											</td>
-											<td>
-												<cfinput type="hidden" name="degreeId" value="#qSearchGetFilteredDegrees.id#">
-												<cfinput type="submit" name="addDegreeButton" value="Select">
-											</td>
-										</tr>
-									</cfform>
-								</cfloop>
+							</cfif>
+							<cfform preserveData="yes">
+								<tr>
+									<td colspan="2">Search by degree name</td>
+								</tr>
+								<tr>
+									<td width="120px"><cfinput type="text" id="searchTerm" name="searchTerm"></td>
+									<td><cfinput type="submit" name="searchButton" value="Search"></td>								
+								</tr>
+							</cfform>			
+						</table>
+
+						<table>
+							<cfif isDefined("form.searchButton") || isDefined("session.aColleges") || isDefined("session.aDepartments")>
+								<cfif qSearchGetFilteredDegrees.RecordCount>
+									<cfloop query="qSearchGetFilteredDegrees">
+										<cfform>
+											<tr>
+												<td>
+													<cfoutput><a href="?view=#qSearchGetFilteredDegrees.id#" title="#qSearchGetFilteredDegrees.degree_name#">#qSearchGetFilteredDegrees.degree_name#</a></cfoutput><br>
+													<cfoutput>#qSearchGetFilteredDegrees.college_name# - #qSearchGetFilteredDegrees.college_city#</cfoutput><br>
+													<cfoutput>#qSearchGetFilteredDegrees.degree_type#</cfoutput>
+												</td>
+												<td>
+													<cfinput type="hidden" name="degreeId" value="#qSearchGetFilteredDegrees.id#">
+													<cfinput type="submit" name="addDegreeButton" value="Select">
+												</td>
+											</tr>
+										</cfform>
+									</cfloop>
+								<cfelse>
+									<tr>
+										<td>No results.  Search may be too restrictive.</td>
+										<td></td>
+									</tr>
+								</cfif>
 							</cfif>
 						</table>
 						
 						
 						<h3>Filters</h3>
+						<table>
+							<tr>
+								<th>Colleges</th>
+								<th>
+									<cfif isDefined("url.colleges") && url.colleges EQ 'all'>
+										<a href="" title="see fewer colleges">see less</a>
+									<cfelse>
+										<a href="?colleges=all" title="see all colleges">see more</a>
+									</cfif>
+								</th>
+							</tr>
+							<cfform>
+								<tr>
+									<td colspan="2">
+										<!--- Display all colleges and recheck previously selected checkboxes --->
+										<cfif isDefined("url.colleges") && url.colleges EQ 'all'>
+											<cfloop query="qSearchGetAllColleges">
+												<cfif isDefined("session.aColleges") && ArrayFind(session.aColleges, qSearchGetAllColleges.id)>
+													<cfinput type="checkbox" id="#qSearchGetAllColleges.id#" name="filterCollege" value="#qSearchGetAllColleges.id#" checked="yes">
+												<cfelse>
+													<cfinput type="checkbox" id="#qSearchGetAllColleges.id#" name="filterCollege" value="#qSearchGetAllColleges.id#">
+												</cfif>
+												<cfoutput><label for="#qSearchGetAllColleges.id#"> #qSearchGetAllColleges.college_name# - #qSearchGetAllColleges.college_city#</label></cfoutput><br>
+											</cfloop>
+											
+										<!--- Display most popular colleges only --->
+										<cfelse>
+											<cfset collegeMax=6>
+											<cfset collegeCounter=0>
+											
+											<!--- Always display colleges previously selected --->
+											<cfif isDefined("session.aColleges")>
+												<cfloop query="qSearchGetAllColleges">
+													<cfif ArrayFind(session.aColleges, qSearchGetAllColleges.id)>
+														<cfinput type="checkbox" id="#qSearchGetAllColleges.id#" name="filterCollege" value="#qSearchGetAllColleges.id#" checked="yes">
+														<cfoutput><label for="#qSearchGetAllColleges.id#"> #qSearchGetAllColleges.college_name# - #qSearchGetAllColleges.college_city#</label></cfoutput><br>
+														<cfset collegeCounter = collegeCounter + 1>
+													</cfif>
+												</cfloop>
+											</cfif>
+											
+											<!--- After displaying any previously selected colleges, fill the list with popular college options --->
+											<cfloop query="qSearchGetPopularColleges">
+												<cfif collegeCounter LT collegeMax>
+													<cfif isDefined("session.aColleges")>
+														<!--- Do not duplicate listings of colleges already selected --->
+														<cfif ArrayFind(session.aColleges, qSearchGetPopularColleges.id)>
+															<cfset collegeCounter = collegeCounter - 1>
+														<cfelse>
+															<cfinput type="checkbox" id="#qSearchGetPopularColleges.id#" name="filterCollege" value="#qSearchGetPopularColleges.id#">
+															<cfoutput><label for="#qSearchGetPopularColleges.id#"> #qSearchGetPopularColleges.college_name# - #qSearchGetPopularColleges.college_city#</label></cfoutput><br>
+														</cfif>
+													<cfelse>
+														<cfinput type="checkbox" id="#qSearchGetPopularColleges.id#" name="filterCollege" value="#qSearchGetPopularColleges.id#">
+														<cfoutput><label for="#qSearchGetPopularColleges.id#"> #qSearchGetPopularColleges.college_name# - #qSearchGetPopularColleges.college_city#</label></cfoutput><br>
+													</cfif>
+												</cfif>
+												<cfset collegeCounter = collegeCounter + 1>
+											</cfloop>
+										</cfif>
+									</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td><cfinput type="submit" name="filterCollegesButton" value="Update"></td>
+									<td></td>
+								</tr>
+							</cfform>
+						</table>
+						
 						<table>
 							<tr>
 								<th>Departments</th>
@@ -124,75 +222,6 @@
 							</cfform>
 						</table>
 						
-						<table>
-							<tr>
-								<th>Colleges</th>
-								<th>
-									<cfif isDefined("url.colleges") && url.colleges EQ 'all'>
-										<a href="" title="see fewer colleges">see less</a>
-									<cfelse>
-										<a href="?colleges=all" title="see all colleges">see more</a>
-									</cfif>
-								</th>
-							</tr>
-							<cfform>
-								<tr>
-									<td colspan="2">
-										<!--- Display all colleges and recheck previously selected checkboxes --->
-										<cfif isDefined("url.colleges") && url.colleges EQ 'all'>
-											<cfloop query="qSearchGetAllColleges">
-												<cfif isDefined("session.aColleges") && ArrayFind(session.aColleges, qSearchGetAllColleges.id)>
-													<cfinput type="checkbox" id="#qSearchGetAllColleges.id#" name="filterCollege" value="#qSearchGetAllColleges.id#" checked="yes">
-												<cfelse>
-													<cfinput type="checkbox" id="#qSearchGetAllColleges.id#" name="filterCollege" value="#qSearchGetAllColleges.id#">
-												</cfif>
-												<cfoutput><label for="#qSearchGetAllColleges.id#"> #qSearchGetAllColleges.college_name# - #qSearchGetAllColleges.college_city#</label></cfoutput><br>
-											</cfloop>
-											
-										<!--- Display most popular colleges only --->
-										<cfelse>
-											<cfset collegeMax=6>
-											<cfset collegeCounter=0>
-											
-											<!--- Always display colleges previously selected --->
-											<cfif isDefined("session.aColleges")>
-												<cfloop query="qSearchGetAllColleges">
-													<cfif ArrayFind(session.aColleges, qSearchGetAllColleges.id)>
-														<cfinput type="checkbox" id="#qSearchGetAllColleges.id#" name="filterCollege" value="#qSearchGetAllColleges.id#" checked="yes">
-														<cfoutput><label for="#qSearchGetAllColleges.id#"> #qSearchGetAllColleges.college_name# - #qSearchGetAllColleges.college_city#</label></cfoutput><br>
-														<cfset collegeCounter = collegeCounter + 1>
-													</cfif>
-												</cfloop>
-											</cfif>
-											
-											<!--- After displaying any previously selected colleges, fill the list with popular college options --->
-											<cfloop query="qSearchGetPopularColleges">
-												<cfif collegeCounter LT collegeMax>
-													<cfif isDefined("session.aColleges")>
-														<!--- Do not duplicate listings of colleges already selected --->
-														<cfif ArrayFind(session.aColleges, qSearchGetPopularColleges.id)>
-															<cfset collegeCounter = collegeCounter - 1>
-														<cfelse>
-															<cfinput type="checkbox" id="#qSearchGetPopularColleges.id#" name="filterCollege" value="#qSearchGetPopularColleges.id#">
-															<cfoutput><label for="#qSearchGetPopularColleges.id#"> #qSearchGetPopularColleges.college_name# - #qSearchGetPopularColleges.college_city#</label></cfoutput><br>
-														</cfif>
-													<cfelse>
-														<cfinput type="checkbox" id="#qSearchGetPopularColleges.id#" name="filterCollege" value="#qSearchGetPopularColleges.id#">
-														<cfoutput><label for="#qSearchGetPopularColleges.id#"> #qSearchGetPopularColleges.college_name# - #qSearchGetPopularColleges.college_city#</label></cfoutput><br>
-													</cfif>
-												</cfif>
-												<cfset collegeCounter = collegeCounter + 1>
-											</cfloop>
-										</cfif>
-									</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td><cfinput type="submit" name="filterCollegesButton" value="Update"></td>
-									<td></td>
-								</tr>
-							</cfform>
-						</table>
 	                </div>
 	            </div>
 	        </div>
