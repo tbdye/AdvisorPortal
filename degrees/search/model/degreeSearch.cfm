@@ -42,7 +42,7 @@
 									<td></td>
 								</tr>
 							</cfif>
-							<cfform preserveData="yes">
+							<cfform>
 								<tr>
 									<td colspan="2">Search by degree name</td>
 								</tr>
