@@ -1,10 +1,15 @@
 <!--- Edit Degree Controller --->
 <!--- Thomas Dye, August 2016 --->
-<cfif !IsUserInRole("editor") || !IsDefined("url.college") || !IsDefined("url.degree")>
+<cfif !IsUserInRole("editor")>
 	<cflocation url="..">
 </cfif>
 
 <cfset messageBean=createObject('#this.mappings['cfcMapping']#.messageBean').init()>
+
+<!--- Do basic validation --->
+<cfif !IsDefined("url.college") || !IsDefined("url.degree") || !IsNumeric("#URLDecode(url.college)#") || !IsNumeric("#URLDecode(url.degree)#")>
+	<cflocation url="..">
+</cfif>
 
 <!--- Prepare basic contents of the page --->
 <cfquery name="qEditGetCollege">

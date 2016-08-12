@@ -109,8 +109,8 @@
 									</tr>
 								</cfif>
 								<tr>
-									<th>EvCC Equivalent</th>
-									<th>Required Course</th>
+									<th>EvCC Course</th>
+									<th>Equivalent Course</th>
 									<th></th>
 								</tr>
 								<cfloop query="qEditGetAdmissionCourses">

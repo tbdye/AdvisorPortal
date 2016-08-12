@@ -36,7 +36,7 @@
 						<h2>Get Started</h2>
 						<a href="../courses/" title="Enter your completed courses">Enter your completed courses</a>
 						<p>or</p>
-						<a href="../degrees/" title="Manage your degree plans">Manage your degree plans</a>
+						<a href="../plans/" title="Manage your degree plans">Manage your degree plans</a>
 					<cfelse>
 						
 					</cfif>

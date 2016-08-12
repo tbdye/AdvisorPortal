@@ -7,8 +7,6 @@
 <cfmodule template="../../../header.cfm">
 	
 	<pagetitle="Advisor Services Portal - Explore Degrees">
-
-	<!--- Alter page header depending if in an adivisng session or not. --->
 	
 	<div class="resize-box">
 		
