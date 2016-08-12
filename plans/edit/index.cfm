@@ -1,10 +1,15 @@
 <!--- Edit Plan Controller --->
 <!--- Thomas Dye, August 2016 --->
-<cfif !(isDefined("session.studentId") || IsUserInRole("student") || isDefined("url.plan"))>
+<cfif !(isDefined("session.studentId") || IsUserInRole("student"))>
 	<cflocation url="..">
 </cfif>
 
 <cfset messageBean=createObject('#this.mappings['cfcMapping']#.messageBean').init()>
+
+<!--- Do basic validation --->
+<cfif !isDefined("url.plan") || !IsNumeric("#URLDecode(url.plan)#")>
+	<cflocation url="..">
+</cfif>
 
 <!--- Prepare basic contents of the page --->
 <cfquery name="qEditGetPlan">

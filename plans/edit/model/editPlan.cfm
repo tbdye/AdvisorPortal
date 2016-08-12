@@ -49,7 +49,7 @@
 		                		<tr>
 		                			<td>Degree:</td>
 		                			<td>
-		                				<cfoutput><a href="?view=#qEditGetPlan.degrees_id#" title="#qEditGetPlan.degree_name#">#qEditGetPlan.degree_name#</a></cfoutput><br>
+		                				<cfoutput><a href="../degrees/view/?degree=#qEditGetPlan.degrees_id#" title="#qEditGetPlan.degree_name#">#qEditGetPlan.degree_name#</a></cfoutput><br>
 		                				<cfoutput>#qEditGetPlan.college_name# - #qEditGetPlan.college_city#</cfoutput><br>
 		                				<cfoutput>#qEditGetPlan.degree_type#</cfoutput>
 		                			</td>

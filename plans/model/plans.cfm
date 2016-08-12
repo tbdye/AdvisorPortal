@@ -1,4 +1,4 @@
-<!--- Degrees Model --->
+<!--- Plans Model --->
 <!--- Thomas Dye, August 2016 --->
 <cfif !isDefined("messageBean")>
 	<cflocation url="..">
@@ -29,14 +29,45 @@
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
 					
-					<h2>Add a degree plan</h2>
-					<p>Provide some instructions on how the degree plans section works and initial steps to get started using the Advisor Services Portal.</p>
-					<a href="create-plan/" title="Create a new degree plan">Create a new degree plan</a>
+					<h2>Explore your educational goals</h2>
+					<a href="create-plan/" title="Create a new degree plan">Create a new degree plan</a><br>
+					<a href="degrees/" title="Explore degrees">Explore degrees</a><br>
+					<a href="colleges/" title="Explore colleges"> Explore colleges</a>
 					
-					<!--- Display completed courses --->
-					<h2>Select a saved degree plan</h2>
-					<cfif qPlansGetStudentPlans.RecordCount>
+					<cfif qPlanGetPlans.RecordCount>
+						<h3>Active plan</h3>
 						<table>
+							<tr>
+								<cfform>
+									<cfinput type="hidden" name="currentPlanId" value="#qPlanGetActivePlan.id#">
+									<td><cfselect name="activePlanId" query="qPlanGetPlans" display="plan_name" value="id" selected="#qPlanGetActivePlan.id#"></cfselect></td>
+									<td><cfinput type="submit" name="updateActivePlanButton" value="Change"></td>
+								</cfform>
+							</tr>
+							<tr>
+								<td>
+									<cfoutput><a href="degrees/view/?degree=#qPlanGetActivePlan.degrees_id#" title="#qPlanGetActivePlan.degree_name#">#qPlanGetActivePlan.degree_name#</a></cfoutput><br>
+		                			<cfoutput>#qPlanGetActivePlan.college_name# - #qPlanGetActivePlan.college_city#</cfoutput><br>
+		                			<cfoutput>#qPlanGetActivePlan.degree_type#</cfoutput>
+								</td>
+							</tr>
+						</table>
+							
+						<h3>Saved degree plans</h3>
+						<table>
+							<cfif messageBean.hasErrors() && isDefined("form.deletePlanButton")>
+								<tr>
+									<td colspan="2">
+										<div id="form-errors">
+											<ul>
+												<cfloop array="#messageBean.getErrors()#" index="error">
+													<cfoutput><li>#error.message#</li></cfoutput>
+												</cfloop>
+											</ul>
+										</div>											
+									</td>
+								</tr>
+							</cfif>
 							<tr>
 								<th>Plan details</th>
 								<th>Created</th>
@@ -44,20 +75,29 @@
 								<th></th>
 								<th></th>
 							</tr>
-							<!---<cfloop query="qPlansGetStudentCourses">
+							<cfloop query="qPlanGetPlans">
 								<tr>
-									<td><cfoutput>#qPlansGetStudentPlans.plan_name#</cfoutput></td>
-									<td><cfoutput>#qPlansGetStudentPlans.time_created#</cfoutput></td>
-									<td><cfoutput>#qPlansGetStudentPlans.time_updated#</cfoutput></td>
-									<td><cfoutput><a href="?delete=#URLEncodedFormat(qPlansGetStudentPlans.plan_name)#&id=#URLEncodedFormat(qPlansGetStudentPlans.id)#" title="Delete">Delete</a></cfoutput></td>
-									<td><cfoutput><a href="?copy=#URLEncodedFormat(qPlansGetStudentPlans.plan_name)#&id=#URLEncodedFormat(qPlansGetStudentPlans.id)#" title="Copy">Copy</a></cfoutput></td>
+									<td><cfoutput><a href="edit/?plan=#qPlanGetPlans.id#" title="#qPlanGetPlans.plan_name#">#qPlanGetPlans.plan_name#</a></cfoutput></td>
+									<td><cfoutput>#qPlanGetPlans.time_created#</cfoutput></td>
+									<td><cfoutput>#qPlanGetPlans.time_updated#</cfoutput></td>
+									<td>
+										<cfform>
+											<cfinput type="hidden" name="thisPlanId" value="#qPlanGetPlans.id#">
+											<cfinput type="hidden" name="activePlanId" value="#qPlanGetActivePlan.id#">
+											<cfinput type="submit" name="deletePlanButton" value="Delete">
+										</cfform>
+									</td>
+									<td>
+										<cfform>
+											<cfinput type="submit" name="copyPlanButton" value="Copy">
+										</cfform>
+									</td>
 								</tr>
-							</cfloop>--->
+							</cfloop>
 						</table>
-					<cfelse>
-						<p>No degree plans created yet.</p>
 					</cfif>
-	                </div>
+					
+	                <p/>
 	            </div>
 	        </div>
 	    </article>                   
