@@ -26,26 +26,21 @@
 	                <span property="dc:title" content="Create Plan" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
-						<h2>Degree search</h2>
-						<table>
-							<cfform>
-								<tr>
-									<td colspan="2">Search by degree name</td>
-								</tr>
-								<tr>
-									
-									<td width="120px">
-										<cfif isDefined("session.searchFilter")>
-											<cfinput type="text" id="searchTerm" name="searchTerm" value="#session.searchFilter#">
-										<cfelse>
-											<cfinput type="text" id="searchTerm" name="searchTerm">
-										</cfif>
-									</td>
-									<td><cfinput type="submit" name="searchButton" value="Search"></td>								
-								</tr>
-							</cfform>			
-						</table>
 
+						<cfform>
+							<p>
+								<strong>Search for a degree</strong>
+							</p>			
+							<p>
+								<cfif isDefined("session.searchFilter")>
+									<cfinput type="text" id="searchTerm" name="searchTerm" value="#session.searchFilter#">
+								<cfelse>
+									<cfinput type="text" id="searchTerm" name="searchTerm">
+								</cfif>&nbsp;
+							<cfinput type="submit" name="searchButton" value="Search"></p>
+						</cfform>
+
+						<div id="search-results">
 						<table>
 							<cfif isDefined("session.searchFilter") || isDefined("session.aColleges") || isDefined("session.aDepartments")>
 								<cfif qSearchGetFilteredDegrees.RecordCount>
@@ -54,8 +49,7 @@
 											<tr>
 												<td>
 													<cfoutput><a href="../degrees/view/?degree=#qSearchGetFilteredDegrees.id#" title="#qSearchGetFilteredDegrees.degree_name#">#qSearchGetFilteredDegrees.degree_name#</a></cfoutput><br>
-													<cfoutput>#qSearchGetFilteredDegrees.college_name# - #qSearchGetFilteredDegrees.college_city#</cfoutput><br>
-													<cfoutput>#qSearchGetFilteredDegrees.degree_type#</cfoutput>
+													<cfoutput>#qSearchGetFilteredDegrees.college_name# - #qSearchGetFilteredDegrees.college_city#</cfoutput>,&nbsp;<cfoutput>#qSearchGetFilteredDegrees.degree_type#</cfoutput>
 												</td>
 												<td>
 													<cfinput type="hidden" name="degreeId" value="#qSearchGetFilteredDegrees.id#">
@@ -73,13 +67,33 @@
 								</cfif>
 							</cfif>
 						</table>
+						</div>
 						
 						
-						<h3>Filters</h3>
+						<!-- Cut from here -->
+						
+	                </div>
+	            </div>
+	        </div>
+	    </article>                   
+
+
+		<aside id="content-sidebar">
+		    <div class="region region-sidebar">			
+                <div class="content">
+                	<p>
+                		<strong>About</strong>                		
+                	</p>
+			    	<p>The Advising Services Portal is an online student-transfer information system... describe some info, helps with visits with faculty advisors.</p>
+					<p>More description... explain about intended use.  Private system, info is not shared or sold.</p>
+					
+					<hr/>
+					
+					<p><strong>Search filters</strong></p>
 						<table>
 							<tr>
 								<th>Colleges</th>
-								<th>
+								<th style="text-align:right;">
 									<cfif isDefined("url.colleges") && url.colleges EQ 'all'>
 										<a href="" title="see fewer colleges">see less</a>
 									<cfelse>
@@ -140,16 +154,17 @@
 									<td></td>
 								</tr>
 								<tr>
-									<td><cfinput type="submit" name="filterCollegesButton" value="Update"></td>
-									<td></td>
+									<td colspan="2"><cfinput type="submit" name="filterCollegesButton" value="Update"></td>
 								</tr>
 							</cfform>
 						</table>
 						
+						<p/>
+						
 						<table>
 							<tr>
 								<th>Departments</th>
-								<th>
+								<th style="text-align:right;">
 									<cfif isDefined("url.departments") && url.departments EQ 'all'>
 										<a href="" title="see fewer departments">see less</a>
 									<cfelse>
@@ -210,28 +225,14 @@
 									<td></td>
 								</tr>
 								<tr>
-									<td><cfinput type="submit" name="filterDepartmentsButton" value="Update"></td>
-									<td></td>
+									<td colspan="2"><cfinput type="submit" name="filterDepartmentsButton" value="Update"></td>
 								</tr>
 							</cfform>
 						</table>
-						
-	                </div>
-	            </div>
-	        </div>
-	    </article>                   
-	</div>
-
-		<aside id="content-sidebar">
-		    <div class="region region-sidebar">			
-                <div class="content">
-                	<p>
-                		<strong>About</strong>                		
-                	</p>
-			    	<p>The Advising Services Portal is an online student-transfer information system... describe some info, helps with visits with faculty advisors.</p>
-					<p>More description... explain about intended use.  Private system, info is not shared or sold.</p>
             	</div>
 		    </div>
 		</aside>
+
+	</div>
 
 <cfmodule template="../../../footer.cfm">

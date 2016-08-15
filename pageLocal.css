@@ -76,10 +76,12 @@ video {
     outline: 0;
     font-size: 100%;
     vertical-align: baseline;
-    background: transparent
+    background: transparent;
+
 }
 body {
     line-height: 1;
+    color: #444;
 }
 article,
 aside,
@@ -146,6 +148,27 @@ th {
     text-align: left;
     padding: 3px;
 }
+
+
+
+#page-content form {  
+    padding: 6px 6px;
+    background: #eee;
+}
+
+#page-content form p,
+#page-content form ol,
+#page-content form ul
+#page-content form tr {
+    padding: 6px 6px;
+    line-height: 1.5em;
+}
+
+
+#search-results tr{
+    border-bottom: solid 1px #eee;
+}
+
 hr {
     display: block;
     height: 1px;
@@ -179,18 +202,13 @@ h1 {
 }
 h2 {
     font-size: 1.8em;
+    padding-top:2%;
 }
 h3 {
-    font-size: 1.3em;
+    font-size: 1em;
 }
 h4 {
-    font-size: 1.3em;
-}
-h5 {
-    font-size: 1.2em;
-}
-h6 {
-    font-size: 1.15em;
+    font-size: 1em;
 }
 a {
     color: #900;
@@ -951,10 +969,9 @@ embed {
     display:inline-block;
     width: 100%;
 }
-#content-wrap #breadcrumb {
-    padding: 0;
-    margin: 0;
-    font-size: 0.8em;
+#content-wrap .breadcrumb {
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 #content-wrap header {
     background: #444 url('assets/page-banner.jpg') center top no-repeat;
@@ -1004,8 +1021,6 @@ embed {
 #page-content h2,
 #page-content h4 {
     margin: 15px 0 3px 0;
-    color: #444;
-    font-weight: bold;
     letter-spacing: -1px;
     line-height: 1em;
 }
@@ -1013,11 +1028,10 @@ embed {
 #page-content h3
 {
     margin: 10px 0 3px 0;
-    color: #444;
     letter-spacing: -1px;
     line-height: 1em;
-    padding:3px;
-    background: #eee;
+
+
 }
 
 #page-content p,
@@ -1084,6 +1098,13 @@ embed {
     font-size: 1.2em;
     margin-top: 6px;
 }
+
+#content-sidebar table {
+    width: 100%;
+    margin: 6px 6px;
+    padding: 0px;
+}
+
 #page-rightbar .page-rightbar-contactinfo {
     background: #444;
     color: #fff;
@@ -1288,7 +1309,6 @@ embed {
 }
 #frontpage-blocks-wrap .block h2 {
     color: #06a9ea;
-    font-weight: bold;
     font-size: 1.3em;
 }
 #frontpage-blocks-wrap .block h2 a {

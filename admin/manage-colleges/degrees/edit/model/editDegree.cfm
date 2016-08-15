@@ -77,8 +77,6 @@
 		    				</tr>
 	                		</table>
 	                	</cfform>
-
-	                	<hr>
 	                		
 	                	<h2>Admission requirements</h2>
 	                	<h3>By course</h3>
@@ -178,9 +176,7 @@
 								</tr>
 							</cfform>	
 	                	</table>
-	                	
-	                	<hr>
-	                		
+	                		                		
 	                	<h2>Optional graduation requirements</h2>
 	                	<h3>By course</h3>
                 		<table>
@@ -279,9 +275,7 @@
 								</tr>
 							</cfform>	
 	                	</table>
-	                	
-	                	<hr>
-	                	
+	                		                	
 	                	<h2>General Notes</h2>
 	                	<table>
                 			<cfform>

@@ -25,8 +25,23 @@
 	                <span property="dc:title" content="Advising" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
-						<h2>Select a student to advise</h2>
+
+					<!-- Form START -->
 						<cfform>
+							<p>
+								<p><strong>Search for a student by name, student ID, or email address to advise</strong></p>
+							</p>
+							<p>
+								<cfinput type="text" id="searchTerm" name="searchTerm">&nbsp;<cfinput type="submit" name="selectButton" value="Search">
+							</p>
+							<p>
+								<cfif isDefined("url.search") || isDefined("qAdvisorGetStudent") && qAdvisorGetStudent.RecordCount>
+									<a href="" title="hide all students">Hide all students</a>
+								<cfelse>
+									<a href="?search=all" title="view all students">View all students</a>
+								</cfif>	
+							</p>
+							
 							<table>
 								<cfif messageBean.hasErrors() && isDefined("form.selectButton")>
 									<tr>
@@ -42,25 +57,11 @@
 										<td></td>
 									</tr>
 								</cfif>
-								<tr>
-									<td colspan="2">Find a student by name, student ID, or email address</td>
-								</tr>
-								<tr>
-									<td width="120px"><cfinput type="text" id="searchTerm" name="searchTerm"></td>
-									<td><cfinput type="submit" name="selectButton" value="Search"></td>								
-								</tr>
-								<tr>
-									<td colspan="2">
-										<cfif isDefined("url.search") || isDefined("qAdvisorGetStudent") && qAdvisorGetStudent.RecordCount>
-											<a href="" title="hide all students">Hide all students</a>
-										<cfelse>
-											<a href="?search=all" title="view all students">View all students</a>
-										</cfif>
-									</td>
-									<td></td>
-								</tr>						
-							</table>
+							</table>	
 						</cfform>
+	                	<!-- Form END -->
+
+
 
 						<cfif messageBean.hasErrors() && isDefined("url.advise")>
 							<div id="form-errors">		
@@ -72,22 +73,25 @@
 							</div>
 						<cfelseif isDefined("qAdvisorGetStudent") && qAdvisorGetStudent.RecordCount>
 							<h2>Search results</h2>
-							<table>
-								<tr>
-									<th>Name</th>
-									<th>Student ID</th>
-									<th>Email</th>
-									<th></th>
-								</tr>
-								<cfloop query="qAdvisorGetStudent">
+							<div id="search-results">
+								<table>
 									<tr>
-										<td><cfoutput>#qAdvisorGetStudent.full_name#</cfoutput></td>
-										<td><cfoutput>#qAdvisorGetStudent.student_id#</cfoutput></td>
-										<td><cfoutput>#qAdvisorGetStudent.email#</cfoutput></td>
-										<td><a href="?advise=<cfoutput>#qAdvisorGetStudent.student_id#</cfoutput>" title="Advise">Advise</a></td>
+										<th>Name</th>
+										<th>Student ID</th>
+										<th>Email</th>
+										<th></th>
 									</tr>
-								</cfloop>
-							</table>
+									<cfloop query="qAdvisorGetStudent">
+										<tr>
+											<td><cfoutput>#qAdvisorGetStudent.full_name#</cfoutput></td>
+											<td><cfoutput>#qAdvisorGetStudent.student_id#</cfoutput></td>
+											<td><cfoutput>#qAdvisorGetStudent.email#</cfoutput></td>
+											<td><a href="?advise=<cfoutput>#qAdvisorGetStudent.student_id#</cfoutput>" title="Advise">Advise</a></td>
+										</tr>
+									</cfloop>
+								</table>
+							</div>
+
 						<cfelse>
 							<cfif isDefined("session.studentId")>
 								<p/>

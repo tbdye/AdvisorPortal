@@ -20,9 +20,12 @@
 	                <span property="dc:title" content="Login" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
-				    	<h2>Please log in</h2>                		                		                	
+				    	               		                		                	
 					    <div id="loginForm">
 					    	<cfform>
+							<p>
+								<strong>Please log in</strong>
+							</p>					    		
 								<table>
 									<tr>
 										<td colspan="2">
@@ -60,10 +63,13 @@
 							</cfform>
 					    </div>
 					    
-
-						<h2>First time user?</h2>								
+					    <p/>
+						
 						<div id="createForm">
 							<cfform>
+								<p>
+									<strong>First time user?</strong>
+								</p>	
 								<table>
 									<tr>
 										<td colspan="2">

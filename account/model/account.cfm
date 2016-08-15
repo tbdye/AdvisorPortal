@@ -24,9 +24,10 @@
 	                <span property="dc:title" content="Account Settings" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
-						<h2>Update login</h2>
-						<div id="updateLoginForm">
+						
+						<div id="updateLoginForm">						
 							<cfform>
+								<p><strong>Update Login</strong></p>								
 								<table>
 									<cfif messageBean.hasErrors() && isDefined("form.buttonUpdateEmail")>
 										<tr>
@@ -65,9 +66,11 @@
 							</cfform>
 						</div>
 						
-						<h2>Update password</h2>
+						<p/>
+						
 						<div id="updatePasswordForm">
 							<cfform>
+								<p><strong>Update Password</strong></p>	
 								<table>
 									<cfif messageBean.hasErrors() && isDefined("form.buttonUpdatePassword")>
 										<tr>
@@ -102,9 +105,11 @@
 							</cfform>
 						</div>
 			
-						<h2>Update account</h2>
+						<p/>
+
 						<div id="updateAccountForm">
 							<cfform>
+								<p><strong>Update name</strong></p>	
 								<table>
 									<cfif messageBean.hasErrors() && isDefined("form.buttonUpdateAccount")>
 										<tr>
