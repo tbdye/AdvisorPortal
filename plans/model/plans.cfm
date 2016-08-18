@@ -17,7 +17,7 @@
 				<cfif IsUserInRole("advisor")>
 					<h1>Degree Plans for <cfoutput>#session.studentName#</cfoutput></h1>
 				<cfelse>
-					<h1>Degree plans</h1>
+					<h1>Degree Plans</h1>
 				</cfif>
 	        </header>
 
@@ -28,32 +28,39 @@
 
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
-					
-					<h2>Explore your educational goals</h2>
-					<a href="create-plan/" title="Create a new degree plan">Create a new degree plan</a><br>
-					<a href="degrees/" title="Explore degrees">Explore degrees</a><br>
-					<a href="colleges/" title="Explore colleges"> Explore colleges</a>
-					
+            	<!-- Form START -->
+						<h2>Explore your educational goals</h2>
+						<p>
+							<a href="create-plan/" title="Create a new degree plan">Create a new degree plan</a><br/>
+							<a href="degrees/" title="Explore degrees">Explore degrees</a><br/>
+							<a href="colleges/" title="Explore colleges"> Explore colleges</a>
+						</p>
+
+                	<!-- Form END -->
+	            	
+					<hr>	        
+	            	
 					<cfif qPlanGetPlans.RecordCount>
-						<h3>Active plan</h3>
-						<table>
-							<tr>
-								<cfform>
-									<cfinput type="hidden" name="currentPlanId" value="#qPlanGetActivePlan.id#">
-									<td><cfselect name="activePlanId" query="qPlanGetPlans" display="plan_name" value="id" selected="#qPlanGetActivePlan.id#"></cfselect></td>
-									<td><cfinput type="submit" name="updateActivePlanButton" value="Change"></td>
-								</cfform>
-							</tr>
-							<tr>
-								<td>
-									<cfoutput><a href="degrees/view/?degree=#qPlanGetActivePlan.degrees_id#" title="#qPlanGetActivePlan.degree_name#">#qPlanGetActivePlan.degree_name#</a></cfoutput><br>
-		                			<cfoutput>#qPlanGetActivePlan.college_name# - #qPlanGetActivePlan.college_city#</cfoutput><br>
-		                			<cfoutput>#qPlanGetActivePlan.degree_type#</cfoutput>
-								</td>
-							</tr>
-						</table>
+						<cfform>
+							<p>
+								<strong>Active Plan</strong>
+							</p>			
 							
-						<h3>Saved degree plans</h3>
+							<p>			
+							<cfoutput><a href="degrees/view/?degree=#qPlanGetActivePlan.degrees_id#" title="#qPlanGetActivePlan.degree_name#">#qPlanGetActivePlan.degree_name#</a></cfoutput><br>
+                			<cfoutput>#qPlanGetActivePlan.college_name# - #qPlanGetActivePlan.college_city#</cfoutput>, <cfoutput>#qPlanGetActivePlan.degree_type#</cfoutput>
+							</p>
+							
+							<p>
+							<cfinput type="hidden" name="currentPlanId" value="#qPlanGetActivePlan.id#">
+							<cfselect name="activePlanId" query="qPlanGetPlans" display="plan_name" value="id" selected="#qPlanGetActivePlan.id#"></cfselect>&nbsp;
+							<cfinput type="submit" name="updateActivePlanButton" value="Change">							
+							</p>
+						</cfform>
+
+							
+						<h2>Saved degree plans</h2>
+						<div id="search-results">						
 						<table>
 							<cfif messageBean.hasErrors() && isDefined("form.deletePlanButton")>
 								<tr>
@@ -95,6 +102,7 @@
 								</tr>
 							</cfloop>
 						</table>
+						</div>
 					</cfif>
 					
 	                <p/>

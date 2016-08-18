@@ -30,8 +30,19 @@
 	                <span property="dc:title" content="Completed Courses" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
-				    	<h2>Add completed course</h2>
+	                	
+	                	<!-- Form START -->
 						<cfform>
+							<p>
+								<strong>Add a completed course by number</strong>
+							</p>
+							<p>
+								<cfinput width="275px" type="text" id="searchTerm" name="searchTerm">&nbsp;<cfinput type="submit" name="searchButton" value="Search">
+							</p>
+							<p>
+								<a href="https://www.everettcc.edu/catalog/" title="View official course catalog" target="_blank">View official course catalog</a>
+							</p>
+							
 							<table>
 								<cfif messageBean.hasErrors() && isDefined("form.searchButton")>
 									<tr>
@@ -46,29 +57,22 @@
 										</td>
 									</tr>
 								</cfif>
-								<tr>
-									<td colspan="2">Find a course by course number</td>
-								</tr>
-								<tr>
-									<td width="120px"><cfinput type="text" id="searchTerm" name="searchTerm"></td>
-									<td><cfinput type="submit" name="searchButton" value="Search"></td>								
-								</tr>
-								<tr>
-									<cfif isDefined("url.add") || isDefined("qCoursesGetCourse") && qCoursesGetCourse.RecordCount>
-										<td colspan="2"><a href="../courses/" title="Clear search">Clear search</a></td>
-									<cfelse>
-										<td colspan="2"><a href="https://www.everettcc.edu/catalog/" title="View official course catalog" target="_blank">View official course catalog</a></td>
-									</cfif>
-								</tr>
 							</table>
 						</cfform>
+	                	<!-- Form END -->
 
+	                	<!-- Search Results START -->
 						<!--- After search form is submitted, display results. --->
+						<div id="search-results">
 						<cfif isDefined("form.searchButton") && isDefined("qCoursesGetCourse") && qCoursesGetCourse.RecordCount>
 							<h2>Search results</h2>
+							<cfif isDefined("url.add") || isDefined("qCoursesGetCourse") && qCoursesGetCourse.RecordCount>
+								<a href="../courses/" title="Clear search">Clear search</a>
+							<cfelse>
+							</cfif>
 							<table>
 								<tr>
-									<th width="120px">Course Number</th>
+									<th width="120px">Number</th>
 									<th>Title</th>
 									<th>Credits</th>
 									<th></th>
@@ -87,8 +91,12 @@
 								</cfloop>
 							</table>
 						</cfif>
-						
+						</div>						
+	                	<!-- Search Results END -->
+
+	                	<!-- Course Validation START -->
 						<!--- The course was valid.  Verify student eligibility before adding the course. --->
+						<div id="search-results">
 						<cfif isDefined("qCoursesCheckCourse") && qCoursesCheckCourse.RecordCount>
 							<cfif IsNumeric(qCoursesCheckCourse.min_credit) || qCoursesGetPrerequisite.RecordCount || qCoursesGetPermission.RecordCount || qCoursesGetPlacement.RecordCount>
 								<h2>Verify course eligibility</h2>
@@ -141,31 +149,38 @@
 								</table>
 							</cfif>
 						</cfif>
+						</div>						
+	                	<!-- Course Validation END -->
 
+	                	<!-- Completed Courses START -->
 						<!--- Display student's completed courses --->
-						<cfif isDefined("qCoursesGetStudentCourses")>
-							<h2>Completed courses</h2>
-							<cfif qCoursesGetStudentCourses.RecordCount>
-								<table>
-									<tr>
-										<th width="120px">Course Number</th>
-										<th>Title</th>
-										<th>Credits</th>
-										<th></th>
-									</tr>
-									<cfloop query="qCoursesGetStudentCourses">
+						<div id="search-results">
+							<cfif isDefined("qCoursesGetStudentCourses")>
+								<h2>Completed Courses</h2>
+								<cfif qCoursesGetStudentCourses.RecordCount>
+									<table>
 										<tr>
-											<td><cfoutput>#qCoursesGetStudentCourses.course_number#</cfoutput></td>
-											<td><cfoutput>#qCoursesGetStudentCourses.title#</cfoutput></td>
-											<td><cfoutput>#qCoursesGetStudentCourses.credit#</cfoutput></td>
-											<td><cfoutput><a href="?delete=#URLEncodedFormat(qCoursesGetStudentCourses.course_number)#&id=#URLEncodedFormat(qCoursesGetStudentCourses.completed_id)#" title="Delete">Delete</a></cfoutput></td>
+											<th width="120px">Number</th>
+											<th>Title</th>
+											<th>Credits</th>
+											<th></th>
 										</tr>
-									</cfloop>
-								</table>
-							<cfelse>
-								<p>No completed courses added yet.</p>
+										<cfloop query="qCoursesGetStudentCourses">
+											<tr>
+											
+												<td><cfoutput>#qCoursesGetStudentCourses.course_number#</cfoutput></td>
+												<td><cfoutput>#qCoursesGetStudentCourses.title#</cfoutput></td>
+												<td><cfoutput>#qCoursesGetStudentCourses.credit#</cfoutput></td>
+												<td><cfoutput><a href="?delete=#URLEncodedFormat(qCoursesGetStudentCourses.course_number)#&id=#URLEncodedFormat(qCoursesGetStudentCourses.completed_id)#" title="Delete">Delete</a></cfoutput></td>
+											</tr>
+										</cfloop>
+									</table>
+								<cfelse>
+									<p>No completed courses added yet.</p>
+								</cfif>
 							</cfif>
-						</cfif>
+						</div>
+	                	<!-- Completed Courses END -->						
 						<p/>
 	                </div>
 	            </div>

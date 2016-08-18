@@ -12,7 +12,7 @@
 		
 	    <article id="content-article" role="article">
 	        <header>
-				<h1>View <cfoutput>#qViewGetDegree.degree_name#</cfoutput></h1>
+				<h1><cfoutput>#qViewGetDegree.degree_name#</cfoutput></h1>
 	        </header>
 
 			<div class="breadcrumb">
