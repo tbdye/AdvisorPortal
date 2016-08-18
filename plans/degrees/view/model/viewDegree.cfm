@@ -5,10 +5,8 @@
 </cfif>
 
 <cfmodule template="../../../../header.cfm">
-	
+<!--- Todo:  Add button to create degree plan from here, show which courses are done/not done w/r/t completed courses --->	
 	<pagetitle="Advisor Services Portal - View Degree">
-
-	<!--- Alter page header depending if in an adivisng session or not. --->
 	
 	<div class="resize-box">
 		
