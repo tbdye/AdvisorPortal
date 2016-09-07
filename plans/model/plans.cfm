@@ -1,5 +1,5 @@
 <!--- Plans Model --->
-<!--- Thomas Dye, August 2016 --->
+<!--- Thomas Dye, September 2016 --->
 <cfif !isDefined("messageBean")>
 	<cflocation url="..">
 </cfif>
@@ -31,9 +31,7 @@
             	<!-- Form START -->
 						<h2>Explore your educational goals</h2>
 						<p>
-							<a href="create-plan/" title="Create a new degree plan">Create a new degree plan</a><br/>
-							<a href="degrees/" title="Explore degrees">Explore degrees</a><br/>
-							<a href="colleges/" title="Explore colleges"> Explore colleges</a>
+							<a href="create-plan/" title="Create a new degree plan">Create a new degree plan</a>
 						</p>
 
                 	<!-- Form END -->
@@ -47,8 +45,9 @@
 							</p>			
 							
 							<p>			
-							<cfoutput><a href="degrees/view/?degree=#qPlanGetActivePlan.degrees_id#" title="#qPlanGetActivePlan.degree_name#">#qPlanGetActivePlan.degree_name#</a></cfoutput><br>
-                			<cfoutput>#qPlanGetActivePlan.college_name# - #qPlanGetActivePlan.college_city#</cfoutput>, <cfoutput>#qPlanGetActivePlan.degree_type#</cfoutput>
+							<cfoutput><a href="degrees/?degree=#qPlanGetActivePlan.degrees_id#" title="#qPlanGetActivePlan.degree_name#">#qPlanGetActivePlan.degree_name#</a></cfoutput><br>
+                			<cfoutput><a href="colleges/?college=#qPlanGetActivePlan.colleges_id#" title="#qPlanGetActivePlan.college_name# - #qPlanGetActivePlan.college_city#">#qPlanGetActivePlan.college_name# - #qPlanGetActivePlan.college_city#</a></cfoutput><br>
+                			<cfoutput>#qPlanGetActivePlan.degree_type#</cfoutput>
 							</p>
 							
 							<p>

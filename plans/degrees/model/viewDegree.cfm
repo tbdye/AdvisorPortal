@@ -4,7 +4,7 @@
 	<cflocation url="..">
 </cfif>
 
-<cfmodule template="../../../../header.cfm">
+<cfmodule template="../../../header.cfm">
 <!--- Todo:  Add button to create degree plan from here, show which courses are done/not done w/r/t completed courses --->	
 	<pagetitle="Advisor Services Portal - View Degree">
 	
@@ -16,9 +16,8 @@
 	        </header>
 
 			<div class="breadcrumb">
-				<a href="../../../dashboard/">Home</a>
-				&raquo; <a href="../..">Degree Plans</a>
-				&raquo; <a href="..">Explore Degrees</a>
+				<a href="../../dashboard/">Home</a>
+				&raquo; <a href="..">Degree Plans</a>
 				&raquo; <cfoutput>#qViewGetDegree.degree_name#</cfoutput>
 			</div>	
 
@@ -28,7 +27,7 @@
 	            	<table>
 	            		<tr>
 							<td>College:</td>
-		    				<td><cfoutput><a href="../../colleges/view/?college=#qViewGetDegree.colleges_id#" title="#qViewGetDegree.college_name# - #qViewGetDegree.college_city#">#qViewGetDegree.college_name# - #qViewGetDegree.college_city#</a></cfoutput></td>
+		    				<td><cfoutput><a href="../colleges/?college=#qViewGetDegree.colleges_id#" title="#qViewGetDegree.college_name# - #qViewGetDegree.college_city#">#qViewGetDegree.college_name# - #qViewGetDegree.college_city#</a></cfoutput></td>
 						</tr>
 	            		<tr>
 							<td width="90px">Degree:</td>
@@ -171,4 +170,4 @@
 		    </div>
 		</aside>
 
-<cfmodule template="../../../../footer.cfm">
+<cfmodule template="../../../footer.cfm">

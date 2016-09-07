@@ -13,7 +13,7 @@
 
 <!--- Prepare basic contents of the page --->
 <cfquery name="qEditGetPlan">
-	SELECT p.id, p.plan_name, s.degrees_id, d.degree_name, c.college_name, c.college_city, d.degree_type
+	SELECT p.id, p.plan_name, s.degrees_id, d.degree_name, d.colleges_id, c.college_name, c.college_city, d.degree_type
 	FROM PLANS p, PLAN_SELECTEDDEGREES s, DEGREES d, COLLEGES c
 	WHERE p.id = s.plans_id
 	AND d.id = s.degrees_id

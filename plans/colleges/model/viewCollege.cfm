@@ -4,7 +4,7 @@
 	<cflocation url="..">
 </cfif>
 
-<cfmodule template="../../../../header.cfm">
+<cfmodule template="../../../header.cfm">
 	
 	<pagetitle="Advisor Services Portal - View College">
 
@@ -14,13 +14,12 @@
 		
 	    <article id="content-article" role="article">
 	        <header>
-				<h1>View <cfoutput>#qViewGetCollege.college_name#</cfoutput></h1>
+				<h1><cfoutput>#qViewGetCollege.college_name#</cfoutput></h1>
 	        </header>
 
 			<div class="breadcrumb">
-				<a href="../../../dashboard/">Home</a>
-				&raquo; <a href="../..">Degree Plans</a>
-				&raquo; <a href="..">Explore Colleges</a>
+				<a href="../../dashboard/">Home</a>
+				&raquo; <a href="..">Degree Plans</a>
 				&raquo; <cfoutput>#qViewGetCollege.college_name#</cfoutput>
 			</div>	
 
@@ -134,4 +133,4 @@
 		    </div>
 		</aside>
 
-<cfmodule template="../../../../footer.cfm">
+<cfmodule template="../../../footer.cfm">

@@ -122,7 +122,7 @@
 
 <!--- Build query to display search results --->
 <cfquery name="qSearchGetFilteredDegrees">
-	SELECT d.id, d.degree_name, d.degree_type, c.college_name, c.college_city
+	SELECT d.id, d.degree_name, d.degree_type, d.colleges_id, c.college_name, c.college_city
 	FROM DEGREES d
 	JOIN COLLEGES c
 	ON d.colleges_id = c.id

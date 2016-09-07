@@ -53,14 +53,15 @@
 							<cfform>
 								<table>
 			                		<tr>
-			                			<td><label for="planName">Plan:</label></td>
+			                			<td><label for="planName">Plan name:</label></td>
 			                			<td><cfinput type="text" size="#len(qEditGetPlan.plan_name)#" id="planName" name="planName" value="#qEditGetPlan.plan_name#"> &nbsp; <cfinput type="submit" name="saveButton" value="Save"></td>			                			
 			                		</tr>
 			                		<tr>
 			                			<td>Degree:</td>
 			                			<td>
-			                				<cfoutput><a href="../degrees/view/?degree=#qEditGetPlan.degrees_id#" title="#qEditGetPlan.degree_name#">#qEditGetPlan.degree_name#</a></cfoutput><br>
-			                				<cfoutput>#qEditGetPlan.college_name# - #qEditGetPlan.college_city#</cfoutput>,&nbsp;<cfoutput>#qEditGetPlan.degree_type#</cfoutput>
+			                				<cfoutput><a href="../degrees/?degree=#qEditGetPlan.degrees_id#" title="#qEditGetPlan.degree_name#">#qEditGetPlan.degree_name#</a></cfoutput><br>
+			                				<cfoutput><a href="../colleges/?college=#qEditGetPlan.colleges_id#" title="#qEditGetPlan.college_name# - #qEditGetPlan.college_city#">#qEditGetPlan.college_name# - #qEditGetPlan.college_city#</a></cfoutput><br>
+			                				<cfoutput>#qEditGetPlan.degree_type#</cfoutput>
 			                			</td>
 			                		</tr>
 		                		</table>							
