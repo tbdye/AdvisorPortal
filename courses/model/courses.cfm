@@ -1,5 +1,5 @@
 <!--- Courses Model --->
-<!--- Thomas Dye, August 2016 --->
+<!--- Thomas Dye, September 2016 --->
 <cfif !isDefined("messageBean")>
 	<cflocation url="..">
 </cfif>
@@ -36,15 +36,8 @@
 							<p>
 								<strong>Add a completed course by number</strong>
 							</p>
-							<p>
-								<cfinput width="275px" type="text" id="searchTerm" name="searchTerm">&nbsp;<cfinput type="submit" name="searchButton" value="Search">
-							</p>
-							<p>
-								<a href="https://www.everettcc.edu/catalog/" title="View official course catalog" target="_blank">View official course catalog</a>
-							</p>
-							
-							<table>
-								<cfif messageBean.hasErrors() && isDefined("form.searchButton")>
+							<cfif messageBean.hasErrors() && isDefined("form.searchButton")>
+								<table>
 									<tr>
 										<td colspan="2">
 											<div id="form-errors">
@@ -56,8 +49,14 @@
 											</div>											
 										</td>
 									</tr>
-								</cfif>
-							</table>
+								</table>
+							</cfif>
+							<p>
+								<cfinput width="275px" type="text" id="searchTerm" name="searchTerm">&nbsp;<cfinput type="submit" name="searchButton" value="Search">
+							</p>
+							<p>
+								<a href="https://www.everettcc.edu/catalog/" title="View official course catalog" target="_blank">View official course catalog</a>
+							</p>	
 						</cfform>
 	                	<!-- Form END -->
 
@@ -86,7 +85,13 @@
 										<cfelse>
 											<td><cfoutput>#qCoursesGetCourse.min_credit# - #qCoursesGetCourse.max_credit#</cfoutput></td>
 										</cfif>
-										<td><cfoutput><a href="?add=#URLEncodedFormat(qCoursesGetCourse.course_number)#&id=#URLEncodedFormat(qCoursesGetCourse.id)#" title="Add">Add</a></cfoutput></td>
+										<td>
+											<cfform>
+												<cfinput type="hidden" name="thisCourseId" value="#qCoursesGetCourse.id#">
+												<cfinput type="hidden" name="thisCourseNumber" value="#qCoursesGetCourse.course_number#">
+												<cfinput type="submit" name="addButton" value="Add">
+											</cfform>
+										</td>
 									</tr>
 								</cfloop>
 							</table>
@@ -167,11 +172,15 @@
 										</tr>
 										<cfloop query="qCoursesGetStudentCourses">
 											<tr>
-											
 												<td><cfoutput>#qCoursesGetStudentCourses.course_number#</cfoutput></td>
 												<td><cfoutput>#qCoursesGetStudentCourses.title#</cfoutput></td>
 												<td><cfoutput>#qCoursesGetStudentCourses.credit#</cfoutput></td>
-												<td><cfoutput><a href="?delete=#URLEncodedFormat(qCoursesGetStudentCourses.course_number)#&id=#URLEncodedFormat(qCoursesGetStudentCourses.completed_id)#" title="Delete">Delete</a></cfoutput></td>
+												<td>
+													<cfform>
+														<cfinput type="hidden" name="thisCourseId" value="#qCoursesGetStudentCourses.completed_id#">
+														<cfinput type="submit" name="deleteCourseButton" value="Delete">
+													</cfform>
+												</td>
 											</tr>
 										</cfloop>
 									</table>

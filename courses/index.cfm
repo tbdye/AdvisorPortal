@@ -1,5 +1,5 @@
 <!--- Courses Controller --->
-<!--- Thomas Dye, August 2016 --->
+<!--- Thomas Dye, September 2016 --->
 <cfif !(isDefined("session.studentId") || IsUserInRole("student")) >
 	<cflocation url="..">
 </cfif>
@@ -34,6 +34,11 @@
 	
 	<cfinclude template="model/courses.cfm">
 	<cfreturn>
+</cfif>
+
+<!--- Prepare to add course. --->
+<cfif isDefined("form.addButton")>
+	<cflocation url="?add=#URLEncodedFormat(form.thisCourseNumber)#&id=#URLEncodedFormat(form.thisCourseId)#">
 </cfif>
 
 <!--- Add course. --->	
@@ -196,31 +201,11 @@
 </cfif>
 
 <!--- Delete course. --->
-<cfif isDefined("url.delete") && isDefined("url.id") && IsNumeric("#URLDecode(url.id)#")>
-	
-	<!--- Validate the url variables to ensure the course exists in the student's record. --->
-	<cfquery name="qCoursesCheckCourse">
-		SELECT s.id
-		FROM STUDENTS_COMPLETEDCOURSES s
-		JOIN COURSES c
-		ON c.id = s.courses_id
-		WHERE students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">
-		AND c.course_number = <cfqueryparam value="#URLDecode(url.delete)#" cfsqltype="cf_sql_varchar">
-		AND s.id = <cfqueryparam value="#URLDecode(url.id)#" cfsqltype="cf_sql_integer">
-	</cfquery>
-	
-	<!--- Stop here if the course is not valid. --->
-	<cfif !qCoursesCheckCourse.RecordCount>
-		<cfset messageBean.addError('There was an error deleting this course; course cannot be deleted.', 'courseId')>
-		<cfinclude template="model/courses.cfm">
-		<cfreturn>
-	</cfif>
-	
-	<!--- Delete the course from the student record --->
+<cfif isDefined("form.deleteCourseButton")>
 	<cfquery>
 		DELETE
 		FROM STUDENTS_COMPLETEDCOURSES
-		WHERE id = <cfqueryparam value="#qCoursesCheckCourse.id#" cfsqltype="cf_sql_integer">
+		WHERE id = <cfqueryparam value="#form.thisCourseId#" cfsqltype="cf_sql_integer">
 	</cfquery>
 	<cflocation url="index.cfm">
 </cfif>
