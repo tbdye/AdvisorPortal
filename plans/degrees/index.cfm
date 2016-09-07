@@ -1,5 +1,5 @@
 <!--- View Degree Controller --->
-<!--- Thomas Dye, August 2016 --->
+<!--- Thomas Dye, September 2016 --->
 <cfif !(isDefined("session.studentId") || IsUserInRole("student")) >
 	<cflocation url="..">
 </cfif>
@@ -11,10 +11,15 @@
 	<cflocation url="..">
 </cfif>
 
+<!--- Define action for degree "Create plan from degree" button --->
+<cfif isDefined("form.addDegreeButton")>
+	<cflocation url="../create-plan/?degree=#URLEncodedFormat(form.degreeName)#&id=#form.degreeId#">
+</cfif>
+
 <!--- Prepare basic contents of the page --->
 <cfquery name="qViewGetDegree">
 	SELECT
-		deg.colleges_id, deg.degree_name, deg.degree_type,
+		deg.id, deg.colleges_id, deg.degree_name, deg.degree_type,
 		dept.department_name,
 		col.college_name, col.college_city
 	FROM DEGREES deg, DEPARTMENTS dept, COLLEGES col

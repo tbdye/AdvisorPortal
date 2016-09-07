@@ -1,10 +1,27 @@
 <!--- Create Plan Controller --->
-<!--- Thomas Dye, August 2016 --->
+<!--- Thomas Dye, September 2016 --->
 <cfif !(isDefined("session.studentId") || IsUserInRole("student")) >
 	<cflocation url="..">
 </cfif>
 
 <cfset messageBean=createObject('#this.mappings['cfcMapping']#.messageBean').init()>
+
+<!--- Run when external page asks to create a degree plan --->
+<cfif isDefined("url.degree") && isDefined("url.id") && IsNumeric("#URLDecode(url.id)#")>
+	<!--- Validate url variables --->
+	<cfquery name="qCheckDegree">
+		SELECT id, degree_name
+		FROM DEGREES
+		WHERE id = <cfqueryparam value="#url.id#" cfsqltype="cf_sql_integer">
+		AND degree_name = <cfqueryparam value="#url.degree#" cfsqltype="cf_sql_varchar">
+	</cfquery>
+	
+	<cfif qCheckDegree.RecordCount>
+		<cfset form.addDegreeButton = "Select">
+		<cfset form.degreeName = qCheckDegree.degree_name>
+		<cfset form.degreeId = qCheckDegree.id>
+	</cfif>
+</cfif>
 
 <!--- Define action for degree "select" button from search results --->
 <cfif isDefined("form.addDegreeButton")>

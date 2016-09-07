@@ -1,5 +1,5 @@
 <!--- View Degree Model --->
-<!--- Thomas Dye, August 2016 --->
+<!--- Thomas Dye, September 2016 --->
 <cfif !isDefined("messageBean")>
 	<cflocation url="..">
 </cfif>
@@ -40,6 +40,16 @@
 						<tr>
 							<td>Type:</td>
 		    				<td><cfoutput>#qViewGetDegree.degree_type#</cfoutput></td>
+						</tr>
+						<tr>
+							<cfform>
+								<td></td>
+								<td>
+									<cfinput type="hidden" name="degreeId" value="#qViewGetDegree.id#">
+									<cfinput type="hidden" name="degreeName" value="#qViewGetDegree.degree_name#">
+									<cfinput type="submit" name="addDegreeButton" value="Create plan from degree">
+								</td>
+							</cfform>
 						</tr>
 	            	</table>
 	            	
