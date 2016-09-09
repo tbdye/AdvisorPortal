@@ -47,7 +47,7 @@
 								<td>
 									<cfinput type="hidden" name="degreeId" value="#qViewGetDegree.id#">
 									<cfinput type="hidden" name="degreeName" value="#qViewGetDegree.degree_name#">
-									<cfinput type="submit" name="addDegreeButton" value="Create plan from degree">
+									<cfinput type="submit" name="addDegreeButton" value="Create new plan with degree">
 								</td>
 							</cfform>
 						</tr>
@@ -60,18 +60,20 @@
 		            		<cfif len(qViewGetDegreeNotes.admission_courses_note)>
 		            			<tr>
 		            				<!--- ToDo:  convert this to preformatted text --->
-		            				<td colspan="2"><cfoutput>#qViewGetDegreeNotes.admission_courses_note#</cfoutput></td>
+		            				<td colspan="3"><cfoutput>#qViewGetDegreeNotes.admission_courses_note#</cfoutput></td>
 		            			</tr>
 		            		</cfif>
 		            		<cfif qViewGetAdmissionCourses.RecordCount>
 		            			<tr>
 									<th>EvCC Course</th>
+									<th>Category</th>
 									<th>Equivalent Course</th>
 								</tr>
 								<cfloop query="qViewGetAdmissionCourses">
 									<tr>
-										<td width="55%"><cfoutput>#qViewGetAdmissionCourses.course_number#</cfoutput></td>
-										<td width="35%"><cfoutput>#qViewGetAdmissionCourses.foreign_course_number#</cfoutput></td>
+										<td width="20%"><cfoutput>#qViewGetAdmissionCourses.course_number#</cfoutput></td>
+										<td width="50%"><cfoutput>#qViewGetAdmissionCourses.category# (#qViewGetAdmissionCourses.description#)</cfoutput></td>
+										<td width="30%"><cfoutput>#qViewGetAdmissionCourses.foreign_course_number#</cfoutput></td>
 									</tr>
 								</cfloop>
 		            		</cfif>

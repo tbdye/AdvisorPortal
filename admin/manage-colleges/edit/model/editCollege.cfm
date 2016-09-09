@@ -89,7 +89,7 @@
 							<table width="100%">
 								<cfform>
 	                				<tr>
-	                					<td colspan="3"><textarea name="courseReqNote" rows="5" cols="80"><cfoutput>#qEditGetCollegeNotes.courses_note#</cfoutput></textarea></td>
+	                					<td colspan="4"><textarea name="courseReqNote" rows="5" cols="80"><cfoutput>#qEditGetCollegeNotes.courses_note#</cfoutput></textarea></td>
 	                				</tr>
 	                				<tr>
 	                					<td><cfinput type="submit" name="updateCourseReqNoteButton" value="Update"></td>
@@ -97,7 +97,7 @@
 	                			</cfform>
 								<cfif messageBean.hasErrors() && isDefined("form.addCourseReq")>
 									<tr>
-										<td colspan="3">
+										<td colspan="4">
 											<div id="form-errors">
 												<ul>
 													<cfloop array="#messageBean.getErrors()#" index="error">
@@ -110,6 +110,7 @@
 								</cfif>
 								<tr>
 									<th>EvCC Course</th>
+									<th>Category</th>
 									<th>Equivalent Course</th>
 									<th></th>
 								</tr>
@@ -117,7 +118,8 @@
 									<cfform>
 										<tr>
 											<cfinput type="hidden" name="coursesId" value="#qEditGetAdmissionCourses.id#">
-											<td width="55%"><cfoutput>#qEditGetAdmissionCourses.course_number#</cfoutput></td>
+											<td width="40%"><cfoutput>#qEditGetAdmissionCourses.course_number#</cfoutput></td>
+											<td width="15%"><cfoutput>#qEditGetAdmissionCourses.category#</cfoutput></td>
 											<td width="35%"><cfoutput>#qEditGetAdmissionCourses.foreign_course_number#</cfoutput></td>
 											<td width="10%"><cfinput type="submit" name="delCourseReq" value="Remove"></td>
 										</tr>
@@ -126,6 +128,11 @@
 								<cfform>
 									<tr>
 										<td><cfinput type="text" id="localCourse" name="localCourse"></td>
+										<td>
+											<cfselect name="localCourseCategory" query="qEditGetSelectCategories" display="category" value="id" queryPosition="below" >
+												<option value="0">Select a category</option>
+											</cfselect>
+										</td>
 										<td><cfinput type="text" id="foreignCourse" name="foreignCourse"></td>
 										<td><cfinput type="submit" name="addCourseReq" value="Add"></td>
 									</tr>

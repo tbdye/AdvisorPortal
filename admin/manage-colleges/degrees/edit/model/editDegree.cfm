@@ -1,5 +1,5 @@
 <!--- Edit Degree Model --->
-<!--- Thomas Dye, August 2016 --->
+<!--- Thomas Dye, September 2016 --->
 <cfif !isDefined("messageBean")>
 	<cflocation url="..">
 </cfif>
@@ -83,7 +83,7 @@
                 		<table>
                 			<cfform>
                 				<tr>
-                					<td colspan="3"><textarea name="admCourseReqNote" rows="5" cols="80"><cfoutput>#qEditGetDegreeNotes.admission_courses_note#</cfoutput></textarea></td>
+                					<td colspan="4"><textarea name="admCourseReqNote" rows="5" cols="80"><cfoutput>#qEditGetDegreeNotes.admission_courses_note#</cfoutput></textarea></td>
                 				</tr>
                 				<tr>
                 					<td><cfinput type="submit" name="updateAdmCourseReqNoteButton" value="Update"></td>
@@ -91,7 +91,7 @@
                 			</cfform>
                 			<cfif messageBean.hasErrors() && isDefined("form.addAdmCourseReq")>
 								<tr>
-									<td colspan="3">
+									<td colspan="4">
 										<div id="form-errors">
 											<ul>
 												<cfloop array="#messageBean.getErrors()#" index="error">
@@ -104,6 +104,7 @@
 							</cfif>
 							<tr>
 								<th>EvCC Course</th>
+								<th>Category</th>
 								<th>Equivalent Course</th>
 								<th></th>
 							</tr>
@@ -111,7 +112,8 @@
 								<cfform>
 									<tr>
 										<cfinput type="hidden" name="admCoursesId" value="#qEditGetAdmissionCourses.id#">
-										<td width="55%"><cfoutput>#qEditGetAdmissionCourses.course_number#</cfoutput></td>
+										<td width="40%"><cfoutput>#qEditGetAdmissionCourses.course_number#</cfoutput></td>
+										<td width="15%"><cfoutput>#qEditGetAdmissionCourses.category#</cfoutput></td>
 										<td width="35%"><cfoutput>#qEditGetAdmissionCourses.foreign_course_number#</cfoutput></td>
 										<td width="10%"><cfinput type="submit" name="delAdmCourseReq" value="Remove"></td>
 									</tr>
@@ -120,6 +122,11 @@
 							<cfform>
 								<tr>
 									<td><cfinput type="text" id="localAdmCourse" name="localAdmCourse"></td>
+									<td>
+										<cfselect name="localAdmCourseCategory" query="qEditGetAllCategories" display="category" value="id" queryPosition="below" >
+											<option value="0">Select a category</option>
+										</cfselect>
+									</td>
 									<td><cfinput type="text" id="foreignAdmCourse" name="foreignAdmCourse"></td>
 									<td><cfinput type="submit" name="addAdmCourseReq" value="Add"></td>
 								</tr>
@@ -182,7 +189,7 @@
                 		<table>
                 			<cfform>
                 				<tr>
-                					<td colspan="3"><textarea name="grdCourseReqNote" rows="5" cols="80"><cfoutput>#qEditGetDegreeNotes.graduation_courses_note#</cfoutput></textarea></td>
+                					<td colspan="4"><textarea name="grdCourseReqNote" rows="5" cols="80"><cfoutput>#qEditGetDegreeNotes.graduation_courses_note#</cfoutput></textarea></td>
                 				</tr>
                 				<tr>
                 					<td><cfinput type="submit" name="updateGrdCourseReqNoteButton" value="Update"></td>
@@ -190,7 +197,7 @@
                 			</cfform>
                 			<cfif messageBean.hasErrors() && isDefined("form.addGrdCourseReq")>
 								<tr>
-									<td colspan="3">
+									<td colspan="4">
 										<div id="form-errors">
 											<ul>
 												<cfloop array="#messageBean.getErrors()#" index="error">
@@ -203,6 +210,7 @@
 							</cfif>
 							<tr>
 								<th>EvCC Course</th>
+								<th>Category</th>
 								<th>Equivalent Course</th>
 								<th></th>
 							</tr>
@@ -210,7 +218,8 @@
 								<cfform>
 									<tr>
 										<cfinput type="hidden" name="grdCoursesId" value="#qEditGetGraduationCourses.id#">
-										<td width="55%"><cfoutput>#qEditGetGraduationCourses.course_number#</cfoutput></td>
+										<td width="40%"><cfoutput>#qEditGetGraduationCourses.course_number#</cfoutput></td>
+										<td width="15%"><cfoutput>#qEditGetGraduationCourses.category#</cfoutput></td>
 										<td width="35%"><cfoutput>#qEditGetGraduationCourses.foreign_course_number#</cfoutput></td>
 										<td width="10%"><cfinput type="submit" name="delGrdCourseReq" value="Remove"></td>
 									</tr>
@@ -219,6 +228,11 @@
 							<cfform>
 								<tr>
 									<td><cfinput type="text" id="localGrdCourse" name="localGrdCourse"></td>
+									<td>
+										<cfselect name="localGrdCourseCategory" query="qEditGetAllCategories" display="category" value="id" queryPosition="below" >
+											<option value="0">Select a category</option>
+										</cfselect>
+									</td>
 									<td><cfinput type="text" id="foreignGrdCourse" name="foreignGrdCourse"></td>
 									<td><cfinput type="submit" name="addGrdCourseReq" value="Add"></td>
 								</tr>

@@ -1,5 +1,5 @@
 <!--- Dashboard Model --->
-<!--- Thomas Dye, August 2016 --->
+<!--- Thomas Dye, September 2016 --->
 <cfif !isDefined("messageBean")>
 	<cflocation url="..">
 </cfif>
@@ -32,13 +32,51 @@
 	            <div class="content">
 	                <span property="dc:title" content="Dashboard" class="rdf-meta element-hidden"></span>
 	
-                	<cfif !isDefined("qGetPlan")>
+                	<cfif qDashboardGetActivePlan.RecordCount>
+						<h2><cfoutput>#qDashboardGetActivePlan.plan_name#</cfoutput></h2>
+						
+						My schedule [<][>]
+						[Quarter 1 | Quarter 2 | Quarter 3 | Quarter 4]
+						[Edit | Edit | Edit | Edit]
+						
+						Edit courses for Quarter 1
+						Unscheduled courses | Courses in Quarter 1
+						[list 1] [>][<] [list 2]
+										[Update][Cancel]
+						
+						Courses remaining for this plan
+						Basic Communication Skills
+						(You need X more credits)
+						[Code | Title | Credits | ]
+						
+						Basic Quantitative Skills
+						(You need X more credits)
+						[Code | Title | Credits | ]
+						
+						Humanities
+						(You need X more credits)
+						[Code | Title | Credits | ]
+						
+						Social Sciences
+						(You need X more credits)
+						[Code | Title | Credits | ]
+						
+						Natural Sciences
+						(You need X more credits)
+						[Code | Title | Credits | ]
+						
+						Major Preparation Courses
+						(You need X more credits)
+						[Code | Title | Credits | ]
+						
+						Electives
+						[Code | Title | Credits | ]
+						
+					<cfelse>
 						<h2>Get Started</h2>
 						<a href="../courses/" title="Enter your completed courses">Enter your completed courses</a>
 						<p>or</p>
 						<a href="../plans/" title="Manage your degree plans">Manage your degree plans</a>
-					<cfelse>
-						
 					</cfif>
 					<p/>
 

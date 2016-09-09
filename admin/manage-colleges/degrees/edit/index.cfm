@@ -37,6 +37,11 @@
 	ORDER BY department_name ASC
 </cfquery>
 
+<cfquery name="qEditGetAllCategories">
+	SELECT id, category
+	FROM CATEGORIES
+</cfquery>
+
 <cfquery name="qEditGetAllCodekeys">
 	SELECT id, description
 	FROM CODEKEYS
@@ -61,11 +66,11 @@
 
 <!--- Prepare requirements contents --->
 <cfquery name="qEditGetAdmissionCourses">
-	SELECT a.courses_id, a.foreign_course_number, c.id, c.course_number
-	FROM DEGREE_ADMISSION_COURSES a
-	JOIN COURSES c
-	ON a.courses_id = c.id
-	WHERE a.degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
+	SELECT a.courses_id, a.foreign_course_number, c.id, c.course_number, cat.category
+	FROM DEGREE_ADMISSION_COURSES a, COURSES c, CATEGORIES cat
+	WHERE a.courses_id = c.id
+	AND a.categories_id = cat.id
+	AND a.degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
 </cfquery>
 
 <cfquery name="qEditGetAdmissionCodekeys">
@@ -77,11 +82,11 @@
 </cfquery>
 
 <cfquery name="qEditGetGraduationCourses">
-	SELECT g.courses_id, g.foreign_course_number, c.id, c.course_number
-	FROM DEGREE_GRADUATION_COURSES g
-	JOIN COURSES c
-	ON g.courses_id = c.id
-	WHERE g.degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
+	SELECT g.courses_id, g.foreign_course_number, c.id, c.course_number, cat.category
+	FROM DEGREE_GRADUATION_COURSES g, COURSES c, CATEGORIES cat
+	WHERE g.courses_id = c.id
+	AND g.categories_id = cat.id
+	AND g.degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
 </cfquery>
 
 <cfquery name="qEditGetGraduationCodekeys">
@@ -105,7 +110,7 @@
 			<cfif len(trim(degreeName))>
 				<cfquery>
 					UPDATE DEGREES
-					SET degree_name = <cfqueryparam value="#degreeName#" cfsqltype="cf_sql_varchar">
+					SET degree_name = <cfqueryparam value="#form.degreeName#" cfsqltype="cf_sql_varchar">
 					WHERE id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
 				</cfquery>
 			<cfelse>
@@ -141,7 +146,7 @@
 			<cfif len(trim(degreeType))>
 				<cfquery>
 					UPDATE DEGREES
-					SET degree_type = <cfqueryparam value="#degreeType#" cfsqltype="cf_sql_varchar">
+					SET degree_type = <cfqueryparam value="#form.degreeType#" cfsqltype="cf_sql_varchar">
 					WHERE id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
 				</cfquery>
 			<cfelse>
@@ -217,6 +222,10 @@
 		<cfset messageBean.addError('An EvCC equivalent course number is required.', 'localAdmCourse')>
 	</cfif>
 	
+	<cfif form.localAdmCourseCategory EQ 0>
+		<cfset messageBean.addError('Please select a category.', 'localAdmCourseCategory')>
+	</cfif>
+	
 	<cfif !len(trim(form.foreignAdmCourse))>
 		<cfset messageBean.addError('The university required course must be specified.', 'foreignAdmCourse')>
 	</cfif>
@@ -268,11 +277,12 @@
 	
 	<cfquery>
 		INSERT INTO DEGREE_ADMISSION_COURSES (
-			degrees_id, courses_id, foreign_course_number
+			degrees_id, courses_id, categories_id, foreign_course_number
 		) VALUES (
 			<cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">,
 			<cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">,
-			<cfqueryparam value="#foreignAdmCourse#" cfsqltype="cf_sql_varchar">
+			<cfqueryparam value="#form.localAdmCourseCategory#" cfsqltype="cf_sql_integer">,
+			<cfqueryparam value="#form.foreignAdmCourse#" cfsqltype="cf_sql_varchar">
 		)
 	</cfquery>
 	
@@ -292,7 +302,7 @@
 		<cfquery>
 			UPDATE DEGREE_NOTES
 			<cfif len(trim(admCodekeyReqNote))>
-				SET admission_codekeys_note = <cfqueryparam value="#admCodekeyReqNote#" cfsqltype="cf_sql_varchar">
+				SET admission_codekeys_note = <cfqueryparam value="#form.admCodekeyReqNote#" cfsqltype="cf_sql_varchar">
 			<cfelse>
 				SET admission_codekeys_note = NULL
 			</cfif>
@@ -403,7 +413,7 @@
 		<cfquery>
 			UPDATE DEGREE_NOTES
 			<cfif len(trim(grdCourseReqNote))>
-				SET graduation_courses_note = <cfqueryparam value="#grdCourseReqNote#" cfsqltype="cf_sql_varchar">
+				SET graduation_courses_note = <cfqueryparam value="#form.grdCourseReqNote#" cfsqltype="cf_sql_varchar">
 			<cfelse>
 				SET graduation_courses_note = NULL
 			</cfif>
@@ -436,6 +446,10 @@
 	<!--- Perform simple validation on form fields --->
 	<cfif !len(trim(form.localGrdCourse))>
 		<cfset messageBean.addError('An EvCC equivalent course number is required.', 'localGrdCourse')>
+	</cfif>
+	
+	<cfif form.localGrdCourseCategory EQ 0>
+		<cfset messageBean.addError('Please select a category.', 'localGrdCourseCategory')>
 	</cfif>
 	
 	<cfif !len(trim(form.foreignGrdCourse))>
@@ -503,11 +517,12 @@
 	
 	<cfquery>
 		INSERT INTO DEGREE_GRADUATION_COURSES (
-			degrees_id, courses_id, foreign_course_number
+			degrees_id, courses_id, categories_id, foreign_course_number
 		) VALUES (
 			<cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">,
 			<cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">,
-			<cfqueryparam value="#foreignGrdCourse#" cfsqltype="cf_sql_varchar">
+			<cfqueryparam value="#form.localGrdCourseCategory#" cfsqltype="cf_sql_integer">,
+			<cfqueryparam value="#form.foreignGrdCourse#" cfsqltype="cf_sql_varchar">
 		)
 	</cfquery>
 	
@@ -527,7 +542,7 @@
 		<cfquery>
 			UPDATE DEGREE_NOTES
 			<cfif len(trim(grdCodekeyReqNote))>
-				SET graduation_codekeys_note = <cfqueryparam value="#grdCodekeyReqNote#" cfsqltype="cf_sql_varchar">
+				SET graduation_codekeys_note = <cfqueryparam value="#form.grdCodekeyReqNote#" cfsqltype="cf_sql_varchar">
 			<cfelse>
 				SET graduation_codekeys_note = NULL
 			</cfif>
@@ -652,7 +667,7 @@
 		<cfquery>
 			UPDATE DEGREE_NOTES
 			<cfif len(trim(degreeGeneralNote))>
-				SET general_note = <cfqueryparam value="#degreeGeneralNote#" cfsqltype="cf_sql_varchar">
+				SET general_note = <cfqueryparam value="#form.degreeGeneralNote#" cfsqltype="cf_sql_varchar">
 			<cfelse>
 				SET general_note = NULL
 			</cfif>

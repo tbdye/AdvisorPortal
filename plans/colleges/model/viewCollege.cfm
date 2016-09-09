@@ -48,18 +48,20 @@
 		            		<cfif len(qViewGetCollegeNotes.courses_note)>
 		            			<tr>
 		            				<!--- ToDo:  convert this to preformatted text --->
-		            				<td colspan="2"><cfoutput>#qViewGetCollegeNotes.courses_note#</cfoutput></td>
+		            				<td colspan="3"><cfoutput>#qViewGetCollegeNotes.courses_note#</cfoutput></td>
 		            			</tr>
 		            		</cfif>
 		            		<cfif qViewGetAdmissionCourses.RecordCount>
 		            			<tr>
 									<th>EvCC Course</th>
+									<th>Category</th>
 									<th>Equivalent Course</th>
 								</tr>
 								<cfloop query="qViewGetAdmissionCourses">
 									<tr>
-										<td width="55%"><cfoutput>#qViewGetAdmissionCourses.course_number#</cfoutput></td>
-										<td width="35%"><cfoutput>#qViewGetAdmissionCourses.foreign_course_number#</cfoutput></td>
+										<td width="20%"><cfoutput>#qViewGetAdmissionCourses.course_number#</cfoutput></td>
+										<td width="50%"><cfoutput>#qViewGetAdmissionCourses.category# (#qViewGetAdmissionCourses.description#)</cfoutput></td>
+										<td width="30%"><cfoutput>#qViewGetAdmissionCourses.foreign_course_number#</cfoutput></td>
 									</tr>
 								</cfloop>
 		            		</cfif>

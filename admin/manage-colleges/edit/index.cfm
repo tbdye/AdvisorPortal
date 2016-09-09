@@ -20,11 +20,11 @@
 
 <!--- Prepare admission requirements contents --->
 <cfquery name="qEditGetAdmissionCourses">
-	SELECT a.foreign_course_number, c.id, c.course_number
-	FROM COLLEGE_ADMISSION_COURSES a
-	JOIN COURSES c
-	ON a.courses_id = c.id
-	WHERE a.colleges_id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
+	SELECT a.foreign_course_number, c.id, c.course_number, cat.category
+	FROM COLLEGE_ADMISSION_COURSES a, COURSES c, CATEGORIES cat
+	WHERE a.courses_id = c.id
+	AND a.categories_id = cat.id
+	AND a.colleges_id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
 </cfquery>
 
 <cfquery name="qEditGetAdmissionDepartments">
@@ -41,6 +41,11 @@
 	JOIN CODEKEYS c
 	ON a.codekeys_id = c.id
 	WHERE a.colleges_id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
+</cfquery>
+
+<cfquery name="qEditGetSelectCategories">
+	SELECT id, category
+	FROM CATEGORIES
 </cfquery>
 
 <cfquery name="qEditGetSelectDepartments">
@@ -82,7 +87,7 @@
 			<cfif len(trim(collegeName))>
 				<cfquery>
 					UPDATE COLLEGES
-					SET college_name = <cfqueryparam value="#collegeName#" cfsqltype="cf_sql_varchar">
+					SET college_name = <cfqueryparam value="#form.collegeName#" cfsqltype="cf_sql_varchar">
 					WHERE id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
 				</cfquery>
 			<cfelse>
@@ -101,7 +106,7 @@
 			<cfif len(trim(collegeCity))>
 				<cfquery>
 					UPDATE COLLEGES
-					SET college_city = <cfqueryparam value="#collegeCity#" cfsqltype="cf_sql_varchar">
+					SET college_city = <cfqueryparam value="#form.collegeCity#" cfsqltype="cf_sql_varchar">
 					WHERE id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
 				</cfquery>
 			<cfelse>
@@ -120,7 +125,7 @@
 			<cfquery>
 				UPDATE COLLEGES
 				<cfif len(trim(collegeWebsite))>
-					SET college_website = <cfqueryparam value="#collegeWebsite#" cfsqltype="cf_sql_varchar">
+					SET college_website = <cfqueryparam value="#form.collegeWebsite#" cfsqltype="cf_sql_varchar">
 				<cfelse>
 					SET college_website = NULL
 				</cfif>
@@ -161,7 +166,7 @@
 		<cfquery>
 			UPDATE COLLEGE_NOTES
 			<cfif len(trim(courseReqNote))>
-				SET courses_note = <cfqueryparam value="#courseReqNote#" cfsqltype="cf_sql_varchar">
+				SET courses_note = <cfqueryparam value="#form.courseReqNote#" cfsqltype="cf_sql_varchar">
 			<cfelse>
 				SET courses_note = NULL
 			</cfif>
@@ -194,6 +199,10 @@
 	<!--- Perform simple validation on form fields --->
 	<cfif !len(trim(form.localCourse))>
 		<cfset messageBean.addError('An EvCC equivalent course number is required.', 'localCourse')>
+	</cfif>
+	
+	<cfif form.localCourseCategory EQ 0>
+		<cfset messageBean.addError('Please select a category.', 'localCourseCategory')>
 	</cfif>
 	
 	<cfif !len(trim(form.foreignCourse))>
@@ -247,11 +256,12 @@
 	
 	<cfquery>
 		INSERT INTO COLLEGE_ADMISSION_COURSES (
-			colleges_id, courses_id, foreign_course_number
+			colleges_id, courses_id, categories_id, foreign_course_number
 		) VALUES (
 			<cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">,
 			<cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">,
-			<cfqueryparam value="#foreignCourse#" cfsqltype="cf_sql_varchar">
+			<cfqueryparam value="#form.localCourseCategory#" cfsqltype="cf_sql_integer">,
+			<cfqueryparam value="#form.foreignCourse#" cfsqltype="cf_sql_varchar">
 		)
 	</cfquery>
 	
@@ -271,7 +281,7 @@
 		<cfquery>
 			UPDATE COLLEGE_NOTES
 			<cfif len(trim(departmentReqNote))>
-				SET departments_note = <cfqueryparam value="#departmentReqNote#" cfsqltype="cf_sql_varchar">
+				SET departments_note = <cfqueryparam value="#form.departmentReqNote#" cfsqltype="cf_sql_varchar">
 			<cfelse>
 				SET departments_note = NULL
 			</cfif>
@@ -383,7 +393,7 @@
 		<cfquery>
 			UPDATE COLLEGE_NOTES
 			<cfif len(trim(codekeyReqNote))>
-				SET codekeys_note = <cfqueryparam value="#codekeyReqNote#" cfsqltype="cf_sql_varchar">
+				SET codekeys_note = <cfqueryparam value="#form.codekeyReqNote#" cfsqltype="cf_sql_varchar">
 			<cfelse>
 				SET codekeys_note = NULL
 			</cfif>
