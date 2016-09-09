@@ -35,42 +35,113 @@
                 	<cfif qDashboardGetActivePlan.RecordCount>
 						<h2><cfoutput>#qDashboardGetActivePlan.plan_name#</cfoutput></h2>
 						
-						My schedule [<][>]
+						<!---My schedule [<][>]
 						[Quarter 1 | Quarter 2 | Quarter 3 | Quarter 4]
 						[Edit | Edit | Edit | Edit]
 						
 						Edit courses for Quarter 1
 						Unscheduled courses | Courses in Quarter 1
 						[list 1] [>][<] [list 2]
-										[Update][Cancel]
+										[Update][Cancel]--->
 						
-						Courses remaining for this plan
-						Basic Communication Skills
-						(You need X more credits)
-						[Code | Title | Credits | ]
+						<h3>Courses remaining for this plan</h3>
+						<h4>English Composition</h4>
+						<table>
+							<tr>
+								<th>Code</th>
+								<th>Title</th>
+								<th>Credits</th>
+								<th></th>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table>
 						
-						Basic Quantitative Skills
-						(You need X more credits)
-						[Code | Title | Credits | ]
+						<h4>Writing and Additional Composition</h4>
+						<table>
+							<tr>
+								<th>Code</th>
+								<th>Title</th>
+								<th>Credits</th>
+								<th></th>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table>
 						
-						Humanities
-						(You need X more credits)
-						[Code | Title | Credits | ]
+						<h4>Quantitative and Symbolic Reasoning</h4>
+						<table>
+							<tr>
+								<th>Code</th>
+								<th>Title</th>
+								<th>Credits</th>
+								<th></th>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table>
 						
-						Social Sciences
-						(You need X more credits)
-						[Code | Title | Credits | ]
+						<h4>The Natural World</h4>
+						<table>
+							<tr>
+								<th>Code</th>
+								<th>Title</th>
+								<th>Credits</th>
+								<th></th>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table>
 						
-						Natural Sciences
-						(You need X more credits)
-						[Code | Title | Credits | ]
+						<h4>Visual, Literary, and Performing Arts</h4>
+						<p>(You need X more credits)</p>
+						<table>
+							<tr>
+								<th>Code</th>
+								<th>Title</th>
+								<th>Credits</th>
+								<th></th>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table>
 						
-						Major Preparation Courses
-						(You need X more credits)
-						[Code | Title | Credits | ]
-						
-						Electives
-						[Code | Title | Credits | ]
+						<h4>Individuals and Societies</h4>
+						<p>(You need X more credits)</p>
+						<table>
+							<tr>
+								<th>Code</th>
+								<th>Title</th>
+								<th>Credits</th>
+								<th></th>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table>
 						
 					<cfelse>
 						<h2>Get Started</h2>
