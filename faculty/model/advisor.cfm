@@ -1,5 +1,5 @@
 <!--- Advisor Model --->
-<!--- Thomas Dye, August 2016 --->
+<!--- Thomas Dye, September 2016 --->
 <cfif !isDefined("messageBean")>
 	<cflocation url="..">
 </cfif>
@@ -86,7 +86,12 @@
 											<td><cfoutput>#qAdvisorGetStudent.full_name#</cfoutput></td>
 											<td><cfoutput>#qAdvisorGetStudent.student_id#</cfoutput></td>
 											<td><cfoutput>#qAdvisorGetStudent.email#</cfoutput></td>
-											<td><a href="?advise=<cfoutput>#qAdvisorGetStudent.student_id#</cfoutput>" title="Advise">Advise</a></td>
+											<td>
+												<cfform>
+													<cfinput type="hidden" name="studentId" value="#qAdvisorGetStudent.student_id#">
+													<cfinput type="submit" name="adviseButton" value="Advise">
+												</cfform>
+											</td>
 										</tr>
 									</cfloop>
 								</table>
@@ -94,8 +99,9 @@
 
 						<cfelse>
 							<cfif isDefined("session.studentId")>
-								<p/>
-								<p><a href="?advise=end" title="End advising session">Stop advising <cfoutput>#session.studentName#</cfoutput></a></p>
+								<cfform>
+									<cfinput type="submit" name="stopAdvisingButton" value="Stop advising #session.studentName#">
+								</cfform>
 							<cfelse>
 								<p>No student selected.</p>
 							</cfif>
