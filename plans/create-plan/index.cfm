@@ -10,7 +10,7 @@
 <cfif isDefined("url.degree") && isDefined("url.id") && IsNumeric("#URLDecode(url.id)#")>
 	<!--- Validate url variables --->
 	<cfquery name="qCheckDegree">
-		SELECT id, degree_name
+		SELECT id, degree_name, colleges_id
 		FROM DEGREES
 		WHERE id = <cfqueryparam value="#url.id#" cfsqltype="cf_sql_integer">
 		AND degree_name = <cfqueryparam value="#url.degree#" cfsqltype="cf_sql_varchar">
@@ -18,8 +18,9 @@
 	
 	<cfif qCheckDegree.RecordCount>
 		<cfset form.addDegreeButton = "Select">
-		<cfset form.degreeName = qCheckDegree.degree_name>
+		<cfset form.collegeId = qCheckDegree.colleges_id>
 		<cfset form.degreeId = qCheckDegree.id>
+		<cfset form.degreeName = qCheckDegree.degree_name>
 	</cfif>
 </cfif>
 
@@ -50,6 +51,50 @@
 			<cfqueryparam value="#form.degreeId#" cfsqltype="cf_sql_integer">
 		)
 	</cfquery>
+	
+	<!--- Get all available admission and graduation courses for this college and degree --->
+	<cfquery name=qGetCourses>
+		SELECT cou.id, col.categories_id, cou.min_credit, cou.max_credit
+		FROM COURSES cou
+		JOIN COLLEGE_ADMISSION_COURSES col
+		ON cou.id = col.courses_id
+		WHERE cou.use_catalog = 1
+		AND col.colleges_id = <cfqueryparam value="#form.collegeId#" cfsqltype="cf_sql_integer">
+		UNION
+		SELECT cou.id, deg.categories_id, cou.min_credit, cou.max_credit
+		FROM COURSES cou
+		JOIN DEGREE_ADMISSION_COURSES deg
+		ON cou.id = deg.courses_id
+		WHERE cou.use_catalog = 1
+		AND deg.degrees_id = <cfqueryparam value="#form.degreeId#" cfsqltype="cf_sql_integer">
+		UNION
+		SELECT cou.id, deg.categories_id, cou.min_credit, cou.max_credit
+		FROM COURSES cou
+		JOIN DEGREE_GRADUATION_COURSES deg
+		ON cou.id = deg.courses_id
+		WHERE cou.use_catalog = 1
+		AND deg.degrees_id = <cfqueryparam value="#form.degreeId#" cfsqltype="cf_sql_integer">
+	</cfquery>
+	
+	<!--- Add available courses to plan --->
+	<cfif qGetCourses.RecordCount>
+		<cfloop query="qGetCourses">
+			<cfquery>
+				INSERT INTO PLAN_SELECTEDCOURSES (
+					plans_id, courses_id, categories_id, credit
+				) VALUES (
+					<cfqueryparam value="#qGetPlan.id#" cfsqltype="cf_sql_integer">,
+					<cfqueryparam value="#qGetCourses.id#" cfsqltype="cf_sql_integer">,
+					<cfqueryparam value="#qGetCourses.categories_id#" cfsqltype="cf_sql_integer">,
+					<cfif len(qGetCourses.min_credit)>
+						NULL
+					<cfelse>
+						<cfqueryparam value="#qGetCourses.max_credit#" cfsqltype="cf_sql_decimal">
+					</cfif>
+				)
+			</cfquery>
+		</cfloop>
+	</cfif>
 	
 	<!--- If the student has no active plans, make this the active plan --->
 	<cfquery name=qCheckActivePlans>

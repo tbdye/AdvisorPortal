@@ -1,5 +1,5 @@
 <!--- Create Plan Model --->
-<!--- Thomas Dye, August 2016 --->
+<!--- Thomas Dye, September 2016 --->
 <cfif !isDefined("messageBean")>
 	<cflocation url="..">
 </cfif>
@@ -53,6 +53,7 @@
 													<cfoutput>#qSearchGetFilteredDegrees.degree_type#</cfoutput>
 												</td>
 												<td>
+													<cfinput type="hidden" name="collegeId" value="#qSearchGetFilteredDegrees.colleges_id#">
 													<cfinput type="hidden" name="degreeId" value="#qSearchGetFilteredDegrees.id#">
 													<cfinput type="hidden" name="degreeName" value="#qSearchGetFilteredDegrees.degree_name#">
 													<cfinput type="submit" name="addDegreeButton" value="Select">
