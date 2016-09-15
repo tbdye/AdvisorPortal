@@ -6,47 +6,6 @@
 
 <cfset messageBean=createObject('#this.mappings['cfcMapping']#.messageBean').init()>
 
-<!--- Define "Remove" button behavior --->
-<cfif isDefined("form.removeCourseButton")>
-	<cfquery>
-		DELETE
-		FROM PLAN_SELECTEDCOURSES
-		WHERE id = <cfqueryparam value="#form.scId#" cfsqltype="cf_sql_integer">
-	</cfquery>
-	
-	<!--- Stop here and refresh page --->
-	<cflocation url=".">
-</cfif>
-
-<!--- Define "Update" button behavior --->
-<cfif isDefined("form.updateCourseButton")>
-	<cfquery name="qDashboardGetCourse">
-		SELECT id, min_credit, max_credit
-		FROM COURSES
-		WHERE id = <cfqueryparam value="#form.courseId#" cfsqltype="cf_sql_integer">
-	</cfquery>
-	
-	<!--- Validate form data --->
-	<cfif isDefined("form.courseCredit")>
-		<cfif !len(trim(form.courseCredit))>
-			<cfset messageBean.addError('The course credit field cannot be left blank.', #form.scId#)>
-		<cfelseif !IsNumeric("#trim(form.courseCredit)#")>
-			<cfset messageBean.addError('Credits must be entered in as a decimal number.', #form.scId#)>
-		<cfelseif trim(form.courseCredit) LT qDashboardGetCourse.min_credit || trim(form.courseCredit) GT qDashboardGetCourse.max_credit>
-			<cfset messageBean.addError('Credit must be between #qDashboardGetCourse.min_credit# and #qDashboardGetCourse.max_credit#.', #form.scId#)>
-		</cfif>
-	</cfif>
-	
-	<!--- Update proposed course credits on plan --->
-	<cfif !messageBean.HasErrors()>
-		<cfquery>
-			UPDATE PLAN_SELECTEDCOURSES
-			SET credit = <cfqueryparam value="#form.courseCredit#" cfsqltype="cf_sql_decimal">
-			WHERE id = <cfqueryparam value="#form.scId#" cfsqltype="cf_sql_integer">
-		</cfquery>
-	</cfif>
-</cfif>
-
 <!--- Prepare basic contents of the page --->
 <cfquery name="qDashboardGetActivePlan">
 	SELECT pla.id AS plans_id, pla.plan_name, deg.id AS degrees_id, deg.degree_name, deg.degree_type, col.id AS colleges_id, col.college_name, col.college_city
