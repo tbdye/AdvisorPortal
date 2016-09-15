@@ -46,7 +46,9 @@
 		FROM PLAN_SELECTEDCOURSES sc
 		JOIN COURSES c
 		ON c.id = sc.courses_id
-		LEFT JOIN STUDENTS_COMPLETEDCOURSES cc
+		LEFT JOIN (SELECT courses_id, credit
+			FROM STUDENTS_COMPLETEDCOURSES
+			WHERE students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">) AS cc
 		ON c.id = cc.courses_id
 		WHERE sc.plans_id = <cfqueryparam value="#qDashboardGetActivePlan.plans_id#" cfsqltype="cf_sql_integer">
 	</cfquery>
