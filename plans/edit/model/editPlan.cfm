@@ -20,78 +20,85 @@
 				&raquo; <a href="..">Degree Plans</a>
 				&raquo; Edit Plan
 			</div>	
-					
 
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
 	                <span property="dc:title" content="Edit Plan" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">               	
-						<p>
-							<strong>Edit details for "<cfoutput>#qEditGetPlan.plan_name#</cfoutput>"</strong>
-						</p>
-	
-	            		<cfif messageBean.hasErrors() && isDefined("form.saveButton")>
+						<h2>Edit details for "<cfoutput>#qEditGetPlan.plan_name#</cfoutput>"</h2>
+
 						<table>
-							<tr>
-								<td colspan="2">
-									<div id="form-errors">
-										<ul>
-											<cfloop array="#messageBean.getErrors()#" index="error">
-												<cfoutput><li>#error.message#</li></cfoutput>
-											</cfloop>
-										</ul>
-									</div>											
-								</td>
-							</tr>
-						</table>
-						</cfif>
+							<cfif messageBean.hasErrors() && isDefined("form.saveButton")>
+								<tr>
+									<td colspan="2">
+										<div id="form-errors">
+											<ul>
+												<cfloop array="#messageBean.getErrors()#" index="error">
+													<cfoutput><li>#error.message#</li></cfoutput>
+												</cfloop>
+											</ul>
+										</div>											
+									</td>
+								</tr>
+							</cfif>
 	
-						<!-- Form START -->
-						<cfform>
-							<table>
+							<cfform>
 		                		<tr>
 		                			<td><label for="planName">Plan name:</label></td>
 		                			<td><cfinput type="text" size="#len(qEditGetPlan.plan_name)#" id="planName" name="planName" value="#qEditGetPlan.plan_name#"> &nbsp; <cfinput type="submit" name="saveButton" value="Save"></td>			                			
 		                		</tr>
-		                		<tr>
-		                			<td>Degree:</td>
-		                			<td>
-		                				<cfoutput><a href="../degrees/?degree=#qEditGetPlan.degrees_id#" title="#qEditGetPlan.degree_name#">#qEditGetPlan.degree_name#</a></cfoutput><br>
-		                				<cfoutput><a href="../colleges/?college=#qEditGetPlan.colleges_id#" title="#qEditGetPlan.college_name# - #qEditGetPlan.college_city#">#qEditGetPlan.college_name# - #qEditGetPlan.college_city#</a></cfoutput><br>
-		                				<cfoutput>#qEditGetPlan.degree_type#</cfoutput>
-		                			</td>
-		                		</tr>
-	                		</table>							
-	               		</cfform>							
-						<!-- Form END -->
-						
-						<cfform>
-							<p>
-								<strong>Add a course to this degree plan by course number</strong>
-							</p>
-							<cfif messageBean.hasErrors() && isDefined("form.searchButton")>
-								<table>
-									<tr>
-										<td colspan="2">
-											<div id="form-errors">
-												<ul>
-													<cfloop array="#messageBean.getErrors()#" index="error">
-														<cfoutput><li>#error.message#</li></cfoutput>
-													</cfloop>
-												</ul>
-											</div>											
-										</td>
-									</tr>
-								</table>
+		                	</cfform>
+	                		<tr>
+	                			<td>Degree:</td>
+	                			<td>
+	                				<cfoutput><a href="../degrees/?degree=#qEditGetPlan.degrees_id#" title="#qEditGetPlan.degree_name#">#qEditGetPlan.degree_name#</a></cfoutput><br>
+	                				<cfoutput><a href="../colleges/?college=#qEditGetPlan.colleges_id#" title="#qEditGetPlan.college_name# - #qEditGetPlan.college_city#">#qEditGetPlan.college_name# - #qEditGetPlan.college_city#</a></cfoutput><br>
+	                				<cfoutput>#qEditGetPlan.degree_type#</cfoutput>
+	                			</td>
+	                		</tr>
+
+							<tr>
+								<td colspan="2"><h3>Add a course to this degree plan by course number</h3></td>
+							</tr>
+							<cfif messageBean.hasErrors() && isDefined("form.addCourseButton")>
+								<tr>
+									<td colspan="2">
+										<div id="form-errors">
+											<ul>
+												<cfloop array="#messageBean.getErrors()#" index="error">
+													<cfoutput><li>#error.message#</li></cfoutput>
+												</cfloop>
+											</ul>
+										</div>											
+									</td>
+								</tr>
 							</cfif>
-							<p>
-								<cfinput width="275px" type="text" id="searchTerm" name="searchTerm">&nbsp;<cfinput type="submit" name="searchButton" value="Search">
-							</p>
-							<p>
-								<a href="https://www.everettcc.edu/catalog/" title="View official course catalog" target="_blank">View official course catalog</a>
-							</p>	
-						</cfform>
+							<cfform>
+								<tr>
+									<td><label for="courseNumber">Course number:</label></td>
+									<td><cfinput width="275px" type="text" id="courseNumber" name="courseNumber"></td>
+								</tr>
+								<tr>
+									<td><label for="category">Category:</label></td>
+									<td>
+										<cfselect name="category" query="qEditGetSelectCategories" display="description" value="id" queryPosition="below" >
+											<option value="0">Select a category</option>
+										</cfselect>
+									</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td><cfinput type="submit" name="addCourseButton" value="Add"></td>
+								</tr>
+							</cfform>
+							<tr>
+								<td></td>
+								<td>
+									<a href="https://www.everettcc.edu/catalog/" title="View official course catalog" target="_blank">View official course catalog</a>
+								</td>
+							</tr>
+						</table>
 						
 						<h3>Courses remaining for this plan</h3>
 						<table>
@@ -147,8 +154,11 @@
 												</cfif>
 											</td>
 											<td>
+												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<cfif len(aCategoryC[Counter][9])>
+													Optional
 												<!--- The course number will exist if the student has completed this course --->
-												<cfif len(aCategoryC[Counter][7])>
+												<cfelseif len(aCategoryC[Counter][7])>
 													Complete
 												</cfif>
 											</td>
@@ -222,8 +232,11 @@
 												</cfif>
 											</td>
 											<td>
+												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<cfif len(aCategoryW[Counter][9])>
+													Optional
 												<!--- The course number will exist if the student has completed this course --->
-												<cfif len(aCategoryW[Counter][7])>
+												<cfelseif len(aCategoryW[Counter][7])>
 													Complete
 												</cfif>
 											</td>
@@ -297,8 +310,11 @@
 												</cfif>
 											</td>
 											<td>
+												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<cfif len(aCategoryQSR[Counter][9])>
+													Optional
 												<!--- The course number will exist if the student has completed this course --->
-												<cfif len(aCategoryQSR[Counter][7])>
+												<cfelseif len(aCategoryQSR[Counter][7])>
 													Complete
 												</cfif>
 											</td>
@@ -372,8 +388,11 @@
 												</cfif>
 											</td>
 											<td>
+												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<cfif len(aCategoryNW[Counter][9])>
+													Optional
 												<!--- The course number will exist if the student has completed this course --->
-												<cfif len(aCategoryNW[Counter][7])>
+												<cfelseif len(aCategoryNW[Counter][7])>
 													Complete
 												</cfif>
 											</td>
@@ -448,8 +467,11 @@
 												</cfif>
 											</td>
 											<td>
+												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<cfif len(aCategoryVLPA[Counter][9])>
+													Optional
 												<!--- The course number will exist if the student has completed this course --->
-												<cfif len(aCategoryVLPA[Counter][7])>
+												<cfelseif len(aCategoryVLPA[Counter][7])>
 													Complete
 												</cfif>
 											</td>
@@ -524,8 +546,11 @@
 												</cfif>
 											</td>
 											<td>
+												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<cfif len(aCategoryIS[Counter][9])>
+													Optional
 												<!--- The course number will exist if the student has completed this course --->
-												<cfif len(aCategoryIS[Counter][7])>
+												<cfelseif len(aCategoryIS[Counter][7])>
 													Complete
 												</cfif>
 											</td>
@@ -543,7 +568,86 @@
                                     </cfoutput>
 								</tr>
 							</cfloop>
-						</table>                	
+							
+							<tr>
+								<td colspan="5">
+									<hr>
+									<h4>Diversity</h4>
+								</td>
+							</tr>
+							<tr>
+								<th>Code</th>
+								<th>Title</th>
+								<th>Credits</th>
+								<th>Status</th>
+								<th></th>
+							</tr>
+							<cfloop from=1 to="#arrayLen(aCategoryDIV)#" index="Counter">
+								<!--- Tag and display errors for courses using sc_id --->
+								<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryDIV[Counter][4]>
+									<tr>
+										<td colspan="5">
+											<div id="form-errors">
+												<ul>
+													<cfloop array="#messageBean.getErrors()#" index="error">
+														<cfoutput><li>#error.message#</li></cfoutput>
+													</cfloop>
+												</ul>
+											</div>											
+										</td>
+									</tr>
+								</cfif>
+								<tr>
+									<cfoutput>
+                                    	<cfform>
+                                    		<cfset displayUpdate=false>
+	                                    	<!--- Display code --->
+	                                    	<td>#aCategoryDIV[Counter][2]#</td>
+											<!--- Display title --->
+											<td>#aCategoryDIV[Counter][3]#</td>
+											<td>
+												<!--- If selected course credit was variable, cell is blank --->
+												<cfif !len(aCategoryDIV[Counter][6])>
+													<!--- The course number will exist if the student has completed this course --->
+													<cfif len(aCategoryDIV[Counter][7])>
+														<!--- Display credit information from the completed course --->
+														#aCategoryDIV[Counter][8]#
+													<!--- Otherwise, ask user to update information --->
+													<cfelse>
+														<cfinput type="text" id="courseCredit" name="courseCredit">
+														<cfset displayUpdate=true>
+													</cfif>
+												<!--- The selected course credit was not variable --->
+												<cfelse>
+													<!--- Display credit --->
+													#aCategoryDIV[Counter][6]#
+												</cfif>
+											</td>
+											<td>
+												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<cfif len(aCategoryDIV[Counter][9])>
+													Optional
+												<!--- The course number will exist if the student has completed this course --->
+												<cfelseif len(aCategoryDIV[Counter][7])>
+													Complete
+												</cfif>
+											</td>
+											<td>
+												<!--- Display buttons --->
+												<cfinput type="hidden" name="scId" value="#aCategoryDIV[Counter][4]#">
+												<cfif displayUpdate>
+													<cfinput type="hidden" name="courseId" value="#aCategoryDIV[Counter][1]#">
+													<cfinput type="submit" name="updateCourseButton" value="Update">
+												<cfelse>
+													<cfinput type="submit" name="removeCourseButton" value="Remove">
+												</cfif>
+											</td>
+										</cfform>
+                                    </cfoutput>
+								</tr>
+							</cfloop>
+						</table>
+						             	
 	                </div>
 	            </div>
 	        </div>

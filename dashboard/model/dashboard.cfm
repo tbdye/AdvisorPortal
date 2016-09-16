@@ -83,8 +83,11 @@
 											</cfif>
 										</td>
 										<td>
+											<!--- The course number will exist if the course is an optional graduation requirement --->
+											<cfif len(aCategoryC[Counter][9])>
+												Optional
 											<!--- The course number will exist if the student has completed this course --->
-											<cfif len(aCategoryC[Counter][7])>
+											<cfelseif len(aCategoryC[Counter][7])>
 												Complete
 											</cfif>
 										</td>
@@ -129,8 +132,11 @@
 											</cfif>
 										</td>
 										<td>
+											<!--- The course number will exist if the course is an optional graduation requirement --->
+											<cfif len(aCategoryW[Counter][9])>
+												Optional
 											<!--- The course number will exist if the student has completed this course --->
-											<cfif len(aCategoryW[Counter][7])>
+											<cfelseif len(aCategoryW[Counter][7])>
 												Complete
 											</cfif>
 										</td>
@@ -175,8 +181,11 @@
 											</cfif>
 										</td>
 										<td>
+											<!--- The course number will exist if the course is an optional graduation requirement --->
+											<cfif len(aCategoryQSR[Counter][9])>
+												Optional
 											<!--- The course number will exist if the student has completed this course --->
-											<cfif len(aCategoryQSR[Counter][7])>
+											<cfelseif len(aCategoryQSR[Counter][7])>
 												Complete
 											</cfif>
 										</td>
@@ -221,8 +230,11 @@
 											</cfif>
 										</td>
 										<td>
+											<!--- The course number will exist if the course is an optional graduation requirement --->
+											<cfif len(aCategoryNW[Counter][9])>
+												Optional
 											<!--- The course number will exist if the student has completed this course --->
-											<cfif len(aCategoryNW[Counter][7])>
+											<cfelseif len(aCategoryNW[Counter][7])>
 												Complete
 											</cfif>
 										</td>
@@ -268,8 +280,11 @@
 											</cfif>
 										</td>
 										<td>
+											<!--- The course number will exist if the course is an optional graduation requirement --->
+											<cfif len(aCategoryVLPA[Counter][9])>
+												Optional
 											<!--- The course number will exist if the student has completed this course --->
-											<cfif len(aCategoryVLPA[Counter][7])>
+											<cfelseif len(aCategoryVLPA[Counter][7])>
 												Complete
 											</cfif>
 										</td>
@@ -315,14 +330,67 @@
 											</cfif>
 										</td>
 										<td>
+											<!--- The course number will exist if the course is an optional graduation requirement --->
+											<cfif len(aCategoryIS[Counter][9])>
+												Optional
 											<!--- The course number will exist if the student has completed this course --->
-											<cfif len(aCategoryIS[Counter][7])>
+											<cfelseif len(aCategoryIS[Counter][7])>
 												Complete
 											</cfif>
 										</td>
                                     </cfoutput>
 								</tr>
 							</cfloop>
+							
+							<tr>
+								<td colspan="4">
+									<hr>
+									<h4>Diversity</h4>
+								</td>
+							</tr>
+							<tr>
+								<th>Code</th>
+								<th>Title</th>
+								<th>Credits</th>
+								<th>Status</th>
+							</tr>
+							<cfloop from=1 to="#arrayLen(aCategoryDIV)#" index="Counter">
+								<tr>
+									<cfoutput>
+                                    	<!--- Display code --->
+                                    	<td>#aCategoryDIV[Counter][2]#</td>
+										<!--- Display title --->
+										<td>#aCategoryDIV[Counter][3]#</td>
+										<td>
+											<!--- If selected course credit was variable, cell is blank --->
+											<cfif !len(aCategoryDIV[Counter][6])>
+												<!--- The course number will exist if the student has completed this course --->
+												<cfif len(aCategoryDIV[Counter][7])>
+													<!--- Display credit information from the completed course --->
+													#aCategoryDIV[Counter][8]#
+												<!--- Otherwise, alert user to update information --->
+												<cfelse>
+													<a href="../plans/edit/?plan=#URLEncodedFormat(qDashboardGetActivePlan.plans_id)#" title="Update credits for #aCategoryDIV[Counter][2]#">Update</a>
+												</cfif>
+											<!--- The selected course credit was not variable --->
+											<cfelse>
+												<!--- Display credit --->
+												#aCategoryDIV[Counter][6]#
+											</cfif>
+										</td>
+										<td>
+											<!--- The course number will exist if the course is an optional graduation requirement --->
+											<cfif len(aCategoryDIV[Counter][9])>
+												Optional
+											<!--- The course number will exist if the student has completed this course --->
+											<cfelseif len(aCategoryDIV[Counter][7])>
+												Complete
+											</cfif>
+										</td>
+                                    </cfoutput>
+								</tr>
+							</cfloop>
+							
 						</table>
 						
 					<cfelse>

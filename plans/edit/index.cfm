@@ -92,6 +92,12 @@
 	</cfif>
 </cfif>
 
+<!--- Display default contents of page --->
+<cfquery name="qEditGetSelectCategories">
+	SELECT id, category, description
+	FROM CATEGORIES
+</cfquery>
+
 <!--- Use arrays to store page output for courses --->
 <cfset aCategoryVLPA=arraynew(2)>
 <cfset aCategoryIS=arraynew(2)>
@@ -105,7 +111,8 @@
 <cfquery name="qEditGetCourses">
 	SELECT c.id, c.course_number, c.title,
 		sc.id AS sc_id, sc.categories_id, sc.credit,
-		cc.courses_id AS cc_id, cc.credit AS cc_credit
+		cc.courses_id AS cc_id, cc.credit AS cc_credit,
+		gc.courses_id AS gc_id
 	FROM PLAN_SELECTEDCOURSES sc
 	JOIN COURSES c
 	ON c.id = sc.courses_id
@@ -113,6 +120,8 @@
 		FROM STUDENTS_COMPLETEDCOURSES
 		WHERE students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">) AS cc
 	ON c.id = cc.courses_id
+	LEFT JOIN DEGREE_GRADUATION_COURSES gc
+	ON c.id = gc.courses_id
 	WHERE sc.plans_id = <cfqueryparam value="#qEditGetPlan.id#" cfsqltype="cf_sql_integer">
 </cfquery>
 
@@ -120,39 +129,6 @@
 <cfloop query="qEditGetCourses">
 	<cfswitch expression="#qEditGetCourses.categories_id#">
 		<cfcase value="1">
-			<cfset row = #arrayLen(aCategoryVLPA)# + 1>
-			<cfset aCategoryVLPA[row][1]=id>
-			<cfset aCategoryVLPA[row][2]=course_number>
-			<cfset aCategoryVLPA[row][3]=title>
-			<cfset aCategoryVLPA[row][4]=sc_id>
-			<cfset aCategoryVLPA[row][5]=categories_id>
-			<cfset aCategoryVLPA[row][6]=credit>
-			<cfset aCategoryVLPA[row][7]=cc_id>
-			<cfset aCategoryVLPA[row][8]=cc_credit>
-		</cfcase>
-		<cfcase value="2">
-			<cfset row = #arrayLen(aCategoryIS)# + 1>
-			<cfset aCategoryIS[row][1]=id>
-			<cfset aCategoryIS[row][2]=course_number>
-			<cfset aCategoryIS[row][3]=title>
-			<cfset aCategoryIS[row][4]=sc_id>
-			<cfset aCategoryIS[row][5]=categories_id>
-			<cfset aCategoryIS[row][6]=credit>
-			<cfset aCategoryIS[row][7]=cc_id>
-			<cfset aCategoryIS[row][8]=cc_credit>
-		</cfcase>
-		<cfcase value="3">
-			<cfset row = #arrayLen(aCategoryNW)# + 1>
-			<cfset aCategoryNW[row][1]=id>
-			<cfset aCategoryNW[row][2]=course_number>
-			<cfset aCategoryNW[row][3]=title>
-			<cfset aCategoryNW[row][4]=sc_id>
-			<cfset aCategoryNW[row][5]=categories_id>
-			<cfset aCategoryNW[row][6]=credit>
-			<cfset aCategoryNW[row][7]=cc_id>
-			<cfset aCategoryNW[row][8]=cc_credit>
-		</cfcase>
-		<cfcase value="4">
 			<cfset row = #arrayLen(aCategoryC)# + 1>
 			<cfset aCategoryC[row][1]=id>
 			<cfset aCategoryC[row][2]=course_number>
@@ -162,19 +138,9 @@
 			<cfset aCategoryC[row][6]=credit>
 			<cfset aCategoryC[row][7]=cc_id>
 			<cfset aCategoryC[row][8]=cc_credit>
+			<cfset aCategoryC[row][9]=gc_id>
 		</cfcase>
-		<cfcase value="5">
-			<cfset row = #arrayLen(aCategoryQSR)# + 1>
-			<cfset aCategoryQSR[row][1]=id>
-			<cfset aCategoryQSR[row][2]=course_number>
-			<cfset aCategoryQSR[row][3]=title>
-			<cfset aCategoryQSR[row][4]=sc_id>
-			<cfset aCategoryQSR[row][5]=categories_id>
-			<cfset aCategoryQSR[row][6]=credit>
-			<cfset aCategoryQSR[row][7]=cc_id>
-			<cfset aCategoryQSR[row][8]=cc_credit>
-		</cfcase>
-		<cfcase value="6">
+		<cfcase value="2">
 			<cfset row = #arrayLen(aCategoryW)# + 1>
 			<cfset aCategoryW[row][1]=id>
 			<cfset aCategoryW[row][2]=course_number>
@@ -184,6 +150,55 @@
 			<cfset aCategoryW[row][6]=credit>
 			<cfset aCategoryW[row][7]=cc_id>
 			<cfset aCategoryW[row][8]=cc_credit>
+			<cfset aCategoryW[row][9]=gc_id>
+		</cfcase>
+		<cfcase value="3">
+			<cfset row = #arrayLen(aCategoryQSR)# + 1>
+			<cfset aCategoryQSR[row][1]=id>
+			<cfset aCategoryQSR[row][2]=course_number>
+			<cfset aCategoryQSR[row][3]=title>
+			<cfset aCategoryQSR[row][4]=sc_id>
+			<cfset aCategoryQSR[row][5]=categories_id>
+			<cfset aCategoryQSR[row][6]=credit>
+			<cfset aCategoryQSR[row][7]=cc_id>
+			<cfset aCategoryQSR[row][8]=cc_credit>
+			<cfset aCategoryQSR[row][9]=gc_id>
+		</cfcase>
+		<cfcase value="4">
+			<cfset row = #arrayLen(aCategoryNW)# + 1>
+			<cfset aCategoryNW[row][1]=id>
+			<cfset aCategoryNW[row][2]=course_number>
+			<cfset aCategoryNW[row][3]=title>
+			<cfset aCategoryNW[row][4]=sc_id>
+			<cfset aCategoryNW[row][5]=categories_id>
+			<cfset aCategoryNW[row][6]=credit>
+			<cfset aCategoryNW[row][7]=cc_id>
+			<cfset aCategoryNW[row][8]=cc_credit>
+			<cfset aCategoryNW[row][9]=gc_id>
+		</cfcase>
+		<cfcase value="5">
+			<cfset row = #arrayLen(aCategoryVLPA)# + 1>
+			<cfset aCategoryVLPA[row][1]=id>
+			<cfset aCategoryVLPA[row][2]=course_number>
+			<cfset aCategoryVLPA[row][3]=title>
+			<cfset aCategoryVLPA[row][4]=sc_id>
+			<cfset aCategoryVLPA[row][5]=categories_id>
+			<cfset aCategoryVLPA[row][6]=credit>
+			<cfset aCategoryVLPA[row][7]=cc_id>
+			<cfset aCategoryVLPA[row][8]=cc_credit>
+			<cfset aCategoryVLPA[row][9]=gc_id>
+		</cfcase>
+		<cfcase value="6">
+			<cfset row = #arrayLen(aCategoryIS)# + 1>
+			<cfset aCategoryIS[row][1]=id>
+			<cfset aCategoryIS[row][2]=course_number>
+			<cfset aCategoryIS[row][3]=title>
+			<cfset aCategoryIS[row][4]=sc_id>
+			<cfset aCategoryIS[row][5]=categories_id>
+			<cfset aCategoryIS[row][6]=credit>
+			<cfset aCategoryIS[row][7]=cc_id>
+			<cfset aCategoryIS[row][8]=cc_credit>
+			<cfset aCategoryIS[row][9]=gc_id>
 		</cfcase>
 		<cfcase value="7">
 			<cfset row = #arrayLen(aCategoryDIV)# + 1>
@@ -195,9 +210,66 @@
 			<cfset aCategoryDIV[row][6]=credit>
 			<cfset aCategoryDIV[row][7]=cc_id>
 			<cfset aCategoryDIV[row][8]=cc_credit>
+			<cfset aCategoryDIV[row][9]=gc_id>
 		</cfcase>
 	</cfswitch>
 </cfloop>
+
+<!--- Define "Add" button behavior --->
+<cfif isDefined("form.addCourseButton")>
+	
+	<!--- Perform simple validation on form fields --->
+	<cfif !len(trim(form.courseNumber))>
+		<cfset messageBean.addError('A course number is required.', 'courseNumber')>
+	</cfif>
+	
+	<cfif form.category EQ 0>
+		<cfset messageBean.addError('Please select a category.', 'category')>
+	</cfif>
+	
+	<!--- Stop here if errors were detected --->
+	<cfif messageBean.hasErrors()>
+		<cfinclude template="model/editPlan.cfm">
+		<cfreturn>
+	</cfif>
+	
+	<!--- Find the course, if exists --->
+	<cfquery name="qEditGetCourse">
+		SELECT id, min_credit, max_credit
+		FROM COURSES
+		WHERE use_catalog = 1
+		AND course_number = <cfqueryparam value="#trim(form.courseNumber)#" cfsqltype="cf_sql_varchar">
+	</cfquery>
+	
+	<cfif !qEditGetCourse.RecordCount>
+		<cfset messageBean.addError('The course could not be found.', 'courseNumber')>
+	</cfif>
+	
+	<!--- Stop here if errors were detected --->
+	<cfif messageBean.hasErrors()>
+		<cfinclude template="model/editPlan.cfm">
+		<cfreturn>
+	</cfif>
+	
+	<!--- Looks good, so add course to plan --->
+	<cfquery>
+		INSERT INTO PLAN_SELECTEDCOURSES (
+			plans_id, courses_id, categories_id, credit
+		) VALUES (
+			<cfqueryparam value="#qEditGetPlan.id#" cfsqltype="cf_sql_integer">,
+			<cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">,
+			<cfqueryparam value="#form.category#" cfsqltype="cf_sql_integer">,
+			<cfif len(qEditGetCourse.min_credit)>
+				NULL
+			<cfelse>
+				<cfqueryparam value="#qEditGetCourse.max_credit#" cfsqltype="cf_sql_decimal">
+			</cfif>
+		)
+	</cfquery>
+	
+	<!--- Refresh the page --->
+	<cflocation url=".?plan=#URLEncodedFormat(qEditGetPlan.id)#">
+</cfif>
 
 <!--- Load page --->
 <cfinclude template="model/editPlan.cfm">
