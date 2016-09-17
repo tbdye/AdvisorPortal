@@ -132,16 +132,16 @@
                                     	<cfform>
                                     		<cfset displayUpdate=false>
 	                                    	<!--- Display code --->
-	                                    	<td>#aCategoryC[Counter][2]#</td>
+	                                    	<td>#aCategoryC[Counter][1]#</td>
 											<!--- Display title --->
-											<td>#aCategoryC[Counter][3]#</td>
+											<td>#aCategoryC[Counter][2]#</td>
 											<td>
 												<!--- If selected course credit was variable, cell is blank --->
-												<cfif !len(aCategoryC[Counter][6])>
-													<!--- The course number will exist if the student has completed this course --->
-													<cfif len(aCategoryC[Counter][7])>
+												<cfif !len(aCategoryC[Counter][3])>
+													<!--- The completed course id will exist if the student has completed this course --->
+													<cfif len(aCategoryC[Counter][9])>
 														<!--- Display credit information from the completed course --->
-														#aCategoryC[Counter][8]#
+														#aCategoryC[Counter][10]#
 													<!--- Otherwise, ask user to update information --->
 													<cfelse>
 														<cfinput type="text" id="courseCredit" name="courseCredit">
@@ -150,23 +150,23 @@
 												<!--- The selected course credit was not variable --->
 												<cfelse>
 													<!--- Display credit --->
-													#aCategoryC[Counter][6]#
+													#aCategoryC[Counter][3]#
 												</cfif>
 											</td>
 											<td>
-												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<!--- The course number will exist if the student has completed or verified this course --->
 												<cfif len(aCategoryC[Counter][9])>
-													Optional
-												<!--- The course number will exist if the student has completed this course --->
-												<cfelseif len(aCategoryC[Counter][7])>
 													Complete
+												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<cfelseif len(aCategoryC[Counter][8])>
+													Optional
 												</cfif>
 											</td>
 											<td>
 												<!--- Display buttons --->
 												<cfinput type="hidden" name="scId" value="#aCategoryC[Counter][4]#">
 												<cfif displayUpdate>
-													<cfinput type="hidden" name="courseId" value="#aCategoryC[Counter][1]#">
+													<cfinput type="hidden" name="courseId" value="#aCategoryC[Counter][5]#">
 													<cfinput type="submit" name="updateCourseButton" value="Update">
 												<cfelse>
 													<cfinput type="submit" name="removeCourseButton" value="Remove">
@@ -176,7 +176,7 @@
                                     </cfoutput>
 								</tr>
 							</cfloop>
-						
+							
 							<tr>
 								<td colspan="5">
 									<hr>
@@ -210,16 +210,16 @@
                                     	<cfform>
                                     		<cfset displayUpdate=false>
 	                                    	<!--- Display code --->
-	                                    	<td>#aCategoryW[Counter][2]#</td>
+	                                    	<td>#aCategoryW[Counter][1]#</td>
 											<!--- Display title --->
-											<td>#aCategoryW[Counter][3]#</td>
+											<td>#aCategoryW[Counter][2]#</td>
 											<td>
 												<!--- If selected course credit was variable, cell is blank --->
-												<cfif !len(aCategoryW[Counter][6])>
-													<!--- The course number will exist if the student has completed this course --->
-													<cfif len(aCategoryW[Counter][7])>
+												<cfif !len(aCategoryW[Counter][3])>
+													<!--- The completed course id will exist if the student has completed this course --->
+													<cfif len(aCategoryW[Counter][9])>
 														<!--- Display credit information from the completed course --->
-														#aCategoryW[Counter][8]#
+														#aCategoryW[Counter][10]#
 													<!--- Otherwise, ask user to update information --->
 													<cfelse>
 														<cfinput type="text" id="courseCredit" name="courseCredit">
@@ -228,23 +228,23 @@
 												<!--- The selected course credit was not variable --->
 												<cfelse>
 													<!--- Display credit --->
-													#aCategoryW[Counter][6]#
+													#aCategoryW[Counter][3]#
 												</cfif>
 											</td>
 											<td>
-												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<!--- The course number will exist if the student has completed or verified this course --->
 												<cfif len(aCategoryW[Counter][9])>
-													Optional
-												<!--- The course number will exist if the student has completed this course --->
-												<cfelseif len(aCategoryW[Counter][7])>
 													Complete
+												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<cfelseif len(aCategoryW[Counter][8])>
+													Optional
 												</cfif>
 											</td>
 											<td>
 												<!--- Display buttons --->
 												<cfinput type="hidden" name="scId" value="#aCategoryW[Counter][4]#">
 												<cfif displayUpdate>
-													<cfinput type="hidden" name="courseId" value="#aCategoryW[Counter][1]#">
+													<cfinput type="hidden" name="courseId" value="#aCategoryW[Counter][5]#">
 													<cfinput type="submit" name="updateCourseButton" value="Update">
 												<cfelse>
 													<cfinput type="submit" name="removeCourseButton" value="Remove">
@@ -288,16 +288,16 @@
                                     	<cfform>
                                     		<cfset displayUpdate=false>
 	                                    	<!--- Display code --->
-	                                    	<td>#aCategoryQSR[Counter][2]#</td>
+	                                    	<td>#aCategoryQSR[Counter][1]#</td>
 											<!--- Display title --->
-											<td>#aCategoryQSR[Counter][3]#</td>
+											<td>#aCategoryQSR[Counter][2]#</td>
 											<td>
 												<!--- If selected course credit was variable, cell is blank --->
-												<cfif !len(aCategoryQSR[Counter][6])>
-													<!--- The course number will exist if the student has completed this course --->
-													<cfif len(aCategoryQSR[Counter][7])>
+												<cfif !len(aCategoryQSR[Counter][3])>
+													<!--- The completed course id will exist if the student has completed this course --->
+													<cfif len(aCategoryQSR[Counter][9])>
 														<!--- Display credit information from the completed course --->
-														#aCategoryQSR[Counter][8]#
+														#aCategoryQSR[Counter][10]#
 													<!--- Otherwise, ask user to update information --->
 													<cfelse>
 														<cfinput type="text" id="courseCredit" name="courseCredit">
@@ -306,23 +306,23 @@
 												<!--- The selected course credit was not variable --->
 												<cfelse>
 													<!--- Display credit --->
-													#aCategoryQSR[Counter][6]#
+													#aCategoryQSR[Counter][3]#
 												</cfif>
 											</td>
 											<td>
-												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<!--- The course number will exist if the student has completed or verified this course --->
 												<cfif len(aCategoryQSR[Counter][9])>
-													Optional
-												<!--- The course number will exist if the student has completed this course --->
-												<cfelseif len(aCategoryQSR[Counter][7])>
 													Complete
+												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<cfelseif len(aCategoryQSR[Counter][8])>
+													Optional
 												</cfif>
 											</td>
 											<td>
 												<!--- Display buttons --->
 												<cfinput type="hidden" name="scId" value="#aCategoryQSR[Counter][4]#">
 												<cfif displayUpdate>
-													<cfinput type="hidden" name="courseId" value="#aCategoryQSR[Counter][1]#">
+													<cfinput type="hidden" name="courseId" value="#aCategoryQSR[Counter][5]#">
 													<cfinput type="submit" name="updateCourseButton" value="Update">
 												<cfelse>
 													<cfinput type="submit" name="removeCourseButton" value="Remove">
@@ -332,7 +332,7 @@
                                     </cfoutput>
 								</tr>
 							</cfloop>
-						
+							
 							<tr>
 								<td colspan="5">
 									<hr>
@@ -366,16 +366,16 @@
                                     	<cfform>
                                     		<cfset displayUpdate=false>
 	                                    	<!--- Display code --->
-	                                    	<td>#aCategoryNW[Counter][2]#</td>
+	                                    	<td>#aCategoryNW[Counter][1]#</td>
 											<!--- Display title --->
-											<td>#aCategoryNW[Counter][3]#</td>
+											<td>#aCategoryNW[Counter][2]#</td>
 											<td>
 												<!--- If selected course credit was variable, cell is blank --->
-												<cfif !len(aCategoryNW[Counter][6])>
-													<!--- The course number will exist if the student has completed this course --->
-													<cfif len(aCategoryNW[Counter][7])>
+												<cfif !len(aCategoryNW[Counter][3])>
+													<!--- The completed course id will exist if the student has completed this course --->
+													<cfif len(aCategoryNW[Counter][9])>
 														<!--- Display credit information from the completed course --->
-														#aCategoryNW[Counter][8]#
+														#aCategoryNW[Counter][10]#
 													<!--- Otherwise, ask user to update information --->
 													<cfelse>
 														<cfinput type="text" id="courseCredit" name="courseCredit">
@@ -384,23 +384,23 @@
 												<!--- The selected course credit was not variable --->
 												<cfelse>
 													<!--- Display credit --->
-													#aCategoryNW[Counter][6]#
+													#aCategoryNW[Counter][3]#
 												</cfif>
 											</td>
 											<td>
-												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<!--- The course number will exist if the student has completed or verified this course --->
 												<cfif len(aCategoryNW[Counter][9])>
-													Optional
-												<!--- The course number will exist if the student has completed this course --->
-												<cfelseif len(aCategoryNW[Counter][7])>
 													Complete
+												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<cfelseif len(aCategoryNW[Counter][8])>
+													Optional
 												</cfif>
 											</td>
 											<td>
 												<!--- Display buttons --->
 												<cfinput type="hidden" name="scId" value="#aCategoryNW[Counter][4]#">
 												<cfif displayUpdate>
-													<cfinput type="hidden" name="courseId" value="#aCategoryNW[Counter][1]#">
+													<cfinput type="hidden" name="courseId" value="#aCategoryNW[Counter][5]#">
 													<cfinput type="submit" name="updateCourseButton" value="Update">
 												<cfelse>
 													<cfinput type="submit" name="removeCourseButton" value="Remove">
@@ -410,12 +410,11 @@
                                     </cfoutput>
 								</tr>
 							</cfloop>
-						
+							
 							<tr>
 								<td colspan="5">
 									<hr>
 									<h4>Visual, Literary, and Performing Arts</h4>
-									(You need X more credits)
 								</td>
 							</tr>
 							<tr>
@@ -445,16 +444,16 @@
                                     	<cfform>
                                     		<cfset displayUpdate=false>
 	                                    	<!--- Display code --->
-	                                    	<td>#aCategoryVLPA[Counter][2]#</td>
+	                                    	<td>#aCategoryVLPA[Counter][1]#</td>
 											<!--- Display title --->
-											<td>#aCategoryVLPA[Counter][3]#</td>
+											<td>#aCategoryVLPA[Counter][2]#</td>
 											<td>
 												<!--- If selected course credit was variable, cell is blank --->
-												<cfif !len(aCategoryVLPA[Counter][6])>
-													<!--- The course number will exist if the student has completed this course --->
-													<cfif len(aCategoryVLPA[Counter][7])>
+												<cfif !len(aCategoryVLPA[Counter][3])>
+													<!--- The completed course id will exist if the student has completed this course --->
+													<cfif len(aCategoryVLPA[Counter][9])>
 														<!--- Display credit information from the completed course --->
-														#aCategoryVLPA[Counter][8]#
+														#aCategoryVLPA[Counter][10]#
 													<!--- Otherwise, ask user to update information --->
 													<cfelse>
 														<cfinput type="text" id="courseCredit" name="courseCredit">
@@ -463,23 +462,23 @@
 												<!--- The selected course credit was not variable --->
 												<cfelse>
 													<!--- Display credit --->
-													#aCategoryVLPA[Counter][6]#
+													#aCategoryVLPA[Counter][3]#
 												</cfif>
 											</td>
 											<td>
-												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<!--- The course number will exist if the student has completed or verified this course --->
 												<cfif len(aCategoryVLPA[Counter][9])>
-													Optional
-												<!--- The course number will exist if the student has completed this course --->
-												<cfelseif len(aCategoryVLPA[Counter][7])>
 													Complete
+												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<cfelseif len(aCategoryVLPA[Counter][8])>
+													Optional
 												</cfif>
 											</td>
 											<td>
 												<!--- Display buttons --->
 												<cfinput type="hidden" name="scId" value="#aCategoryVLPA[Counter][4]#">
 												<cfif displayUpdate>
-													<cfinput type="hidden" name="courseId" value="#aCategoryVLPA[Counter][1]#">
+													<cfinput type="hidden" name="courseId" value="#aCategoryVLPA[Counter][5]#">
 													<cfinput type="submit" name="updateCourseButton" value="Update">
 												<cfelse>
 													<cfinput type="submit" name="removeCourseButton" value="Remove">
@@ -489,12 +488,11 @@
                                     </cfoutput>
 								</tr>
 							</cfloop>
-						
+							
 							<tr>
 								<td colspan="5">
 									<hr>
 									<h4>Individuals and Societies</h4>
-									(You need X more credits)
 								</td>
 							</tr>
 							<tr>
@@ -524,16 +522,16 @@
                                     	<cfform>
                                     		<cfset displayUpdate=false>
 	                                    	<!--- Display code --->
-	                                    	<td>#aCategoryIS[Counter][2]#</td>
+	                                    	<td>#aCategoryIS[Counter][1]#</td>
 											<!--- Display title --->
-											<td>#aCategoryIS[Counter][3]#</td>
+											<td>#aCategoryIS[Counter][2]#</td>
 											<td>
 												<!--- If selected course credit was variable, cell is blank --->
-												<cfif !len(aCategoryIS[Counter][6])>
-													<!--- The course number will exist if the student has completed this course --->
-													<cfif len(aCategoryIS[Counter][7])>
+												<cfif !len(aCategoryIS[Counter][3])>
+													<!--- The completed course id will exist if the student has completed this course --->
+													<cfif len(aCategoryIS[Counter][9])>
 														<!--- Display credit information from the completed course --->
-														#aCategoryIS[Counter][8]#
+														#aCategoryIS[Counter][10]#
 													<!--- Otherwise, ask user to update information --->
 													<cfelse>
 														<cfinput type="text" id="courseCredit" name="courseCredit">
@@ -542,23 +540,23 @@
 												<!--- The selected course credit was not variable --->
 												<cfelse>
 													<!--- Display credit --->
-													#aCategoryIS[Counter][6]#
+													#aCategoryIS[Counter][3]#
 												</cfif>
 											</td>
 											<td>
-												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<!--- The course number will exist if the student has completed or verified this course --->
 												<cfif len(aCategoryIS[Counter][9])>
-													Optional
-												<!--- The course number will exist if the student has completed this course --->
-												<cfelseif len(aCategoryIS[Counter][7])>
 													Complete
+												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<cfelseif len(aCategoryIS[Counter][8])>
+													Optional
 												</cfif>
 											</td>
 											<td>
 												<!--- Display buttons --->
 												<cfinput type="hidden" name="scId" value="#aCategoryIS[Counter][4]#">
 												<cfif displayUpdate>
-													<cfinput type="hidden" name="courseId" value="#aCategoryIS[Counter][1]#">
+													<cfinput type="hidden" name="courseId" value="#aCategoryIS[Counter][5]#">
 													<cfinput type="submit" name="updateCourseButton" value="Update">
 												<cfelse>
 													<cfinput type="submit" name="removeCourseButton" value="Remove">
@@ -602,16 +600,16 @@
                                     	<cfform>
                                     		<cfset displayUpdate=false>
 	                                    	<!--- Display code --->
-	                                    	<td>#aCategoryDIV[Counter][2]#</td>
+	                                    	<td>#aCategoryDIV[Counter][1]#</td>
 											<!--- Display title --->
-											<td>#aCategoryDIV[Counter][3]#</td>
+											<td>#aCategoryDIV[Counter][2]#</td>
 											<td>
 												<!--- If selected course credit was variable, cell is blank --->
-												<cfif !len(aCategoryDIV[Counter][6])>
-													<!--- The course number will exist if the student has completed this course --->
-													<cfif len(aCategoryDIV[Counter][7])>
+												<cfif !len(aCategoryDIV[Counter][3])>
+													<!--- The completed course id will exist if the student has completed this course --->
+													<cfif len(aCategoryDIV[Counter][9])>
 														<!--- Display credit information from the completed course --->
-														#aCategoryDIV[Counter][8]#
+														#aCategoryDIV[Counter][10]#
 													<!--- Otherwise, ask user to update information --->
 													<cfelse>
 														<cfinput type="text" id="courseCredit" name="courseCredit">
@@ -620,23 +618,101 @@
 												<!--- The selected course credit was not variable --->
 												<cfelse>
 													<!--- Display credit --->
-													#aCategoryDIV[Counter][6]#
+													#aCategoryDIV[Counter][3]#
 												</cfif>
 											</td>
 											<td>
-												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<!--- The course number will exist if the student has completed or verified this course --->
 												<cfif len(aCategoryDIV[Counter][9])>
-													Optional
-												<!--- The course number will exist if the student has completed this course --->
-												<cfelseif len(aCategoryDIV[Counter][7])>
 													Complete
+												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<cfelseif len(aCategoryDIV[Counter][8])>
+													Optional
 												</cfif>
 											</td>
 											<td>
 												<!--- Display buttons --->
 												<cfinput type="hidden" name="scId" value="#aCategoryDIV[Counter][4]#">
 												<cfif displayUpdate>
-													<cfinput type="hidden" name="courseId" value="#aCategoryDIV[Counter][1]#">
+													<cfinput type="hidden" name="courseId" value="#aCategoryDIV[Counter][5]#">
+													<cfinput type="submit" name="updateCourseButton" value="Update">
+												<cfelse>
+													<cfinput type="submit" name="removeCourseButton" value="Remove">
+												</cfif>
+											</td>
+										</cfform>
+                                    </cfoutput>
+								</tr>
+							</cfloop>
+							
+							<tr>
+								<td colspan="5">
+									<hr>
+									<h4>General Electives</h4>
+								</td>
+							</tr>
+							<tr>
+								<th>Code</th>
+								<th>Title</th>
+								<th>Credits</th>
+								<th>Status</th>
+								<th></th>
+							</tr>
+							<cfloop from=1 to="#arrayLen(aCategoryE)#" index="Counter">
+								<!--- Tag and display errors for courses using sc_id --->
+								<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryE[Counter][4]>
+									<tr>
+										<td colspan="5">
+											<div id="form-errors">
+												<ul>
+													<cfloop array="#messageBean.getErrors()#" index="error">
+														<cfoutput><li>#error.message#</li></cfoutput>
+													</cfloop>
+												</ul>
+											</div>											
+										</td>
+									</tr>
+								</cfif>
+								<tr>
+									<cfoutput>
+                                    	<cfform>
+                                    		<cfset displayUpdate=false>
+	                                    	<!--- Display code --->
+	                                    	<td>#aCategoryE[Counter][1]#</td>
+											<!--- Display title --->
+											<td>#aCategoryE[Counter][2]#</td>
+											<td>
+												<!--- If selected course credit was variable, cell is blank --->
+												<cfif !len(aCategoryE[Counter][3])>
+													<!--- The completed course id will exist if the student has completed this course --->
+													<cfif len(aCategoryE[Counter][9])>
+														<!--- Display credit information from the completed course --->
+														#aCategoryE[Counter][10]#
+													<!--- Otherwise, ask user to update information --->
+													<cfelse>
+														<cfinput type="text" id="courseCredit" name="courseCredit">
+														<cfset displayUpdate=true>
+													</cfif>
+												<!--- The selected course credit was not variable --->
+												<cfelse>
+													<!--- Display credit --->
+													#aCategoryE[Counter][3]#
+												</cfif>
+											</td>
+											<td>
+												<!--- The course number will exist if the student has completed or verified this course --->
+												<cfif len(aCategoryE[Counter][9])>
+													Complete
+												<!--- The course number will exist if the course is an optional graduation requirement --->
+												<cfelseif len(aCategoryE[Counter][8])>
+													Optional
+												</cfif>
+											</td>
+											<td>
+												<!--- Display buttons --->
+												<cfinput type="hidden" name="scId" value="#aCategoryE[Counter][4]#">
+												<cfif displayUpdate>
+													<cfinput type="hidden" name="courseId" value="#aCategoryE[Counter][5]#">
 													<cfinput type="submit" name="updateCourseButton" value="Update">
 												<cfelse>
 													<cfinput type="submit" name="removeCourseButton" value="Remove">

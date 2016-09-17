@@ -54,6 +54,7 @@
 		LEFT JOIN DEGREE_GRADUATION_COURSES gc
 		ON c.id = gc.courses_id
 		WHERE sc.plans_id = <cfqueryparam value="#qDashboardGetActivePlan.plans_id#" cfsqltype="cf_sql_integer">
+		ORDER BY c.course_number
 	</cfquery>
 	
 	<!--- Sort courses into storage arrays by category --->
