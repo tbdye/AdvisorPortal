@@ -110,43 +110,53 @@
 								<th>Title</th>
 								<th>Credits</th>
 								<th>Status</th>
-								<th></th>
+								<th>Remove</th>
 							</tr>
-							<cfloop from=1 to="#arrayLen(aCategoryC)#" index="Counter">
-								<!--- Tag and display errors for courses using sc_id --->
-								<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryC[Counter][4]>
+							<cfform>
+								<cfloop from=1 to="#arrayLen(aCategoryC)#" index="Counter">
+									<!--- Tag and display errors for courses using sc_id --->
+									<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryC[Counter][4]>
+										<tr>
+											<td colspan="5">
+												<div id="form-errors">
+													<ul>
+														<cfloop array="#messageBean.getErrors()#" index="error">
+															<cfoutput><li>#error.message#</li></cfoutput>
+														</cfloop>
+													</ul>
+												</div>											
+											</td>
+										</tr>
+									</cfif>
 									<tr>
-										<td colspan="5">
-											<div id="form-errors">
-												<ul>
-													<cfloop array="#messageBean.getErrors()#" index="error">
-														<cfoutput><li>#error.message#</li></cfoutput>
-													</cfloop>
-												</ul>
-											</div>											
-										</td>
-									</tr>
-								</cfif>
-								<tr>
-									<cfoutput>
-                                    	<cfform>
-                                    		<cfset displayUpdate=false>
+										<cfoutput>
 	                                    	<!--- Display code --->
 	                                    	<td>#aCategoryC[Counter][1]#</td>
 											<!--- Display title --->
 											<td>#aCategoryC[Counter][2]#</td>
 											<td>
+												<!--- Check to see if this course is marked as completed --->
+												<cfif len(aCategoryC[Counter][9])>
+													<!--- Display the completed course credits by default --->
+													#aCategoryC[Counter][10]#
 												<!--- If selected course credit was variable, cell is blank --->
-												<cfif !len(aCategoryC[Counter][3])>
-													<!--- The completed course id will exist if the student has completed this course --->
-													<cfif len(aCategoryC[Counter][9])>
-														<!--- Display credit information from the completed course --->
-														#aCategoryC[Counter][10]#
-													<!--- Otherwise, ask user to update information --->
-													<cfelse>
-														<cfinput type="text" id="courseCredit" name="courseCredit">
-														<cfset displayUpdate=true>
-													</cfif>
+												<cfelseif !len(aCategoryC[Counter][3])>
+													<cfinput type="hidden" name="creditId" value="#aCategoryC[Counter][4]#">
+													<!--- Use a selector box to choose the variable credits --->
+													<cfselect name="courseCredit">
+														<option value="0">
+															Choose
+														</option>
+														<!--- Set the minimum credit --->
+														<cfset credit=Val(aCategoryC[Counter][11])>
+														<!--- Display the available range of credits as integers --->
+														<cfloop from=1 to="#Val(aCategoryC[Counter][12]) - Val(aCategoryC[Counter][11]) + 1#" index="i">
+															<option value="#credit#">
+																#credit#
+															</option>
+															<cfset credit=credit + 1>
+														</cfloop>
+													</cfselect>
 												<!--- The selected course credit was not variable --->
 												<cfelse>
 													<!--- Display credit --->
@@ -155,27 +165,42 @@
 											</td>
 											<td>
 												<!--- The course number will exist if the student has completed or verified this course --->
-												<cfif len(aCategoryC[Counter][9])>
+												<cfif qEditGetSelectCoursesC.RecordCount>
+													<cfinput type="hidden" name="statusId" value="#aCategoryC[Counter][4]#">
+													<!--- Use a selector box to map the filtered available completed courses --->
+													<cfselect name="status" query="qEditGetSelectCoursesC" display="course_number" value="id" queryPosition="below">
+														<option value="0">
+															<cfif len(aCategoryC[Counter][9])>
+																Completed
+															<cfelse>
+																Select completed course
+															</cfif>
+														</option>
+													</cfselect>
+												<!--- Display by default when no unmapped courses are available --->
+												<cfelseif len(aCategoryC[Counter][9])>
 													Complete
-												<!--- The course number will exist if the course is an optional graduation requirement --->
 												<cfelseif len(aCategoryC[Counter][8])>
 													Optional
 												</cfif>
 											</td>
 											<td>
-												<!--- Display buttons --->
-												<cfinput type="hidden" name="scId" value="#aCategoryC[Counter][4]#">
-												<cfif displayUpdate>
-													<cfinput type="hidden" name="courseId" value="#aCategoryC[Counter][5]#">
-													<cfinput type="submit" name="updateCourseButton" value="Update">
-												<cfelse>
-													<cfinput type="submit" name="removeCourseButton" value="Remove">
-												</cfif>
+												<!--- Display remove checkboxes --->
+												<cfinput type="checkbox" name="remove" value="#aCategoryC[Counter][4]#">
 											</td>
-										</cfform>
-                                    </cfoutput>
-								</tr>
-							</cfloop>
+	                                    </cfoutput>
+									</tr>
+								</cfloop>
+								<cfif arrayLen(aCategoryC)>
+									<tr>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
+										<td></td>
+									</tr>
+								</cfif>
+							</cfform>
 							
 							<tr>
 								<td colspan="5">
@@ -188,43 +213,53 @@
 								<th>Title</th>
 								<th>Credits</th>
 								<th>Status</th>
-								<th></th>
+								<th>Remove</th>
 							</tr>
-							<cfloop from=1 to="#arrayLen(aCategoryW)#" index="Counter">
-								<!--- Tag and display errors for courses using sc_id --->
-								<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryW[Counter][4]>
+							<cfform>
+								<cfloop from=1 to="#arrayLen(aCategoryW)#" index="Counter">
+									<!--- Tag and display errors for courses using sc_id --->
+									<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryW[Counter][4]>
+										<tr>
+											<td colspan="5">
+												<div id="form-errors">
+													<ul>
+														<cfloop array="#messageBean.getErrors()#" index="error">
+															<cfoutput><li>#error.message#</li></cfoutput>
+														</cfloop>
+													</ul>
+												</div>											
+											</td>
+										</tr>
+									</cfif>
 									<tr>
-										<td colspan="5">
-											<div id="form-errors">
-												<ul>
-													<cfloop array="#messageBean.getErrors()#" index="error">
-														<cfoutput><li>#error.message#</li></cfoutput>
-													</cfloop>
-												</ul>
-											</div>											
-										</td>
-									</tr>
-								</cfif>
-								<tr>
-									<cfoutput>
-                                    	<cfform>
-                                    		<cfset displayUpdate=false>
+										<cfoutput>
 	                                    	<!--- Display code --->
 	                                    	<td>#aCategoryW[Counter][1]#</td>
 											<!--- Display title --->
 											<td>#aCategoryW[Counter][2]#</td>
 											<td>
+												<!--- Check to see if this course is marked as completed --->
+												<cfif len(aCategoryW[Counter][9])>
+													<!--- Display the completed course credits by default --->
+													#aCategoryW[Counter][10]#
 												<!--- If selected course credit was variable, cell is blank --->
-												<cfif !len(aCategoryW[Counter][3])>
-													<!--- The completed course id will exist if the student has completed this course --->
-													<cfif len(aCategoryW[Counter][9])>
-														<!--- Display credit information from the completed course --->
-														#aCategoryW[Counter][10]#
-													<!--- Otherwise, ask user to update information --->
-													<cfelse>
-														<cfinput type="text" id="courseCredit" name="courseCredit">
-														<cfset displayUpdate=true>
-													</cfif>
+												<cfelseif !len(aCategoryW[Counter][3])>
+													<cfinput type="hidden" name="creditId" value="#aCategoryW[Counter][4]#">
+													<!--- Use a selector box to choose the variable credits --->
+													<cfselect name="courseCredit">
+														<option value="0">
+															Choose
+														</option>
+														<!--- Set the minimum credit --->
+														<cfset credit=Val(aCategoryW[Counter][11])>
+														<!--- Display the available range of credits as integers --->
+														<cfloop from=1 to="#Val(aCategoryW[Counter][12]) - Val(aCategoryW[Counter][11]) + 1#" index="i">
+															<option value="#credit#">
+																#credit#
+															</option>
+															<cfset credit=credit + 1>
+														</cfloop>
+													</cfselect>
 												<!--- The selected course credit was not variable --->
 												<cfelse>
 													<!--- Display credit --->
@@ -233,27 +268,42 @@
 											</td>
 											<td>
 												<!--- The course number will exist if the student has completed or verified this course --->
-												<cfif len(aCategoryW[Counter][9])>
+												<cfif qEditGetSelectCoursesW.RecordCount>
+													<cfinput type="hidden" name="statusId" value="#aCategoryW[Counter][4]#">
+													<!--- Use a selector box to map the filtered available completed courses --->
+													<cfselect name="status" query="qEditGetSelectCoursesW" display="course_number" value="id" queryPosition="below">
+														<option value="0">
+															<cfif len(aCategoryW[Counter][9])>
+																Completed
+															<cfelse>
+																Select completed course
+															</cfif>
+														</option>
+													</cfselect>
+												<!--- Display by default when no unmapped courses are available --->
+												<cfelseif len(aCategoryW[Counter][9])>
 													Complete
-												<!--- The course number will exist if the course is an optional graduation requirement --->
 												<cfelseif len(aCategoryW[Counter][8])>
 													Optional
 												</cfif>
 											</td>
 											<td>
-												<!--- Display buttons --->
-												<cfinput type="hidden" name="scId" value="#aCategoryW[Counter][4]#">
-												<cfif displayUpdate>
-													<cfinput type="hidden" name="courseId" value="#aCategoryW[Counter][5]#">
-													<cfinput type="submit" name="updateCourseButton" value="Update">
-												<cfelse>
-													<cfinput type="submit" name="removeCourseButton" value="Remove">
-												</cfif>
+												<!--- Display remove checkboxes --->
+												<cfinput type="checkbox" name="remove" value="#aCategoryW[Counter][4]#">
 											</td>
-										</cfform>
-                                    </cfoutput>
-								</tr>
-							</cfloop>
+	                                    </cfoutput>
+									</tr>
+								</cfloop>
+								<cfif arrayLen(aCategoryW)>
+									<tr>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
+										<td></td>
+									</tr>
+								</cfif>
+							</cfform>
 						
 							<tr>
 								<td colspan="5">
@@ -266,43 +316,53 @@
 								<th>Title</th>
 								<th>Credits</th>
 								<th>Status</th>
-								<th></th>
+								<th>Remove</th>
 							</tr>
-							<cfloop from=1 to="#arrayLen(aCategoryQSR)#" index="Counter">
-								<!--- Tag and display errors for courses using sc_id --->
-								<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryQSR[Counter][4]>
+							<cfform>
+								<cfloop from=1 to="#arrayLen(aCategoryQSR)#" index="Counter">
+									<!--- Tag and display errors for courses using sc_id --->
+									<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryQSR[Counter][4]>
+										<tr>
+											<td colspan="5">
+												<div id="form-errors">
+													<ul>
+														<cfloop array="#messageBean.getErrors()#" index="error">
+															<cfoutput><li>#error.message#</li></cfoutput>
+														</cfloop>
+													</ul>
+												</div>											
+											</td>
+										</tr>
+									</cfif>
 									<tr>
-										<td colspan="5">
-											<div id="form-errors">
-												<ul>
-													<cfloop array="#messageBean.getErrors()#" index="error">
-														<cfoutput><li>#error.message#</li></cfoutput>
-													</cfloop>
-												</ul>
-											</div>											
-										</td>
-									</tr>
-								</cfif>
-								<tr>
-									<cfoutput>
-                                    	<cfform>
-                                    		<cfset displayUpdate=false>
+										<cfoutput>
 	                                    	<!--- Display code --->
 	                                    	<td>#aCategoryQSR[Counter][1]#</td>
 											<!--- Display title --->
 											<td>#aCategoryQSR[Counter][2]#</td>
 											<td>
+												<!--- Check to see if this course is marked as completed --->
+												<cfif len(aCategoryQSR[Counter][9])>
+													<!--- Display the completed course credits by default --->
+													#aCategoryQSR[Counter][10]#
 												<!--- If selected course credit was variable, cell is blank --->
-												<cfif !len(aCategoryQSR[Counter][3])>
-													<!--- The completed course id will exist if the student has completed this course --->
-													<cfif len(aCategoryQSR[Counter][9])>
-														<!--- Display credit information from the completed course --->
-														#aCategoryQSR[Counter][10]#
-													<!--- Otherwise, ask user to update information --->
-													<cfelse>
-														<cfinput type="text" id="courseCredit" name="courseCredit">
-														<cfset displayUpdate=true>
-													</cfif>
+												<cfelseif !len(aCategoryQSR[Counter][3])>
+													<cfinput type="hidden" name="creditId" value="#aCategoryQSR[Counter][4]#">
+													<!--- Use a selector box to choose the variable credits --->
+													<cfselect name="courseCredit">
+														<option value="0">
+															Choose
+														</option>
+														<!--- Set the minimum credit --->
+														<cfset credit=Val(aCategoryQSR[Counter][11])>
+														<!--- Display the available range of credits as integers --->
+														<cfloop from=1 to="#Val(aCategoryQSR[Counter][12]) - Val(aCategoryQSR[Counter][11]) + 1#" index="i">
+															<option value="#credit#">
+																#credit#
+															</option>
+															<cfset credit=credit + 1>
+														</cfloop>
+													</cfselect>
 												<!--- The selected course credit was not variable --->
 												<cfelse>
 													<!--- Display credit --->
@@ -311,27 +371,42 @@
 											</td>
 											<td>
 												<!--- The course number will exist if the student has completed or verified this course --->
-												<cfif len(aCategoryQSR[Counter][9])>
+												<cfif qEditGetSelectCoursesQSR.RecordCount>
+													<cfinput type="hidden" name="statusId" value="#aCategoryQSR[Counter][4]#">
+													<!--- Use a selector box to map the filtered available completed courses --->
+													<cfselect name="status" query="qEditGetSelectCoursesQSR" display="course_number" value="id" queryPosition="below">
+														<option value="0">
+															<cfif len(aCategoryQSR[Counter][9])>
+																Completed
+															<cfelse>
+																Select completed course
+															</cfif>
+														</option>
+													</cfselect>
+												<!--- Display by default when no unmapped courses are available --->
+												<cfelseif len(aCategoryQSR[Counter][9])>
 													Complete
-												<!--- The course number will exist if the course is an optional graduation requirement --->
 												<cfelseif len(aCategoryQSR[Counter][8])>
 													Optional
 												</cfif>
 											</td>
 											<td>
-												<!--- Display buttons --->
-												<cfinput type="hidden" name="scId" value="#aCategoryQSR[Counter][4]#">
-												<cfif displayUpdate>
-													<cfinput type="hidden" name="courseId" value="#aCategoryQSR[Counter][5]#">
-													<cfinput type="submit" name="updateCourseButton" value="Update">
-												<cfelse>
-													<cfinput type="submit" name="removeCourseButton" value="Remove">
-												</cfif>
+												<!--- Display remove checkboxes --->
+												<cfinput type="checkbox" name="remove" value="#aCategoryQSR[Counter][4]#">
 											</td>
-										</cfform>
-                                    </cfoutput>
-								</tr>
-							</cfloop>
+	                                    </cfoutput>
+									</tr>
+								</cfloop>
+								<cfif arrayLen(aCategoryQSR)>
+									<tr>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
+										<td></td>
+									</tr>
+								</cfif>
+							</cfform>
 							
 							<tr>
 								<td colspan="5">
@@ -344,43 +419,53 @@
 								<th>Title</th>
 								<th>Credits</th>
 								<th>Status</th>
-								<th></th>
+								<th>Remove</th>
 							</tr>
-							<cfloop from=1 to="#arrayLen(aCategoryNW)#" index="Counter">
-								<!--- Tag and display errors for courses using sc_id --->
-								<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryNW[Counter][4]>
+							<cfform>
+								<cfloop from=1 to="#arrayLen(aCategoryNW)#" index="Counter">
+									<!--- Tag and display errors for courses using sc_id --->
+									<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryNW[Counter][4]>
+										<tr>
+											<td colspan="5">
+												<div id="form-errors">
+													<ul>
+														<cfloop array="#messageBean.getErrors()#" index="error">
+															<cfoutput><li>#error.message#</li></cfoutput>
+														</cfloop>
+													</ul>
+												</div>											
+											</td>
+										</tr>
+									</cfif>
 									<tr>
-										<td colspan="5">
-											<div id="form-errors">
-												<ul>
-													<cfloop array="#messageBean.getErrors()#" index="error">
-														<cfoutput><li>#error.message#</li></cfoutput>
-													</cfloop>
-												</ul>
-											</div>											
-										</td>
-									</tr>
-								</cfif>
-								<tr>
-									<cfoutput>
-                                    	<cfform>
-                                    		<cfset displayUpdate=false>
+										<cfoutput>
 	                                    	<!--- Display code --->
 	                                    	<td>#aCategoryNW[Counter][1]#</td>
 											<!--- Display title --->
 											<td>#aCategoryNW[Counter][2]#</td>
 											<td>
+												<!--- Check to see if this course is marked as completed --->
+												<cfif len(aCategoryNW[Counter][9])>
+													<!--- Display the completed course credits by default --->
+													#aCategoryNW[Counter][10]#
 												<!--- If selected course credit was variable, cell is blank --->
-												<cfif !len(aCategoryNW[Counter][3])>
-													<!--- The completed course id will exist if the student has completed this course --->
-													<cfif len(aCategoryNW[Counter][9])>
-														<!--- Display credit information from the completed course --->
-														#aCategoryNW[Counter][10]#
-													<!--- Otherwise, ask user to update information --->
-													<cfelse>
-														<cfinput type="text" id="courseCredit" name="courseCredit">
-														<cfset displayUpdate=true>
-													</cfif>
+												<cfelseif !len(aCategoryNW[Counter][3])>
+													<cfinput type="hidden" name="creditId" value="#aCategoryNW[Counter][4]#">
+													<!--- Use a selector box to choose the variable credits --->
+													<cfselect name="courseCredit">
+														<option value="0">
+															Choose
+														</option>
+														<!--- Set the minimum credit --->
+														<cfset credit=Val(aCategoryNW[Counter][11])>
+														<!--- Display the available range of credits as integers --->
+														<cfloop from=1 to="#Val(aCategoryNW[Counter][12]) - Val(aCategoryNW[Counter][11]) + 1#" index="i">
+															<option value="#credit#">
+																#credit#
+															</option>
+															<cfset credit=credit + 1>
+														</cfloop>
+													</cfselect>
 												<!--- The selected course credit was not variable --->
 												<cfelse>
 													<!--- Display credit --->
@@ -389,27 +474,42 @@
 											</td>
 											<td>
 												<!--- The course number will exist if the student has completed or verified this course --->
-												<cfif len(aCategoryNW[Counter][9])>
+												<cfif qEditGetSelectCoursesNW.RecordCount>
+													<cfinput type="hidden" name="statusId" value="#aCategoryNW[Counter][4]#">
+													<!--- Use a selector box to map the filtered available completed courses --->
+													<cfselect name="status" query="qEditGetSelectCoursesNW" display="course_number" value="id" queryPosition="below">
+														<option value="0">
+															<cfif len(aCategoryNW[Counter][9])>
+																Completed
+															<cfelse>
+																Select completed course
+															</cfif>
+														</option>
+													</cfselect>
+												<!--- Display by default when no unmapped courses are available --->
+												<cfelseif len(aCategoryNW[Counter][9])>
 													Complete
-												<!--- The course number will exist if the course is an optional graduation requirement --->
 												<cfelseif len(aCategoryNW[Counter][8])>
 													Optional
 												</cfif>
 											</td>
 											<td>
-												<!--- Display buttons --->
-												<cfinput type="hidden" name="scId" value="#aCategoryNW[Counter][4]#">
-												<cfif displayUpdate>
-													<cfinput type="hidden" name="courseId" value="#aCategoryNW[Counter][5]#">
-													<cfinput type="submit" name="updateCourseButton" value="Update">
-												<cfelse>
-													<cfinput type="submit" name="removeCourseButton" value="Remove">
-												</cfif>
+												<!--- Display remove checkboxes --->
+												<cfinput type="checkbox" name="remove" value="#aCategoryNW[Counter][4]#">
 											</td>
-										</cfform>
-                                    </cfoutput>
-								</tr>
-							</cfloop>
+	                                    </cfoutput>
+									</tr>
+								</cfloop>
+								<cfif arrayLen(aCategoryNW)>
+									<tr>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
+										<td></td>
+									</tr>
+								</cfif>
+							</cfform>
 							
 							<tr>
 								<td colspan="5">
@@ -422,43 +522,53 @@
 								<th>Title</th>
 								<th>Credits</th>
 								<th>Status</th>
-								<th></th>
+								<th>Remove</th>
 							</tr>
-							<cfloop from=1 to="#arrayLen(aCategoryVLPA)#" index="Counter">
-								<!--- Tag and display errors for courses using sc_id --->
-								<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryVLPA[Counter][4]>
+							<cfform>
+								<cfloop from=1 to="#arrayLen(aCategoryVLPA)#" index="Counter">
+									<!--- Tag and display errors for courses using sc_id --->
+									<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryVLPA[Counter][4]>
+										<tr>
+											<td colspan="5">
+												<div id="form-errors">
+													<ul>
+														<cfloop array="#messageBean.getErrors()#" index="error">
+															<cfoutput><li>#error.message#</li></cfoutput>
+														</cfloop>
+													</ul>
+												</div>											
+											</td>
+										</tr>
+									</cfif>
 									<tr>
-										<td colspan="5">
-											<div id="form-errors">
-												<ul>
-													<cfloop array="#messageBean.getErrors()#" index="error">
-														<cfoutput><li>#error.message#</li></cfoutput>
-													</cfloop>
-												</ul>
-											</div>											
-										</td>
-									</tr>
-								</cfif>
-								<tr>
-									<cfoutput>
-                                    	<cfform>
-                                    		<cfset displayUpdate=false>
+										<cfoutput>
 	                                    	<!--- Display code --->
 	                                    	<td>#aCategoryVLPA[Counter][1]#</td>
 											<!--- Display title --->
 											<td>#aCategoryVLPA[Counter][2]#</td>
 											<td>
+												<!--- Check to see if this course is marked as completed --->
+												<cfif len(aCategoryVLPA[Counter][9])>
+													<!--- Display the completed course credits by default --->
+													#aCategoryVLPA[Counter][10]#
 												<!--- If selected course credit was variable, cell is blank --->
-												<cfif !len(aCategoryVLPA[Counter][3])>
-													<!--- The completed course id will exist if the student has completed this course --->
-													<cfif len(aCategoryVLPA[Counter][9])>
-														<!--- Display credit information from the completed course --->
-														#aCategoryVLPA[Counter][10]#
-													<!--- Otherwise, ask user to update information --->
-													<cfelse>
-														<cfinput type="text" id="courseCredit" name="courseCredit">
-														<cfset displayUpdate=true>
-													</cfif>
+												<cfelseif !len(aCategoryVLPA[Counter][3])>
+													<cfinput type="hidden" name="creditId" value="#aCategoryVLPA[Counter][4]#">
+													<!--- Use a selector box to choose the variable credits --->
+													<cfselect name="courseCredit">
+														<option value="0">
+															Choose
+														</option>
+														<!--- Set the minimum credit --->
+														<cfset credit=Val(aCategoryVLPA[Counter][11])>
+														<!--- Display the available range of credits as integers --->
+														<cfloop from=1 to="#Val(aCategoryVLPA[Counter][12]) - Val(aCategoryVLPA[Counter][11]) + 1#" index="i">
+															<option value="#credit#">
+																#credit#
+															</option>
+															<cfset credit=credit + 1>
+														</cfloop>
+													</cfselect>
 												<!--- The selected course credit was not variable --->
 												<cfelse>
 													<!--- Display credit --->
@@ -467,27 +577,42 @@
 											</td>
 											<td>
 												<!--- The course number will exist if the student has completed or verified this course --->
-												<cfif len(aCategoryVLPA[Counter][9])>
+												<cfif qEditGetSelectCoursesVLPA.RecordCount>
+													<cfinput type="hidden" name="statusId" value="#aCategoryVLPA[Counter][4]#">
+													<!--- Use a selector box to map the filtered available completed courses --->
+													<cfselect name="status" query="qEditGetSelectCoursesVLPA" display="course_number" value="id" queryPosition="below">
+														<option value="0">
+															<cfif len(aCategoryVLPA[Counter][9])>
+																Completed
+															<cfelse>
+																Select completed course
+															</cfif>
+														</option>
+													</cfselect>
+												<!--- Display by default when no unmapped courses are available --->
+												<cfelseif len(aCategoryVLPA[Counter][9])>
 													Complete
-												<!--- The course number will exist if the course is an optional graduation requirement --->
 												<cfelseif len(aCategoryVLPA[Counter][8])>
 													Optional
 												</cfif>
 											</td>
 											<td>
-												<!--- Display buttons --->
-												<cfinput type="hidden" name="scId" value="#aCategoryVLPA[Counter][4]#">
-												<cfif displayUpdate>
-													<cfinput type="hidden" name="courseId" value="#aCategoryVLPA[Counter][5]#">
-													<cfinput type="submit" name="updateCourseButton" value="Update">
-												<cfelse>
-													<cfinput type="submit" name="removeCourseButton" value="Remove">
-												</cfif>
+												<!--- Display remove checkboxes --->
+												<cfinput type="checkbox" name="remove" value="#aCategoryVLPA[Counter][4]#">
 											</td>
-										</cfform>
-                                    </cfoutput>
-								</tr>
-							</cfloop>
+	                                    </cfoutput>
+									</tr>
+								</cfloop>
+								<cfif arrayLen(aCategoryVLPA)>
+									<tr>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
+										<td></td>
+									</tr>
+								</cfif>
+							</cfform>
 							
 							<tr>
 								<td colspan="5">
@@ -500,43 +625,53 @@
 								<th>Title</th>
 								<th>Credits</th>
 								<th>Status</th>
-								<th></th>
+								<th>Remove</th>
 							</tr>
-							<cfloop from=1 to="#arrayLen(aCategoryIS)#" index="Counter">
-								<!--- Tag and display errors for courses using sc_id --->
-								<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryIS[Counter][4]>
+							<cfform>
+								<cfloop from=1 to="#arrayLen(aCategoryIS)#" index="Counter">
+									<!--- Tag and display errors for courses using sc_id --->
+									<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryIS[Counter][4]>
+										<tr>
+											<td colspan="5">
+												<div id="form-errors">
+													<ul>
+														<cfloop array="#messageBean.getErrors()#" index="error">
+															<cfoutput><li>#error.message#</li></cfoutput>
+														</cfloop>
+													</ul>
+												</div>											
+											</td>
+										</tr>
+									</cfif>
 									<tr>
-										<td colspan="5">
-											<div id="form-errors">
-												<ul>
-													<cfloop array="#messageBean.getErrors()#" index="error">
-														<cfoutput><li>#error.message#</li></cfoutput>
-													</cfloop>
-												</ul>
-											</div>											
-										</td>
-									</tr>
-								</cfif>
-								<tr>
-									<cfoutput>
-                                    	<cfform>
-                                    		<cfset displayUpdate=false>
+										<cfoutput>
 	                                    	<!--- Display code --->
 	                                    	<td>#aCategoryIS[Counter][1]#</td>
 											<!--- Display title --->
 											<td>#aCategoryIS[Counter][2]#</td>
 											<td>
+												<!--- Check to see if this course is marked as completed --->
+												<cfif len(aCategoryIS[Counter][9])>
+													<!--- Display the completed course credits by default --->
+													#aCategoryIS[Counter][10]#
 												<!--- If selected course credit was variable, cell is blank --->
-												<cfif !len(aCategoryIS[Counter][3])>
-													<!--- The completed course id will exist if the student has completed this course --->
-													<cfif len(aCategoryIS[Counter][9])>
-														<!--- Display credit information from the completed course --->
-														#aCategoryIS[Counter][10]#
-													<!--- Otherwise, ask user to update information --->
-													<cfelse>
-														<cfinput type="text" id="courseCredit" name="courseCredit">
-														<cfset displayUpdate=true>
-													</cfif>
+												<cfelseif !len(aCategoryIS[Counter][3])>
+													<cfinput type="hidden" name="creditId" value="#aCategoryIS[Counter][4]#">
+													<!--- Use a selector box to choose the variable credits --->
+													<cfselect name="courseCredit">
+														<option value="0">
+															Choose
+														</option>
+														<!--- Set the minimum credit --->
+														<cfset credit=Val(aCategoryIS[Counter][11])>
+														<!--- Display the available range of credits as integers --->
+														<cfloop from=1 to="#Val(aCategoryIS[Counter][12]) - Val(aCategoryIS[Counter][11]) + 1#" index="i">
+															<option value="#credit#">
+																#credit#
+															</option>
+															<cfset credit=credit + 1>
+														</cfloop>
+													</cfselect>
 												<!--- The selected course credit was not variable --->
 												<cfelse>
 													<!--- Display credit --->
@@ -545,27 +680,42 @@
 											</td>
 											<td>
 												<!--- The course number will exist if the student has completed or verified this course --->
-												<cfif len(aCategoryIS[Counter][9])>
+												<cfif qEditGetSelectCoursesIS.RecordCount>
+													<cfinput type="hidden" name="statusId" value="#aCategoryIS[Counter][4]#">
+													<!--- Use a selector box to map the filtered available completed courses --->
+													<cfselect name="status" query="qEditGetSelectCoursesIS" display="course_number" value="id" queryPosition="below">
+														<option value="0">
+															<cfif len(aCategoryIS[Counter][9])>
+																Completed
+															<cfelse>
+																Select completed course
+															</cfif>
+														</option>
+													</cfselect>
+												<!--- Display by default when no unmapped courses are available --->
+												<cfelseif len(aCategoryIS[Counter][9])>
 													Complete
-												<!--- The course number will exist if the course is an optional graduation requirement --->
 												<cfelseif len(aCategoryIS[Counter][8])>
 													Optional
 												</cfif>
 											</td>
 											<td>
-												<!--- Display buttons --->
-												<cfinput type="hidden" name="scId" value="#aCategoryIS[Counter][4]#">
-												<cfif displayUpdate>
-													<cfinput type="hidden" name="courseId" value="#aCategoryIS[Counter][5]#">
-													<cfinput type="submit" name="updateCourseButton" value="Update">
-												<cfelse>
-													<cfinput type="submit" name="removeCourseButton" value="Remove">
-												</cfif>
+												<!--- Display remove checkboxes --->
+												<cfinput type="checkbox" name="remove" value="#aCategoryIS[Counter][4]#">
 											</td>
-										</cfform>
-                                    </cfoutput>
-								</tr>
-							</cfloop>
+	                                    </cfoutput>
+									</tr>
+								</cfloop>
+								<cfif arrayLen(aCategoryIS)>
+									<tr>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
+										<td></td>
+									</tr>
+								</cfif>
+							</cfform>
 							
 							<tr>
 								<td colspan="5">
@@ -578,43 +728,53 @@
 								<th>Title</th>
 								<th>Credits</th>
 								<th>Status</th>
-								<th></th>
+								<th>Remove</th>
 							</tr>
-							<cfloop from=1 to="#arrayLen(aCategoryDIV)#" index="Counter">
-								<!--- Tag and display errors for courses using sc_id --->
-								<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryDIV[Counter][4]>
+							<cfform>
+								<cfloop from=1 to="#arrayLen(aCategoryDIV)#" index="Counter">
+									<!--- Tag and display errors for courses using sc_id --->
+									<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryDIV[Counter][4]>
+										<tr>
+											<td colspan="5">
+												<div id="form-errors">
+													<ul>
+														<cfloop array="#messageBean.getErrors()#" index="error">
+															<cfoutput><li>#error.message#</li></cfoutput>
+														</cfloop>
+													</ul>
+												</div>											
+											</td>
+										</tr>
+									</cfif>
 									<tr>
-										<td colspan="5">
-											<div id="form-errors">
-												<ul>
-													<cfloop array="#messageBean.getErrors()#" index="error">
-														<cfoutput><li>#error.message#</li></cfoutput>
-													</cfloop>
-												</ul>
-											</div>											
-										</td>
-									</tr>
-								</cfif>
-								<tr>
-									<cfoutput>
-                                    	<cfform>
-                                    		<cfset displayUpdate=false>
+										<cfoutput>
 	                                    	<!--- Display code --->
 	                                    	<td>#aCategoryDIV[Counter][1]#</td>
 											<!--- Display title --->
 											<td>#aCategoryDIV[Counter][2]#</td>
 											<td>
+												<!--- Check to see if this course is marked as completed --->
+												<cfif len(aCategoryDIV[Counter][9])>
+													<!--- Display the completed course credits by default --->
+													#aCategoryDIV[Counter][10]#
 												<!--- If selected course credit was variable, cell is blank --->
-												<cfif !len(aCategoryDIV[Counter][3])>
-													<!--- The completed course id will exist if the student has completed this course --->
-													<cfif len(aCategoryDIV[Counter][9])>
-														<!--- Display credit information from the completed course --->
-														#aCategoryDIV[Counter][10]#
-													<!--- Otherwise, ask user to update information --->
-													<cfelse>
-														<cfinput type="text" id="courseCredit" name="courseCredit">
-														<cfset displayUpdate=true>
-													</cfif>
+												<cfelseif !len(aCategoryDIV[Counter][3])>
+													<cfinput type="hidden" name="creditId" value="#aCategoryDIV[Counter][4]#">
+													<!--- Use a selector box to choose the variable credits --->
+													<cfselect name="courseCredit">
+														<option value="0">
+															Choose
+														</option>
+														<!--- Set the minimum credit --->
+														<cfset credit=Val(aCategoryDIV[Counter][11])>
+														<!--- Display the available range of credits as integers --->
+														<cfloop from=1 to="#Val(aCategoryDIV[Counter][12]) - Val(aCategoryDIV[Counter][11]) + 1#" index="i">
+															<option value="#credit#">
+																#credit#
+															</option>
+															<cfset credit=credit + 1>
+														</cfloop>
+													</cfselect>
 												<!--- The selected course credit was not variable --->
 												<cfelse>
 													<!--- Display credit --->
@@ -623,27 +783,42 @@
 											</td>
 											<td>
 												<!--- The course number will exist if the student has completed or verified this course --->
-												<cfif len(aCategoryDIV[Counter][9])>
+												<cfif qEditGetSelectCoursesDIV.RecordCount>
+													<cfinput type="hidden" name="statusId" value="#aCategoryDIV[Counter][4]#">
+													<!--- Use a selector box to map the filtered available completed courses --->
+													<cfselect name="status" query="qEditGetSelectCoursesDIV" display="course_number" value="id" queryPosition="below">
+														<option value="0">
+															<cfif len(aCategoryDIV[Counter][9])>
+																Completed
+															<cfelse>
+																Select completed course
+															</cfif>
+														</option>
+													</cfselect>
+												<!--- Display by default when no unmapped courses are available --->
+												<cfelseif len(aCategoryDIV[Counter][9])>
 													Complete
-												<!--- The course number will exist if the course is an optional graduation requirement --->
 												<cfelseif len(aCategoryDIV[Counter][8])>
 													Optional
 												</cfif>
 											</td>
 											<td>
-												<!--- Display buttons --->
-												<cfinput type="hidden" name="scId" value="#aCategoryDIV[Counter][4]#">
-												<cfif displayUpdate>
-													<cfinput type="hidden" name="courseId" value="#aCategoryDIV[Counter][5]#">
-													<cfinput type="submit" name="updateCourseButton" value="Update">
-												<cfelse>
-													<cfinput type="submit" name="removeCourseButton" value="Remove">
-												</cfif>
+												<!--- Display remove checkboxes --->
+												<cfinput type="checkbox" name="remove" value="#aCategoryDIV[Counter][4]#">
 											</td>
-										</cfform>
-                                    </cfoutput>
-								</tr>
-							</cfloop>
+	                                    </cfoutput>
+									</tr>
+								</cfloop>
+								<cfif arrayLen(aCategoryDIV)>
+									<tr>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
+										<td></td>
+									</tr>
+								</cfif>
+							</cfform>
 							
 							<tr>
 								<td colspan="5">
@@ -656,43 +831,53 @@
 								<th>Title</th>
 								<th>Credits</th>
 								<th>Status</th>
-								<th></th>
+								<th>Remove</th>
 							</tr>
-							<cfloop from=1 to="#arrayLen(aCategoryE)#" index="Counter">
-								<!--- Tag and display errors for courses using sc_id --->
-								<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryE[Counter][4]>
+							<cfform>
+								<cfloop from=1 to="#arrayLen(aCategoryE)#" index="Counter">
+									<!--- Tag and display errors for courses using sc_id --->
+									<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryE[Counter][4]>
+										<tr>
+											<td colspan="5">
+												<div id="form-errors">
+													<ul>
+														<cfloop array="#messageBean.getErrors()#" index="error">
+															<cfoutput><li>#error.message#</li></cfoutput>
+														</cfloop>
+													</ul>
+												</div>											
+											</td>
+										</tr>
+									</cfif>
 									<tr>
-										<td colspan="5">
-											<div id="form-errors">
-												<ul>
-													<cfloop array="#messageBean.getErrors()#" index="error">
-														<cfoutput><li>#error.message#</li></cfoutput>
-													</cfloop>
-												</ul>
-											</div>											
-										</td>
-									</tr>
-								</cfif>
-								<tr>
-									<cfoutput>
-                                    	<cfform>
-                                    		<cfset displayUpdate=false>
+										<cfoutput>
 	                                    	<!--- Display code --->
 	                                    	<td>#aCategoryE[Counter][1]#</td>
 											<!--- Display title --->
 											<td>#aCategoryE[Counter][2]#</td>
 											<td>
+												<!--- Check to see if this course is marked as completed --->
+												<cfif len(aCategoryE[Counter][9])>
+													<!--- Display the completed course credits by default --->
+													#aCategoryE[Counter][10]#
 												<!--- If selected course credit was variable, cell is blank --->
-												<cfif !len(aCategoryE[Counter][3])>
-													<!--- The completed course id will exist if the student has completed this course --->
-													<cfif len(aCategoryE[Counter][9])>
-														<!--- Display credit information from the completed course --->
-														#aCategoryE[Counter][10]#
-													<!--- Otherwise, ask user to update information --->
-													<cfelse>
-														<cfinput type="text" id="courseCredit" name="courseCredit">
-														<cfset displayUpdate=true>
-													</cfif>
+												<cfelseif !len(aCategoryE[Counter][3])>
+													<cfinput type="hidden" name="creditId" value="#aCategoryE[Counter][4]#">
+													<!--- Use a selector box to choose the variable credits --->
+													<cfselect name="courseCredit">
+														<option value="0">
+															Choose
+														</option>
+														<!--- Set the minimum credit --->
+														<cfset credit=Val(aCategoryE[Counter][11])>
+														<!--- Display the available range of credits as integers --->
+														<cfloop from=1 to="#Val(aCategoryE[Counter][12]) - Val(aCategoryE[Counter][11]) + 1#" index="i">
+															<option value="#credit#">
+																#credit#
+															</option>
+															<cfset credit=credit + 1>
+														</cfloop>
+													</cfselect>
 												<!--- The selected course credit was not variable --->
 												<cfelse>
 													<!--- Display credit --->
@@ -701,27 +886,42 @@
 											</td>
 											<td>
 												<!--- The course number will exist if the student has completed or verified this course --->
-												<cfif len(aCategoryE[Counter][9])>
+												<cfif qEditGetSelectCoursesE.RecordCount>
+													<cfinput type="hidden" name="statusId" value="#aCategoryE[Counter][4]#">
+													<!--- Use a selector box to map the filtered available completed courses --->
+													<cfselect name="status" query="qEditGetSelectCoursesE" display="course_number" value="id" queryPosition="below">
+														<option value="0">
+															<cfif len(aCategoryE[Counter][9])>
+																Completed
+															<cfelse>
+																Select completed course
+															</cfif>
+														</option>
+													</cfselect>
+												<!--- Display by default when no unmapped courses are available --->
+												<cfelseif len(aCategoryE[Counter][9])>
 													Complete
-												<!--- The course number will exist if the course is an optional graduation requirement --->
 												<cfelseif len(aCategoryE[Counter][8])>
 													Optional
 												</cfif>
 											</td>
 											<td>
-												<!--- Display buttons --->
-												<cfinput type="hidden" name="scId" value="#aCategoryE[Counter][4]#">
-												<cfif displayUpdate>
-													<cfinput type="hidden" name="courseId" value="#aCategoryE[Counter][5]#">
-													<cfinput type="submit" name="updateCourseButton" value="Update">
-												<cfelse>
-													<cfinput type="submit" name="removeCourseButton" value="Remove">
-												</cfif>
+												<!--- Display remove checkboxes --->
+												<cfinput type="checkbox" name="remove" value="#aCategoryE[Counter][4]#">
 											</td>
-										</cfform>
-                                    </cfoutput>
-								</tr>
-							</cfloop>
+	                                    </cfoutput>
+									</tr>
+								</cfloop>
+								<cfif arrayLen(aCategoryE)>
+									<tr>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
+										<td></td>
+									</tr>
+								</cfif>
+							</cfform>
 						</table>
 						             	
 	                </div>

@@ -51,47 +51,6 @@
 	</cfif>
 </cfif>
 
-<!--- Define "Remove" button behavior --->
-<cfif isDefined("form.removeCourseButton")>
-	<cfquery>
-		DELETE
-		FROM PLAN_SELECTEDCOURSES
-		WHERE id = <cfqueryparam value="#form.scId#" cfsqltype="cf_sql_integer">
-	</cfquery>
-	
-	<!--- Stop here and refresh page --->
-	<cflocation url="./?plan=#URLEncodedFormat(qEditGetPlan.id)#">
-</cfif>
-
-<!--- Define "Update" button behavior --->
-<cfif isDefined("form.updateCourseButton")>
-	<cfquery name="qEditGetCourse">
-		SELECT id, min_credit, max_credit
-		FROM COURSES
-		WHERE id = <cfqueryparam value="#form.courseId#" cfsqltype="cf_sql_integer">
-	</cfquery>
-	
-	<!--- Validate form data --->
-	<cfif isDefined("form.courseCredit")>
-		<cfif !len(trim(form.courseCredit))>
-			<cfset messageBean.addError('The course credit field cannot be left blank.', #form.scId#)>
-		<cfelseif !IsNumeric("#trim(form.courseCredit)#")>
-			<cfset messageBean.addError('Credits must be entered in as a decimal number.', #form.scId#)>
-		<cfelseif trim(form.courseCredit) LT qEditGetCourse.min_credit || trim(form.courseCredit) GT qEditGetCourse.max_credit>
-			<cfset messageBean.addError('Credit must be between #qEditGetCourse.min_credit# and #qEditGetCourse.max_credit#.', #form.scId#)>
-		</cfif>
-	</cfif>
-	
-	<!--- Update proposed course credits on plan --->
-	<cfif !messageBean.HasErrors()>
-		<cfquery>
-			UPDATE PLAN_SELECTEDCOURSES
-			SET credit = <cfqueryparam value="#form.courseCredit#" cfsqltype="cf_sql_decimal">
-			WHERE id = <cfqueryparam value="#form.scId#" cfsqltype="cf_sql_integer">
-		</cfquery>
-	</cfif>
-</cfif>
-
 <!--- Display default contents of page --->
 <cfquery name="qEditGetSelectCategories">
 	SELECT id, category, description
@@ -120,7 +79,8 @@
 <cfquery name="qEditGetCourses">
 	SELECT c.course_number, c.title, sc.credit, sc.id AS sc_id,
 		c.id AS c_id, c.departments_id, sc.categories_id,
-		gc.courses_id AS gc_id, cc.id AS cc_id, cc.credit AS cc_credit
+		gc.courses_id AS gc_id, cc.id AS cc_id, cc.credit AS cc_credit,
+		c.min_credit, c.max_credit
 	FROM PLAN_SELECTEDCOURSES sc
 	JOIN COURSES c
 	ON c.id = sc.courses_id
@@ -149,6 +109,8 @@
 			<cfset aCategoryC[row][8]=gc_id>
 			<cfset aCategoryC[row][9]=cc_id>
 			<cfset aCategoryC[row][10]=cc_credit>
+			<cfset aCategoryC[row][11]=min_credit>
+			<cfset aCategoryC[row][12]=max_credit>
 		</cfcase>
 		<cfcase value="2">
 			<cfset row = #arrayLen(aCategoryW)# + 1>
@@ -162,6 +124,8 @@
 			<cfset aCategoryW[row][8]=gc_id>
 			<cfset aCategoryW[row][9]=cc_id>
 			<cfset aCategoryW[row][10]=cc_credit>
+			<cfset aCategoryW[row][11]=min_credit>
+			<cfset aCategoryW[row][12]=max_credit>
 		</cfcase>
 		<cfcase value="3">
 			<cfset row = #arrayLen(aCategoryQSR)# + 1>
@@ -175,6 +139,8 @@
 			<cfset aCategoryQSR[row][8]=gc_id>
 			<cfset aCategoryQSR[row][9]=cc_id>
 			<cfset aCategoryQSR[row][10]=cc_credit>
+			<cfset aCategoryQSR[row][11]=min_credit>
+			<cfset aCategoryQSR[row][12]=max_credit>
 		</cfcase>
 		<cfcase value="4">
 			<cfset row = #arrayLen(aCategoryNW)# + 1>
@@ -188,6 +154,8 @@
 			<cfset aCategoryNW[row][8]=gc_id>
 			<cfset aCategoryNW[row][9]=cc_id>
 			<cfset aCategoryNW[row][10]=cc_credit>
+			<cfset aCategoryNW[row][11]=min_credit>
+			<cfset aCategoryNW[row][12]=max_credit>
 		</cfcase>
 		<cfcase value="5">
 			<cfset row = #arrayLen(aCategoryVLPA)# + 1>
@@ -201,6 +169,8 @@
 			<cfset aCategoryVLPA[row][8]=gc_id>
 			<cfset aCategoryVLPA[row][9]=cc_id>
 			<cfset aCategoryVLPA[row][10]=cc_credit>
+			<cfset aCategoryVLPA[row][11]=min_credit>
+			<cfset aCategoryVLPA[row][12]=max_credit>
 		</cfcase>
 		<cfcase value="6">
 			<cfset row = #arrayLen(aCategoryIS)# + 1>
@@ -214,6 +184,8 @@
 			<cfset aCategoryIS[row][8]=gc_id>
 			<cfset aCategoryIS[row][9]=cc_id>
 			<cfset aCategoryIS[row][10]=cc_credit>
+			<cfset aCategoryIS[row][11]=min_credit>
+			<cfset aCategoryIS[row][12]=max_credit>
 		</cfcase>
 		<cfcase value="7">
 			<cfset row = #arrayLen(aCategoryDIV)# + 1>
@@ -227,6 +199,8 @@
 			<cfset aCategoryDIV[row][8]=gc_id>
 			<cfset aCategoryDIV[row][9]=cc_id>
 			<cfset aCategoryDIV[row][10]=cc_credit>
+			<cfset aCategoryDIV[row][11]=min_credit>
+			<cfset aCategoryDIV[row][12]=max_credit>
 		</cfcase>
 		<cfcase value="8">
 			<cfset row = #arrayLen(aCategoryE)# + 1>
@@ -240,9 +214,180 @@
 			<cfset aCategoryE[row][8]=gc_id>
 			<cfset aCategoryE[row][9]=cc_id>
 			<cfset aCategoryE[row][10]=cc_credit>
+			<cfset aCategoryE[row][11]=min_credit>
+			<cfset aCategoryE[row][12]=max_credit>
 		</cfcase>
 	</cfswitch>
 </cfloop>
+
+<cfquery name="qEditGetSelectCoursesC">
+	SELECT c.course_number, sc.id, sc.courses_id
+	FROM COURSES c JOIN (SELECT id, courses_id
+		FROM STUDENTS_COMPLETEDCOURSES
+		WHERE students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">) AS sc
+	ON c.id = sc.courses_id
+	WHERE sc.id NOT IN (SELECT completedcourses_id
+		FROM PLAN_SELECTEDCOURSES
+		WHERE completedcourses_id IS NOT NULL)
+	AND sc.courses_id IN (SELECT courses_id
+		FROM PLAN_SELECTEDCOURSES
+		WHERE categories_id = 1)
+</cfquery>
+
+<cfquery name="qEditGetSelectCoursesW">
+	SELECT c.course_number, sc.id, sc.courses_id
+	FROM COURSES c JOIN (SELECT id, courses_id
+		FROM STUDENTS_COMPLETEDCOURSES
+		WHERE students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">) AS sc
+	ON c.id = sc.courses_id
+	WHERE sc.id NOT IN (SELECT completedcourses_id
+		FROM PLAN_SELECTEDCOURSES
+		WHERE completedcourses_id IS NOT NULL)
+	AND sc.courses_id IN (SELECT courses_id
+		FROM PLAN_SELECTEDCOURSES
+		WHERE categories_id = 2)
+</cfquery>
+
+<cfquery name="qEditGetSelectCoursesQSR">
+	SELECT c.course_number, sc.id, sc.courses_id
+	FROM COURSES c JOIN (SELECT id, courses_id
+		FROM STUDENTS_COMPLETEDCOURSES
+		WHERE students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">) AS sc
+	ON c.id = sc.courses_id
+	WHERE sc.id NOT IN (SELECT completedcourses_id
+		FROM PLAN_SELECTEDCOURSES
+		WHERE completedcourses_id IS NOT NULL)
+	AND sc.courses_id IN (SELECT courses_id
+		FROM PLAN_SELECTEDCOURSES
+		WHERE categories_id = 3)
+</cfquery>
+
+<cfquery name="qEditGetSelectCoursesNW">
+	SELECT c.course_number, sc.id, sc.courses_id
+	FROM COURSES c JOIN (SELECT id, courses_id
+		FROM STUDENTS_COMPLETEDCOURSES
+		WHERE students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">) AS sc
+	ON c.id = sc.courses_id
+	WHERE sc.id NOT IN (SELECT completedcourses_id
+		FROM PLAN_SELECTEDCOURSES
+		WHERE completedcourses_id IS NOT NULL)
+	AND sc.courses_id IN (SELECT courses_id
+		FROM PLAN_SELECTEDCOURSES
+		WHERE categories_id = 4)
+</cfquery>
+
+<cfquery name="qEditGetSelectCoursesVLPA">
+	SELECT c.course_number, sc.id, sc.courses_id
+	FROM COURSES c JOIN (SELECT id, courses_id
+		FROM STUDENTS_COMPLETEDCOURSES
+		WHERE students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">) AS sc
+	ON c.id = sc.courses_id
+	WHERE sc.id NOT IN (SELECT completedcourses_id
+		FROM PLAN_SELECTEDCOURSES
+		WHERE completedcourses_id IS NOT NULL)
+	AND sc.courses_id IN (SELECT courses_id
+		FROM PLAN_SELECTEDCOURSES
+		WHERE categories_id = 5)
+</cfquery>
+
+<cfquery name="qEditGetSelectCoursesIS">
+	SELECT c.course_number, sc.id, sc.courses_id
+	FROM COURSES c JOIN (SELECT id, courses_id
+		FROM STUDENTS_COMPLETEDCOURSES
+		WHERE students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">) AS sc
+	ON c.id = sc.courses_id
+	WHERE sc.id NOT IN (SELECT completedcourses_id
+		FROM PLAN_SELECTEDCOURSES
+		WHERE completedcourses_id IS NOT NULL)
+	AND sc.courses_id IN (SELECT courses_id
+		FROM PLAN_SELECTEDCOURSES
+		WHERE categories_id = 6)
+</cfquery>
+
+<cfquery name="qEditGetSelectCoursesDIV">
+	SELECT c.course_number, sc.id, sc.courses_id
+	FROM COURSES c JOIN (SELECT id, courses_id
+		FROM STUDENTS_COMPLETEDCOURSES
+		WHERE students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">) AS sc
+	ON c.id = sc.courses_id
+	WHERE sc.id NOT IN (SELECT completedcourses_id
+		FROM PLAN_SELECTEDCOURSES
+		WHERE completedcourses_id IS NOT NULL)
+	AND sc.courses_id IN (SELECT courses_id
+		FROM PLAN_SELECTEDCOURSES
+		WHERE categories_id = 7)
+</cfquery>
+
+<cfquery name="qEditGetSelectCoursesE">
+	SELECT c.course_number, sc.id, sc.courses_id
+	FROM COURSES c JOIN (SELECT id, courses_id
+		FROM STUDENTS_COMPLETEDCOURSES
+		WHERE students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">) AS sc
+	ON c.id = sc.courses_id
+	WHERE sc.id NOT IN (SELECT completedcourses_id
+		FROM PLAN_SELECTEDCOURSES
+		WHERE completedcourses_id IS NOT NULL)
+	AND sc.courses_id IN (SELECT courses_id
+		FROM PLAN_SELECTEDCOURSES
+		WHERE categories_id = 8)
+</cfquery>
+
+<!--- Define "Update" button behavior --->
+<cfif isDefined("form.updateCourseButton")>
+
+	<!--- Process credit select boxes --->
+	<cfif isDefined("form.courseCredit")>
+		<cfset aCredit=listToArray(trim(form.courseCredit), ",", false, false)>
+		<cfset aCreditId=listToArray(trim(form.creditId), ",", false, false)>
+		
+		<cfloop from="1" to="#arrayLen(aCredit)#" index="row">
+			<cfif aCredit[row]>
+				<cfquery>
+					UPDATE PLAN_SELECTEDCOURSES
+					SET credit = <cfqueryparam value="#aCredit[row]#" cfsqltype="cf_sql_decimal">
+					WHERE id = <cfqueryparam value="#aCreditId[row]#" cfsqltype="cf_sql_integer">
+				</cfquery>
+			</cfif>
+		</cfloop>
+	</cfif>
+	
+	<!--- Process status select boxes --->
+	<cfif isDefined("form.status")>
+		<cfset aStatus=listToArray(trim(form.status), ",", false, false)>
+		<cfset aStatusId=listToArray(trim(form.statusId), ",", false, false)>
+		
+		<cfloop from="1" to="#arrayLen(aStatus)#" index="row">
+			<cfif aStatus[row]>
+				<cfquery>
+					UPDATE PLAN_SELECTEDCOURSES
+					SET completedcourses_id = <cfqueryparam value="#aStatus[row]#" cfsqltype="cf_sql_integer">
+					WHERE id = <cfqueryparam value="#aStatusId[row]#" cfsqltype="cf_sql_integer">
+				</cfquery>
+			</cfif>
+		</cfloop>
+	</cfif>
+	
+	<!--- Process remove checkboxes last --->
+	<cfif isDefined("form.remove")>
+		<cfset aRemove=listToArray(trim(form.remove), ",", false, false)>
+		
+		<!--- Build a singe query to delete one to many rows --->
+		<cfquery>
+			DELETE
+			FROM PLAN_SELECTEDCOURSES
+			<cfloop from="1" to="#arrayLen(aRemove)#" index="row">
+				<cfif #row# EQ 1>
+					WHERE id = <cfqueryparam value="#aRemove[row]#" cfsqltype="cf_sql_integer">
+				<cfelse>
+					OR id = <cfqueryparam value="#aRemove[row]#" cfsqltype="cf_sql_integer">
+				</cfif>
+			</cfloop>
+		</cfquery>
+	</cfif>
+	
+	<!--- Refresh page --->
+	<cflocation url="./?plan=#URLEncodedFormat(qEditGetPlan.id)#">
+</cfif>
 
 <!--- Define "Add" button behavior --->
 <cfif isDefined("form.addCourseButton")>
