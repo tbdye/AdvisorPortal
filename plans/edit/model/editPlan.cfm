@@ -103,7 +103,9 @@
 						<h3>Courses remaining for this plan</h3>
 						<table>
 							<tr>
-								<td colspan="5"><h4>English Composition</h4></td>
+								<td colspan="5">
+									<h4>English Composition</h4>
+								</td>
 							</tr>
 							<tr>
 								<th>Code</th>
@@ -114,20 +116,6 @@
 							</tr>
 							<cfform>
 								<cfloop from=1 to="#arrayLen(aCategoryC)#" index="Counter">
-									<!--- Tag and display errors for courses using sc_id --->
-									<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryC[Counter][4]>
-										<tr>
-											<td colspan="5">
-												<div id="form-errors">
-													<ul>
-														<cfloop array="#messageBean.getErrors()#" index="error">
-															<cfoutput><li>#error.message#</li></cfoutput>
-														</cfloop>
-													</ul>
-												</div>											
-											</td>
-										</tr>
-									</cfif>
 									<tr>
 										<cfoutput>
 	                                    	<!--- Display code --->
@@ -217,20 +205,6 @@
 							</tr>
 							<cfform>
 								<cfloop from=1 to="#arrayLen(aCategoryW)#" index="Counter">
-									<!--- Tag and display errors for courses using sc_id --->
-									<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryW[Counter][4]>
-										<tr>
-											<td colspan="5">
-												<div id="form-errors">
-													<ul>
-														<cfloop array="#messageBean.getErrors()#" index="error">
-															<cfoutput><li>#error.message#</li></cfoutput>
-														</cfloop>
-													</ul>
-												</div>											
-											</td>
-										</tr>
-									</cfif>
 									<tr>
 										<cfoutput>
 	                                    	<!--- Display code --->
@@ -320,20 +294,6 @@
 							</tr>
 							<cfform>
 								<cfloop from=1 to="#arrayLen(aCategoryQSR)#" index="Counter">
-									<!--- Tag and display errors for courses using sc_id --->
-									<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryQSR[Counter][4]>
-										<tr>
-											<td colspan="5">
-												<div id="form-errors">
-													<ul>
-														<cfloop array="#messageBean.getErrors()#" index="error">
-															<cfoutput><li>#error.message#</li></cfoutput>
-														</cfloop>
-													</ul>
-												</div>											
-											</td>
-										</tr>
-									</cfif>
 									<tr>
 										<cfoutput>
 	                                    	<!--- Display code --->
@@ -423,20 +383,6 @@
 							</tr>
 							<cfform>
 								<cfloop from=1 to="#arrayLen(aCategoryNW)#" index="Counter">
-									<!--- Tag and display errors for courses using sc_id --->
-									<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryNW[Counter][4]>
-										<tr>
-											<td colspan="5">
-												<div id="form-errors">
-													<ul>
-														<cfloop array="#messageBean.getErrors()#" index="error">
-															<cfoutput><li>#error.message#</li></cfoutput>
-														</cfloop>
-													</ul>
-												</div>											
-											</td>
-										</tr>
-									</cfif>
 									<tr>
 										<cfoutput>
 	                                    	<!--- Display code --->
@@ -526,20 +472,6 @@
 							</tr>
 							<cfform>
 								<cfloop from=1 to="#arrayLen(aCategoryVLPA)#" index="Counter">
-									<!--- Tag and display errors for courses using sc_id --->
-									<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryVLPA[Counter][4]>
-										<tr>
-											<td colspan="5">
-												<div id="form-errors">
-													<ul>
-														<cfloop array="#messageBean.getErrors()#" index="error">
-															<cfoutput><li>#error.message#</li></cfoutput>
-														</cfloop>
-													</ul>
-												</div>											
-											</td>
-										</tr>
-									</cfif>
 									<tr>
 										<cfoutput>
 	                                    	<!--- Display code --->
@@ -629,20 +561,6 @@
 							</tr>
 							<cfform>
 								<cfloop from=1 to="#arrayLen(aCategoryIS)#" index="Counter">
-									<!--- Tag and display errors for courses using sc_id --->
-									<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryIS[Counter][4]>
-										<tr>
-											<td colspan="5">
-												<div id="form-errors">
-													<ul>
-														<cfloop array="#messageBean.getErrors()#" index="error">
-															<cfoutput><li>#error.message#</li></cfoutput>
-														</cfloop>
-													</ul>
-												</div>											
-											</td>
-										</tr>
-									</cfif>
 									<tr>
 										<cfoutput>
 	                                    	<!--- Display code --->
@@ -732,20 +650,6 @@
 							</tr>
 							<cfform>
 								<cfloop from=1 to="#arrayLen(aCategoryDIV)#" index="Counter">
-									<!--- Tag and display errors for courses using sc_id --->
-									<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryDIV[Counter][4]>
-										<tr>
-											<td colspan="5">
-												<div id="form-errors">
-													<ul>
-														<cfloop array="#messageBean.getErrors()#" index="error">
-															<cfoutput><li>#error.message#</li></cfoutput>
-														</cfloop>
-													</ul>
-												</div>											
-											</td>
-										</tr>
-									</cfif>
 									<tr>
 										<cfoutput>
 	                                    	<!--- Display code --->
@@ -824,6 +728,28 @@
 								<td colspan="5">
 									<hr>
 									<h4>General Electives</h4>
+									<!--- Evaluate required department credits --->
+									<cfif qEditGetDepartmentCreditsE.RecordCount>
+										<!--- Evaluate for each department specified --->
+										<cfloop query="qEditGetDepartmentCreditsE">
+											<cfset creditsRemaining = qEditGetDepartmentCreditsE.credit>
+											<cfloop from=1 to="#arrayLen(aCategoryE)#" index="Counter">
+												<!--- Match department --->
+												<cfif creditsRemaining GT 0 && qEditGetDepartmentCreditsE.id EQ aCategoryE[Counter][6]>
+													<cfif IsNumeric(aCategoryE[Counter][10])>
+														<!--- Subtract department credits from matching completed course credits --->
+														<cfset creditsRemaining = creditsRemaining - aCategoryE[Counter][10]>
+													<cfelseif IsNumeric(aCategoryE[Counter][3])>
+														<!--- Subtract department credits from matching course credits --->
+														<cfset creditsRemaining = creditsRemaining - aCategoryE[Counter][3]>
+													</cfif>
+												</cfif>
+											</cfloop>
+											<cfif creditsRemaining GT 0>
+												(You need <cfoutput>#creditsRemaining#</cfoutput> more credits in <cfoutput>#qEditGetDepartmentCreditsE.department_name#</cfoutput>)<br>
+											</cfif>
+										</cfloop>
+									</cfif>
 								</td>
 							</tr>
 							<tr>
@@ -835,20 +761,6 @@
 							</tr>
 							<cfform>
 								<cfloop from=1 to="#arrayLen(aCategoryE)#" index="Counter">
-									<!--- Tag and display errors for courses using sc_id --->
-									<cfif messageBean.hasErrors() && messageBean.getErrors()[1].field EQ aCategoryE[Counter][4]>
-										<tr>
-											<td colspan="5">
-												<div id="form-errors">
-													<ul>
-														<cfloop array="#messageBean.getErrors()#" index="error">
-															<cfoutput><li>#error.message#</li></cfoutput>
-														</cfloop>
-													</ul>
-												</div>											
-											</td>
-										</tr>
-									</cfif>
 									<tr>
 										<cfoutput>
 	                                    	<!--- Display code --->

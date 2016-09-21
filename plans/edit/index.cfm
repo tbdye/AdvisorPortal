@@ -57,7 +57,7 @@
 	FROM CATEGORIES
 </cfquery>
 
-<cfquery name="qEditGetElectiveDepartmentCredits">
+<cfquery name="qEditGetDepartmentCreditsE">
 	SELECT d.id, d.department_name, cad.credit
 	FROM DEPARTMENTS d
 	JOIN COLLEGE_ADMISSION_DEPARTMENTS cad
