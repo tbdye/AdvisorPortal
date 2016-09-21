@@ -1,3 +1,4 @@
+<!--- Template Model --->
 <!--- Thomas Dye, August 2016 --->
 <cfif !isDefined("messageBean")>
 	<cflocation url="..">
@@ -16,6 +17,7 @@
 
 			<div class="breadcrumb">
 				<a href="">Home</a>
+				&raquo; Template
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">

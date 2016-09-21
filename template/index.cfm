@@ -1,6 +1,6 @@
 <!--- Template Controller --->
 <!--- Thomas Dye, August 2016 --->
-<cfif IsUserInRole("role") >
+<cfif !IsUserInRole("role") >
 	<cflocation url="..">
 </cfif>
 
