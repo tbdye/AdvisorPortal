@@ -110,7 +110,7 @@
 			<cfif len(trim(degreeName))>
 				<cfquery>
 					UPDATE DEGREES
-					SET degree_name = <cfqueryparam value="#form.degreeName#" cfsqltype="cf_sql_varchar">
+					SET degree_name = <cfqueryparam value="#degreeName#" cfsqltype="cf_sql_varchar">
 					WHERE id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
 				</cfquery>
 			<cfelse>
@@ -146,7 +146,7 @@
 			<cfif len(trim(degreeType))>
 				<cfquery>
 					UPDATE DEGREES
-					SET degree_type = <cfqueryparam value="#form.degreeType#" cfsqltype="cf_sql_varchar">
+					SET degree_type = <cfqueryparam value="#degreeType#" cfsqltype="cf_sql_varchar">
 					WHERE id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
 				</cfquery>
 			<cfelse>
@@ -282,7 +282,7 @@
 			<cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">,
 			<cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">,
 			<cfqueryparam value="#form.localAdmCourseCategory#" cfsqltype="cf_sql_integer">,
-			<cfqueryparam value="#form.foreignAdmCourse#" cfsqltype="cf_sql_varchar">
+			<cfqueryparam value="#foreignAdmCourse#" cfsqltype="cf_sql_varchar">
 		)
 	</cfquery>
 	
@@ -302,7 +302,7 @@
 		<cfquery>
 			UPDATE DEGREE_NOTES
 			<cfif len(trim(admCodekeyReqNote))>
-				SET admission_codekeys_note = <cfqueryparam value="#form.admCodekeyReqNote#" cfsqltype="cf_sql_varchar">
+				SET admission_codekeys_note = <cfqueryparam value="#admCodekeyReqNote#" cfsqltype="cf_sql_varchar">
 			<cfelse>
 				SET admission_codekeys_note = NULL
 			</cfif>
@@ -413,7 +413,7 @@
 		<cfquery>
 			UPDATE DEGREE_NOTES
 			<cfif len(trim(grdCourseReqNote))>
-				SET graduation_courses_note = <cfqueryparam value="#form.grdCourseReqNote#" cfsqltype="cf_sql_varchar">
+				SET graduation_courses_note = <cfqueryparam value="#grdCourseReqNote#" cfsqltype="cf_sql_varchar">
 			<cfelse>
 				SET graduation_courses_note = NULL
 			</cfif>
@@ -522,7 +522,7 @@
 			<cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">,
 			<cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">,
 			<cfqueryparam value="#form.localGrdCourseCategory#" cfsqltype="cf_sql_integer">,
-			<cfqueryparam value="#form.foreignGrdCourse#" cfsqltype="cf_sql_varchar">
+			<cfqueryparam value="#foreignGrdCourse#" cfsqltype="cf_sql_varchar">
 		)
 	</cfquery>
 	
@@ -542,7 +542,7 @@
 		<cfquery>
 			UPDATE DEGREE_NOTES
 			<cfif len(trim(grdCodekeyReqNote))>
-				SET graduation_codekeys_note = <cfqueryparam value="#form.grdCodekeyReqNote#" cfsqltype="cf_sql_varchar">
+				SET graduation_codekeys_note = <cfqueryparam value="#grdCodekeyReqNote#" cfsqltype="cf_sql_varchar">
 			<cfelse>
 				SET graduation_codekeys_note = NULL
 			</cfif>
@@ -667,7 +667,7 @@
 		<cfquery>
 			UPDATE DEGREE_NOTES
 			<cfif len(trim(degreeGeneralNote))>
-				SET general_note = <cfqueryparam value="#form.degreeGeneralNote#" cfsqltype="cf_sql_varchar">
+				SET general_note = <cfqueryparam value="#degreeGeneralNote#" cfsqltype="cf_sql_varchar">
 			<cfelse>
 				SET general_note = NULL
 			</cfif>

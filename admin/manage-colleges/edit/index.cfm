@@ -87,7 +87,7 @@
 			<cfif len(trim(collegeName))>
 				<cfquery>
 					UPDATE COLLEGES
-					SET college_name = <cfqueryparam value="#form.collegeName#" cfsqltype="cf_sql_varchar">
+					SET college_name = <cfqueryparam value="#collegeName#" cfsqltype="cf_sql_varchar">
 					WHERE id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
 				</cfquery>
 			<cfelse>
@@ -106,7 +106,7 @@
 			<cfif len(trim(collegeCity))>
 				<cfquery>
 					UPDATE COLLEGES
-					SET college_city = <cfqueryparam value="#form.collegeCity#" cfsqltype="cf_sql_varchar">
+					SET college_city = <cfqueryparam value="#collegeCity#" cfsqltype="cf_sql_varchar">
 					WHERE id = <cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">
 				</cfquery>
 			<cfelse>
@@ -125,7 +125,7 @@
 			<cfquery>
 				UPDATE COLLEGES
 				<cfif len(trim(collegeWebsite))>
-					SET college_website = <cfqueryparam value="#form.collegeWebsite#" cfsqltype="cf_sql_varchar">
+					SET college_website = <cfqueryparam value="#collegeWebsite#" cfsqltype="cf_sql_varchar">
 				<cfelse>
 					SET college_website = NULL
 				</cfif>
@@ -166,7 +166,7 @@
 		<cfquery>
 			UPDATE COLLEGE_NOTES
 			<cfif len(trim(courseReqNote))>
-				SET courses_note = <cfqueryparam value="#form.courseReqNote#" cfsqltype="cf_sql_varchar">
+				SET courses_note = <cfqueryparam value="#courseReqNote#" cfsqltype="cf_sql_varchar">
 			<cfelse>
 				SET courses_note = NULL
 			</cfif>
@@ -261,7 +261,7 @@
 			<cfqueryparam value="#qEditGetCollege.id#" cfsqltype="cf_sql_integer">,
 			<cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">,
 			<cfqueryparam value="#form.localCourseCategory#" cfsqltype="cf_sql_integer">,
-			<cfqueryparam value="#form.foreignCourse#" cfsqltype="cf_sql_varchar">
+			<cfqueryparam value="#foreignCourse#" cfsqltype="cf_sql_varchar">
 		)
 	</cfquery>
 	
@@ -281,7 +281,7 @@
 		<cfquery>
 			UPDATE COLLEGE_NOTES
 			<cfif len(trim(departmentReqNote))>
-				SET departments_note = <cfqueryparam value="#form.departmentReqNote#" cfsqltype="cf_sql_varchar">
+				SET departments_note = <cfqueryparam value="#departmentReqNote#" cfsqltype="cf_sql_varchar">
 			<cfelse>
 				SET departments_note = NULL
 			</cfif>
@@ -393,7 +393,7 @@
 		<cfquery>
 			UPDATE COLLEGE_NOTES
 			<cfif len(trim(codekeyReqNote))>
-				SET codekeys_note = <cfqueryparam value="#form.codekeyReqNote#" cfsqltype="cf_sql_varchar">
+				SET codekeys_note = <cfqueryparam value="#codekeyReqNote#" cfsqltype="cf_sql_varchar">
 			<cfelse>
 				SET codekeys_note = NULL
 			</cfif>
