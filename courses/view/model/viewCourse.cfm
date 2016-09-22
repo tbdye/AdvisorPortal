@@ -17,7 +17,6 @@
 
 			<div class="breadcrumb">
 				<a href="../../dashboard/">Home</a>
-				&raquo; <a href="../">Completed Courses</a>
 				&raquo; View Course
 			</div>	
 
