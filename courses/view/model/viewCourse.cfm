@@ -81,35 +81,23 @@
 							</table>
 						</cfif>
 						
-						<cfif qViewGetPrerequisites.RecordCount>
-							<hr>
-					    	<h3>Prerequisites</h3>
-				    		<table>
-				    			<tr>
-									<td>
+						<hr>
+				    	<h3>Prerequisites</h3>
+			    		<table>
+			    			<tr>
+								<td>
+									<cfif qViewGetPrerequisites.RecordCount>
 										<ul>
 											<cfloop index="i" from=1 to=#ArrayLen(aPrerequisites)#>
 												<li><cfoutput>#aPrerequisites[i]#</cfoutput><br></li>
 											</cfloop>
 										</ul>
-									</td>
-								</tr>
-				    		</table>
-			    		</cfif>
-						
-						<hr>
-						<h3>Enrollment</h3>
-						<table>
-							<tr>
-								<cfif qViewGetPermission.RecordCount>
-									<td>Enrollment is available by instructor permission</td>
-								<cfelseif !qViewGetPermission.RecordCount && !qViewGetPrerequisites.RecordCount>
-									<td>This class has open enrollment.</td>
-								<cfelse>
-									<td>Enrollment is authorized through prerequisite courses only</td>
-								</cfif>
+									<cfelse>
+										This class has open enrollment.
+									</cfif>
+								</td>
 							</tr>
-						</table>
+				    	</table>
 
 						<p/>
 	                </div>
