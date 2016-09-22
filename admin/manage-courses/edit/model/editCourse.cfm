@@ -12,13 +12,13 @@
 		
 	    <article id="content-article" role="article">
 	        <header>
-	            <h1>Edit #course_number#</h1>
+	            <h1>Edit <cfoutput>#qEditGetCourse.course_number#</cfoutput></h1>
 	        </header>
 
 			<div class="breadcrumb">
-				<a href="">Home</a>
-				&raquo; <a href="">Manage Courses</a>
-				&raquo; Edit Course
+				<a href="../../">Home</a>
+				&raquo; <a href="../">Manage Courses</a>
+				&raquo; Edit <cfoutput>#qEditGetCourse.course_number#</cfoutput>
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
@@ -29,28 +29,168 @@
 
 						<h2>Edit Course</h2>
 						<h3>Course Information</h3>
-				    	Number:
-				    	Title:
-				    	Department:
-				    	Availability:
+				    	<table>
+				    		<cfform>
+						    	<cfif messageBean.hasErrors() && isDefined("form.updateCourseInfoButton")>
+									<tr>
+										<td colspan="3">
+											<div id="form-errors">
+												<ul>
+													<cfloop array="#messageBean.getErrors()#" index="error">
+														<cfoutput><li>#error.message#</li></cfoutput>
+													</cfloop>
+												</ul>
+											</div>											
+										</td>
+									</tr>
+								</cfif>
+						    	<tr>
+						    		<td><label for="courseNumber">Number:</label></td>
+						    		<td colspan="2"><cfinput type="text" id="courseNumber" name="courseNumber" value="#qEditGetCourse.course_number#"></td>
+						    	</tr>
+						    	<tr>
+						    		<td><label for="courseTitle">Title:</label></td>
+						    		<td colspan="2"><cfinput type="text" id="courseTitle" name="courseTitle" value="#qEditGetCourse.title#"></td>
+						    	</tr>
+						    	<tr>
+						    		<td><label for="courseDepartment">Department:</label></td>
+						    		<td colspan="2">
+						    			<cfselect name="courseDepartment" query="qEditGetSelectDepartments" display="department_name" value="id" selected="#qEditGetCourse.departments_id#"></cfselect>
+						    		</td>
+						    	</tr>
+						    	<cfif IsUserInRole("administrator")>
+							    	<tr>
+							    		<td>Availability:</td>
+											<td>
+												<cfinput type="radio" id="active" name="courseAvailability" value="1" checked="#status1#">
+												<cfoutput><label for="active"> available</label></cfoutput> </br>
+												<cfinput type="radio" id="inactive" name="courseAvailability" value="0" checked="#status2#">
+												<cfoutput><label for="inactive"> hidden</label></cfoutput><br>
+											</td>
+							    	</tr>
+						    	</cfif>
+						    	<tr>
+						    		<td colspan="3"></td>
+						    	</tr>
+						    	<tr>
+						    		<th></th>
+						    		<th>Min</th>
+						    		<th>Max</th>
+						    	</tr>
+						    	<tr>
+						    		<td>Credit:</td>
+						    		<td><cfinput type="text" id="courseMinCredit" name="courseMinCredit" value="#qEditGetCourse.min_credit#"></td>
+						    		<td><cfinput type="text" id="courseMaxCredit" name="courseMaxCredit" value="#qEditGetCourse.max_credit#"></td>
+						    	</tr>
+						    	<tr>
+						    		<td></td>
+						    		<td colspan="2"><cfinput type="submit" name="updateCourseInfoButton" value="Update course information"></td>
+						    	</tr>
+				    		</cfform>
+				    	</table>
 				    	
-				    			Min		Max
-				    	Credit: [text] [text]
-				    			[Update course]
-				    	
-				    	<h3>Catalog Description</h3>
-				    	[textarea]
-				    	[Update]
-
-						<h3>Placement Scores</h3>
-						* Information [Remove]
-						[textbox] Add]
+				    	<hr>
+				    	<h3>Course Description</h3>
+				    	<table>
+				    		<cfform>
+						    	<tr>
+						    		<td><textarea name="courseDescription" rows="5" cols="80"><cfoutput>#qEditGetCourse.course_description#</cfoutput></textarea></td>
+						    	</tr>
+						    	<tr>
+						    		<td><cfinput type="submit" name="updateCourseDescButton" value="Update course description"></td>
+						    	</tr>
+						    </cfform>
+				    	</table>
 						
+						<hr>
+						<h3>Placement Scores</h3>
+						<table>
+							<cfform>
+								<cfif messageBean.hasErrors() && isDefined("form.addPlacementButton")>
+									<tr>
+										<td colspan="2">
+											<div id="form-errors">
+												<ul>
+													<cfloop array="#messageBean.getErrors()#" index="error">
+														<cfoutput><li>#error.message#</li></cfoutput>
+													</cfloop>
+												</ul>
+											</div>											
+										</td>
+									</tr>
+								</cfif>
+								<tr>
+									<cfif qEditGetPlacement.RecordCount>
+										<td><cfoutput>#qEditGetPlacement.placement#</cfoutput></td>
+										<td><cfinput type="submit" name="removePlacementButton" value="Remove"></td>
+									<cfelse>
+										<td><cfinput type="text" id="coursePlacement" name="coursePlacement"></td>
+										<td><cfinput type="submit" name="addPlacementButton" value="Add"></td>
+									</cfif>
+								</tr>
+							</cfform>
+						</table>
+						
+						<hr>
 				    	<h3>Prerequisites</h3>
-				    	Grouping	Course
-				    	#			XXX		  [Remove]
-				    	[selector] [textbox]  [Add]
-
+			    		<table>
+			    			<cfif messageBean.hasErrors() && isDefined("form.addPrerequisiteButton")>
+								<tr>
+									<td colspan="3">
+										<div id="form-errors">
+											<ul>
+												<cfloop array="#messageBean.getErrors()#" index="error">
+													<cfoutput><li>#error.message#</li></cfoutput>
+												</cfloop>
+											</ul>
+										</div>											
+									</td>
+								</tr>
+							</cfif>
+			    			<tr>
+					    		<th>Grouping</th>
+					    		<th>Course</th>
+					    		<th></th>
+				    		</tr>
+				    		<cfloop query="qEditGetPrerequisites">
+					    		<tr>
+						    		<cfform>
+							    		<td><cfoutput>#qEditGetPrerequisites.group_id#</cfoutput></td>
+							    		<td><cfoutput>#qEditGetPrerequisites.course_number#</cfoutput></td>
+							    		<td>
+								    		<cfinput type="hidden" name="prerequisiteId" value="#qEditGetPrerequisites.id#">
+								    		<cfinput type="submit" name="removePrerequisiteButton" value="Remove">
+							    		</td>
+						    		</cfform>
+					    		</tr>
+				    		</cfloop>
+				    		<tr>
+					    		<cfform>
+						    		<td>
+						    			<cfselect name="groupId" query="qEditGetSelectGroups" display="group_id" value="group_id" queryPosition="above" >
+											<option value="0">New group</option>
+										</cfselect>
+						    		</td>
+						    		<td><cfinput type="text" id="coursePrerequisite" name="coursePrerequisite"></td>
+						    		<td><cfinput type="submit" name="addPrerequisiteButton" value="Add"></td>
+					    		</cfform>
+				    		</tr>
+			    		</table>
+						
+						<hr>
+						<h3>Enrollment</h3>
+						<table>
+							<cfform>
+								<tr>
+									<td><cfinput type="checkbox" id="courseEnrollment" name="courseEnrollment" checked="#checked#"></td>
+									<td><label for="courseEnrollment">Allow enrollment by instructor permission</label></td>
+								</tr>
+								<tr>
+									<td colspan="2"><cfinput type="submit" name="updateEnrollmentButton" value="Update enrollment"></td>
+								</tr>
+							</cfform>
+						</table>
+						
 						<p/>
 	                </div>
 	            </div>
