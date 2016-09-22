@@ -1,0 +1,132 @@
+<!--- View Course Model --->
+<!--- Thomas Dye, September 2016 --->
+<cfif !isDefined("messageBean")>
+	<cflocation url="..">
+</cfif>
+
+<cfmodule template="../../../header.cfm"
+
+	pagetitle="Advisor Services Portal - View Course">
+	
+	<div class="resize-box">
+		
+	    <article id="content-article" role="article">
+	        <header>
+	            <h1>View <cfoutput>#qViewGetCourse.course_number#</cfoutput></h1>
+	        </header>
+
+			<div class="breadcrumb">
+				<a href="../../dashboard/">Home</a>
+				&raquo; <a href="../">Completed Courses</a>
+				&raquo; View Course
+			</div>	
+
+	        <div id="page-content" class="page-plus-side">
+	            <div class="content">
+	                <span property="dc:title" content="View Course" class="rdf-meta element-hidden"></span>
+	
+	                <div class="content">
+				    	<h2>View Course</h2>
+						<h3>Course Information</h3>
+				    	<table>
+					    	<tr>
+					    		<td>Number:</td>
+					    		<td colspan="2"><cfoutput>#qViewGetCourse.course_number#</cfoutput></td>
+					    	</tr>
+					    	<tr>
+					    		<td>Title:</td>
+					    		<td colspan="2"><cfoutput>#qViewGetCourse.title#</cfoutput></td>
+					    	</tr>
+					    	<tr>
+					    		<td>Department:</td>
+					    		<td colspan="2"><cfoutput>#qViewGetCourse.department_name#</cfoutput></td>
+					    	</tr>
+					    	<tr>
+					    		<td colspan="3"></td>
+					    	</tr>
+					    	<cfif IsNumeric(qViewGetCourse.min_credit)>
+						    	<tr>
+						    		<th></th>
+						    		<th>Min</th>
+						    		<th>Max</th>
+						    	</tr>
+						    	<tr>
+						    		<td>Variable Credit:</td>
+						    		<td><cfoutput>#qViewGetCourse.min_credit#</cfoutput></td>
+						    		<td><cfoutput>#qViewGetCourse.max_credit#</cfoutput></td>
+						    	</tr>
+						    <cfelse>
+						    	<tr>
+						    		<td>Credit:</td>
+						    		<td><cfoutput>#qViewGetCourse.max_credit#</cfoutput></td>
+						    	</tr>
+					    	</cfif>
+				    	</table>
+				    	
+				    	<hr>
+				    	<h3>Course Description</h3>
+				    	<table>
+					    	<tr>
+					    		<td><cfoutput>#qViewGetCourse.course_description#</cfoutput></td>
+					    	</tr>
+				    	</table>
+						
+						<cfif qViewGetPlacement.RecordCount>
+							<hr>
+							<h3>Placement Scores</h3>
+							<table>
+								<tr>
+									<td><cfoutput>#qViewGetPlacement.placement#</cfoutput></td>
+								</tr>
+							</table>
+						</cfif>
+						
+						<cfif qViewGetPrerequisites.RecordCount>
+							<hr>
+					    	<h3>Prerequisites</h3>
+				    		<table>
+				    			<tr>
+									<td>
+										<ul>
+											<cfloop index="i" from=1 to=#ArrayLen(aPrerequisites)#>
+												<li><cfoutput>#aPrerequisites[i]#</cfoutput><br></li>
+											</cfloop>
+										</ul>
+									</td>
+								</tr>
+				    		</table>
+			    		</cfif>
+						
+						<hr>
+						<h3>Enrollment</h3>
+						<table>
+							<tr>
+								<cfif qViewGetPermission.RecordCount>
+									<td>Enrollment is available by instructor permission</td>
+								<cfelseif !qViewGetPermission.RecordCount && !qViewGetPrerequisites.RecordCount>
+									<td>This class has open enrollment.</td>
+								<cfelse>
+									<td>Enrollment is authorized through prerequisite courses only</td>
+								</cfif>
+							</tr>
+						</table>
+
+						<p/>
+	                </div>
+	            </div>
+	        </div>
+	    </article>                   
+
+		<aside id="content-sidebar">
+		    <div class="region region-sidebar">			
+                <div class="content">
+                	<p>
+                		<strong>About</strong>                		
+                	</p>
+			    	<p>The Advising Services Portal is an online student-transfer information system... describe some info, helps with visits with faculty advisors.</p>
+					<p>More description... explain about intended use.  Private system, info is not shared or sold.</p>
+            	</div>
+		    </div>
+		</aside>
+	
+<cfmodule template="../../../footer.cfm">

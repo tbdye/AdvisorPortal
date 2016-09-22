@@ -78,7 +78,7 @@
 								</tr>
 								<cfloop query="qCoursesGetCourse">
 									<tr>
-										<td><cfoutput>#qCoursesGetCourse.course_number#</cfoutput></td>
+										<td><cfoutput><a href="view/?course=#URLEncodedFormat(qCoursesGetCourse.id)#" title="#qCoursesGetCourse.course_number#">#qCoursesGetCourse.course_number#</a></cfoutput></td>
 										<td><cfoutput>#qCoursesGetCourse.title#</cfoutput></td>
 										<cfif !len(qCoursesGetCourse.min_credit)>
 											<td><cfoutput>#qCoursesGetCourse.max_credit#</cfoutput></td>
@@ -172,7 +172,7 @@
 										</tr>
 										<cfloop query="qCoursesGetStudentCourses">
 											<tr>
-												<td><cfoutput>#qCoursesGetStudentCourses.course_number#</cfoutput></td>
+												<td><cfoutput><a href="view/?course=#URLEncodedFormat(qCoursesGetStudentCourses.id)#" title="#qCoursesGetStudentCourses.course_number#">#qCoursesGetStudentCourses.course_number#</a></cfoutput></td>
 												<td><cfoutput>#qCoursesGetStudentCourses.title#</cfoutput></td>
 												<td><cfoutput>#qCoursesGetStudentCourses.credit#</cfoutput></td>
 												<td>

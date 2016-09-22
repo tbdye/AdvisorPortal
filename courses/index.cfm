@@ -212,7 +212,7 @@
 
 <!--- Display courses completed by the student. --->
 <cfquery name="qCoursesGetStudentCourses">
-	SELECT c.course_number, c.title, s.id AS completed_id, s.credit
+	SELECT c.id, c.course_number, c.title, s.id AS completed_id, s.credit
 	FROM STUDENTS_COMPLETEDCOURSES s
 	JOIN COURSES c
 	ON c.id = s.courses_id
