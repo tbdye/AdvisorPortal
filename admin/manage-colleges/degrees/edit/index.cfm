@@ -33,7 +33,9 @@
 <cfquery name="qEditGetAllDepartments">
 	SELECT id, department_name
 	FROM DEPARTMENTS
-	WHERE use_catalog = 1
+	<cfif !IsUserInRole("administrator")>
+		WHERE use_catalog = 1
+	</cfif>
 	ORDER BY department_name ASC
 </cfquery>
 
@@ -240,7 +242,9 @@
 	<cfquery name="qEditGetCourse">
 		SELECT id
 		FROM COURSES
-		WHERE use_catalog = 1
+		<cfif !IsUserInRole("administrator")>
+			WHERE use_catalog = 1
+		</cfif>
 		AND course_number = <cfqueryparam value="#trim(form.localAdmCourse)#" cfsqltype="cf_sql_varchar">
 	</cfquery>
 	
@@ -466,7 +470,9 @@
 	<cfquery name="qEditGetCourse">
 		SELECT id
 		FROM COURSES
-		WHERE use_catalog = 1
+		<cfif !IsUserInRole("administrator")>
+			WHERE use_catalog = 1
+		</cfif>
 		AND course_number = <cfqueryparam value="#trim(form.localGrdCourse)#" cfsqltype="cf_sql_varchar">
 	</cfquery>
 	

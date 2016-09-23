@@ -49,7 +49,8 @@
 		<cfquery name="qCoursesGetCourse">
 			SELECT id, min_credit, max_credit
 			FROM COURSES
-			WHERE id = <cfqueryparam value="#URLDecode(url.id)#" cfsqltype="cf_sql_integer">
+			WHERE use_catalog = 1
+			AND id = <cfqueryparam value="#URLDecode(url.id)#" cfsqltype="cf_sql_integer">
 			AND course_number = <cfqueryparam value="#URLDecode(url.add)#" cfsqltype="cf_sql_varchar">
 		</cfquery>
 		
@@ -98,7 +99,8 @@
 	<cfquery name="qCoursesCheckCourse">
 		SELECT id, course_number, title, min_credit, max_credit
 		FROM COURSES
-		WHERE id = <cfqueryparam value="#URLDecode(url.id)#" cfsqltype="cf_sql_integer">
+		WHERE use_catalog = 1
+		AND id = <cfqueryparam value="#URLDecode(url.id)#" cfsqltype="cf_sql_integer">
 		AND course_number = <cfqueryparam value="#URLDecode(url.add)#" cfsqltype="cf_sql_varchar">
 	</cfquery>
 

@@ -22,7 +22,6 @@
 <cfquery name="qManageGetAllDepartments">
 	SELECT id, department_name
 	FROM DEPARTMENTS
-	WHERE use_catalog = 1
 	ORDER BY department_name ASC
 </cfquery>
 
@@ -32,7 +31,6 @@
 	WHERE id IN (SELECT departments_id
 		FROM DEGREES
 		WHERE colleges_id = <cfqueryparam value="#qManageGetCollege.id#" cfsqltype="cf_sql_integer">)
-	AND use_catalog = 1
 	ORDER BY department_name ASC
 </cfquery>
 

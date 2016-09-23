@@ -219,7 +219,9 @@
 	<cfquery name="qEditGetCourse">
 		SELECT id
 		FROM COURSES
-		WHERE use_catalog = 1
+		<cfif !IsUserInRole("administrator")>
+			WHERE use_catalog = 1
+		</cfif>
 		AND course_number = <cfqueryparam value="#trim(form.localCourse)#" cfsqltype="cf_sql_varchar">
 	</cfquery>
 	
@@ -334,7 +336,9 @@
 	<cfquery name="qEditGetDepartment">
 		SELECT id
 		FROM DEPARTMENTS
-		WHERE use_catalog = 1
+		<cfif !IsUserInRole("administrator")>
+			WHERE use_catalog = 1
+		</cfif>
 		AND id = <cfqueryparam value="#trim(form.localDepartment)#" cfsqltype="cf_sql_integer">
 	</cfquery>
 

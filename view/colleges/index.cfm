@@ -15,7 +15,8 @@
 <cfquery name="qViewGetCollege">
 	SELECT college_name, college_city, college_website
 	FROM COLLEGES
-	WHERE id = <cfqueryparam value="#URLDecode(url.college)#" cfsqltype="cf_sql_integer">
+	WHERE use_catalog = 1
+	AND id = <cfqueryparam value="#URLDecode(url.college)#" cfsqltype="cf_sql_integer">
 </cfquery>
 
 <!--- Back out if the college ID is not valid --->

@@ -12,7 +12,8 @@
 	<cfquery name="qCheckDegree">
 		SELECT id, degree_name, colleges_id
 		FROM DEGREES
-		WHERE id = <cfqueryparam value="#url.id#" cfsqltype="cf_sql_integer">
+		WHERE use_catalog = 1
+		AND id = <cfqueryparam value="#url.id#" cfsqltype="cf_sql_integer">
 		AND degree_name = <cfqueryparam value="#url.degree#" cfsqltype="cf_sql_varchar">
 	</cfquery>
 	

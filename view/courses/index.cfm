@@ -17,7 +17,8 @@
 	FROM COURSES c
 	JOIN DEPARTMENTS d
 	ON d.id = c.departments_id
-	WHERE c.id = <cfqueryparam value="#URLDecode(url.course)#" cfsqltype="cf_sql_integer">
+	WHERE c.use_catalog = 1
+	AND c.id = <cfqueryparam value="#URLDecode(url.course)#" cfsqltype="cf_sql_integer">
 </cfquery>
 
 <!--- Back out if the course ID is not valid --->
