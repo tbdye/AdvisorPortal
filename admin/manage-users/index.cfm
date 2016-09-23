@@ -141,7 +141,7 @@
 	<cfquery name="qAdminGetAccount">
 		SELECT id
 		FROM ACCOUNTS
-		WHERE email = <cfqueryparam value="#trim(form.emailAddress)#" cfsqltype="cf_sql_varchar">
+		WHERE email = <cfqueryparam value="#trim(emailAddress)#" cfsqltype="cf_sql_varchar">
 	</cfquery>
 	<cfquery>
 		INSERT INTO	FACULTY (

@@ -1,6 +1,6 @@
-<!--- Manage Courses Controller --->
+<!--- Manage Departments Controller --->
 <!--- Thomas Dye, August 2016 --->
-<cfif !IsUserInRole("administrator")>
+<cfif !IsUserInRole("editor")>
 	<cflocation url="..">
 </cfif>
 

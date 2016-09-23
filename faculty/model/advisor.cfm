@@ -16,7 +16,7 @@
 	        </header>
 
 			<div class="breadcrumb">
-				<a href="">Home</a>
+				<a href=".">Home</a>
 				&raquo; Advise Student
 			</div>	
 
@@ -36,7 +36,7 @@
 							</p>
 							<p>
 								<cfif isDefined("url.search") || isDefined("qAdvisorGetStudent") && qAdvisorGetStudent.RecordCount>
-									<a href="" title="hide all students">Hide all students</a>
+									<a href="." title="hide all students">Hide all students</a>
 								<cfelse>
 									<a href="?search=all" title="view all students">View all students</a>
 								</cfif>	

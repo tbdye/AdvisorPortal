@@ -16,7 +16,7 @@
 	        </header>
 
 			<div class="breadcrumb">
-				<a href="..">Home</a>
+				<a href="../">Home</a>
 				&raquo; Manage Courses
 			</div>	
 

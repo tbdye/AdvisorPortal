@@ -52,8 +52,8 @@
 	                		<tr>
 	                			<td>Degree:</td>
 	                			<td>
-	                				<cfoutput><a href="../degrees/?degree=#qEditGetPlan.degrees_id#" title="#qEditGetPlan.degree_name#">#qEditGetPlan.degree_name#</a></cfoutput><br>
-	                				<cfoutput><a href="../colleges/?college=#qEditGetPlan.colleges_id#" title="#qEditGetPlan.college_name# - #qEditGetPlan.college_city#">#qEditGetPlan.college_name# - #qEditGetPlan.college_city#</a></cfoutput><br>
+	                				<cfoutput><a href="../../view/degrees/?degree=#qEditGetPlan.degrees_id#" title="#qEditGetPlan.degree_name#">#qEditGetPlan.degree_name#</a></cfoutput><br>
+	                				<cfoutput><a href="../../view/colleges/?college=#qEditGetPlan.colleges_id#" title="#qEditGetPlan.college_name# - #qEditGetPlan.college_city#">#qEditGetPlan.college_name# - #qEditGetPlan.college_city#</a></cfoutput><br>
 	                				<cfoutput>#qEditGetPlan.degree_type#</cfoutput>
 	                			</td>
 	                		</tr>
@@ -119,7 +119,7 @@
 									<tr>
 										<cfoutput>
 	                                    	<!--- Display code --->
-	                                    	<td><a href="../../courses/view/?course=#URLEncodedFormat(aCategoryC[Counter][5])#" title="#aCategoryC[Counter][1]#">#aCategoryC[Counter][1]#</a></td>
+	                                    	<td><a href="../../view/courses/?course=#URLEncodedFormat(aCategoryC[Counter][5])#" title="#aCategoryC[Counter][1]#">#aCategoryC[Counter][1]#</a></td>
 											<!--- Display title --->
 											<td>#aCategoryC[Counter][2]#</td>
 											<td>
@@ -208,7 +208,7 @@
 									<tr>
 										<cfoutput>
 	                                    	<!--- Display code --->
-	                                    	<td><a href="../../courses/view/?course=#URLEncodedFormat(aCategoryW[Counter][5])#" title="#aCategoryW[Counter][1]#">#aCategoryW[Counter][1]#</a></td>
+	                                    	<td><a href="../../view/courses/?course=#URLEncodedFormat(aCategoryW[Counter][5])#" title="#aCategoryW[Counter][1]#">#aCategoryW[Counter][1]#</a></td>
 											<!--- Display title --->
 											<td>#aCategoryW[Counter][2]#</td>
 											<td>
@@ -297,7 +297,7 @@
 									<tr>
 										<cfoutput>
 	                                    	<!--- Display code --->
-	                                    	<td><a href="../../courses/view/?course=#URLEncodedFormat(aCategoryQSR[Counter][5])#" title="#aCategoryQSR[Counter][1]#">#aCategoryQSR[Counter][1]#</a></td>
+	                                    	<td><a href="../../view/courses/?course=#URLEncodedFormat(aCategoryQSR[Counter][5])#" title="#aCategoryQSR[Counter][1]#">#aCategoryQSR[Counter][1]#</a></td>
 											<!--- Display title --->
 											<td>#aCategoryQSR[Counter][2]#</td>
 											<td>
@@ -386,7 +386,7 @@
 									<tr>
 										<cfoutput>
 	                                    	<!--- Display code --->
-	                                    	<td><a href="../../courses/view/?course=#URLEncodedFormat(aCategoryNW[Counter][5])#" title="#aCategoryNW[Counter][1]#">#aCategoryNW[Counter][1]#</a></td>
+	                                    	<td><a href="../../view/courses/?course=#URLEncodedFormat(aCategoryNW[Counter][5])#" title="#aCategoryNW[Counter][1]#">#aCategoryNW[Counter][1]#</a></td>
 											<!--- Display title --->
 											<td>#aCategoryNW[Counter][2]#</td>
 											<td>
@@ -475,7 +475,7 @@
 									<tr>
 										<cfoutput>
 	                                    	<!--- Display code --->
-	                                    	<td><a href="../../courses/view/?course=#URLEncodedFormat(aCategoryVLPA[Counter][5])#" title="#aCategoryVLPA[Counter][1]#">#aCategoryVLPA[Counter][1]#</a></td>
+	                                    	<td><a href="../../view/courses/?course=#URLEncodedFormat(aCategoryVLPA[Counter][5])#" title="#aCategoryVLPA[Counter][1]#">#aCategoryVLPA[Counter][1]#</a></td>
 											<!--- Display title --->
 											<td>#aCategoryVLPA[Counter][2]#</td>
 											<td>
@@ -564,7 +564,7 @@
 									<tr>
 										<cfoutput>
 	                                    	<!--- Display code --->
-	                                    	<td><a href="../../courses/view/?course=#URLEncodedFormat(aCategoryIS[Counter][5])#" title="#aCategoryIS[Counter][1]#">#aCategoryIS[Counter][1]#</a></td>
+	                                    	<td><a href="../../view/courses/?course=#URLEncodedFormat(aCategoryIS[Counter][5])#" title="#aCategoryIS[Counter][1]#">#aCategoryIS[Counter][1]#</a></td>
 											<!--- Display title --->
 											<td>#aCategoryIS[Counter][2]#</td>
 											<td>
@@ -653,7 +653,7 @@
 									<tr>
 										<cfoutput>
 	                                    	<!--- Display code --->
-	                                    	<td><a href="../../courses/view/?course=#URLEncodedFormat(aCategoryDIV[Counter][5])#" title="#aCategoryDIV[Counter][1]#">#aCategoryDIV[Counter][1]#</a></td>
+	                                    	<td><a href="../../view/courses/?course=#URLEncodedFormat(aCategoryDIV[Counter][5])#" title="#aCategoryDIV[Counter][1]#">#aCategoryDIV[Counter][1]#</a></td>
 											<!--- Display title --->
 											<td>#aCategoryDIV[Counter][2]#</td>
 											<td>
@@ -764,7 +764,7 @@
 									<tr>
 										<cfoutput>
 	                                    	<!--- Display code --->
-	                                    	<td><a href="../../courses/view/?course=#URLEncodedFormat(aCategoryE[Counter][5])#" title="#aCategoryE[Counter][1]#">#aCategoryE[Counter][1]#</a></td>
+	                                    	<td><a href="../../view/courses/?course=#URLEncodedFormat(aCategoryE[Counter][5])#" title="#aCategoryE[Counter][1]#">#aCategoryE[Counter][1]#</a></td>
 											<!--- Display title --->
 											<td>#aCategoryE[Counter][2]#</td>
 											<td>

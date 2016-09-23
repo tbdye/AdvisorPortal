@@ -17,7 +17,7 @@
 
 			<div class="breadcrumb">
 				<a href="../../dashboard/">Home</a>
-				&raquo; View Course
+				&raquo; View <cfoutput>#qViewGetCourse.course_number#</cfoutput>
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">

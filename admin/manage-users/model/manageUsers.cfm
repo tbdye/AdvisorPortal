@@ -112,7 +112,7 @@
 								<tr>
 									<td colspan="2">
 										<cfif isDefined("url.search") || isDefined("qAdminSearchAccount") && qAdminSearchAccount.RecordCount>
-											<a href="" title="hide all users">Hide all users</a>
+											<a href="." title="hide all users">Hide all users</a>
 										<cfelse>
 											<a href="?search=all" title="view all users">View all users</a>
 										</cfif>

@@ -19,7 +19,6 @@
 
 			<div class="breadcrumb">
 				<a href="../../dashboard/">Home</a>
-				&raquo; <a href="..">Degree Plans</a>
 				&raquo; <cfoutput>#qViewGetCollege.college_name#</cfoutput>
 			</div>	
 
@@ -59,7 +58,7 @@
 								</tr>
 								<cfloop query="qViewGetAdmissionCourses">
 									<tr>
-										<td width="20%"><cfoutput>#qViewGetAdmissionCourses.course_number#</cfoutput></td>
+										<td width="20%"><cfoutput><a href="../courses/?course=#URLEncodedFormat(qViewGetAdmissionCourses.id)#" title="#qViewGetAdmissionCourses.course_number#">#qViewGetAdmissionCourses.course_number#</a></cfoutput></td>
 										<td width="50%"><cfoutput>#qViewGetAdmissionCourses.category# (#qViewGetAdmissionCourses.description#)</cfoutput></td>
 										<td width="30%"><cfoutput>#qViewGetAdmissionCourses.foreign_course_number#</cfoutput></td>
 									</tr>

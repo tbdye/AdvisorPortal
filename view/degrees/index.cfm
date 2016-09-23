@@ -13,7 +13,7 @@
 
 <!--- Define action for degree "Create plan from degree" button --->
 <cfif isDefined("form.addDegreeButton")>
-	<cflocation url="../create-plan/?degree=#URLEncodedFormat(form.degreeName)#&id=#form.degreeId#">
+	<cflocation url="../../plans/create-plan/?degree=#URLEncodedFormat(form.degreeName)#&id=#form.degreeId#">
 </cfif>
 
 <!--- Prepare basic contents of the page --->

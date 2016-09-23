@@ -90,7 +90,7 @@
 			</cfquery>
 			
 			<!--- Done, reset page --->
-			<cflocation url="index.cfm">
+			<cflocation url="./">
 		</cfif>
 	</cfif>
 	
@@ -197,7 +197,7 @@
 	</cfquery>
 	
 	<!--- Done, reset page. --->
-	<cflocation url="index.cfm">
+	<cflocation url="./">
 </cfif>
 
 <!--- Delete course. --->
@@ -207,7 +207,7 @@
 		FROM STUDENTS_COMPLETEDCOURSES
 		WHERE id = <cfqueryparam value="#form.thisCourseId#" cfsqltype="cf_sql_integer">
 	</cfquery>
-	<cflocation url="index.cfm">
+	<cflocation url="./">
 </cfif>
 
 <!--- Display courses completed by the student. --->

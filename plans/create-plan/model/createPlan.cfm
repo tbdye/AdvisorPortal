@@ -48,8 +48,8 @@
 										<cfform>
 											<tr>
 												<td>
-													<cfoutput><a href="../degrees/?degree=#qSearchGetFilteredDegrees.id#" title="#qSearchGetFilteredDegrees.degree_name#">#qSearchGetFilteredDegrees.degree_name#</a></cfoutput><br>
-													<cfoutput><a href="../colleges/?college=#qSearchGetFilteredDegrees.colleges_id#" title="#qSearchGetFilteredDegrees.college_name# - #qSearchGetFilteredDegrees.college_city#">#qSearchGetFilteredDegrees.college_name# - #qSearchGetFilteredDegrees.college_city#</a></cfoutput><br>
+													<cfoutput><a href="../../view/degrees/?degree=#qSearchGetFilteredDegrees.id#" title="#qSearchGetFilteredDegrees.degree_name#">#qSearchGetFilteredDegrees.degree_name#</a></cfoutput><br>
+													<cfoutput><a href="../../view/colleges/?college=#qSearchGetFilteredDegrees.colleges_id#" title="#qSearchGetFilteredDegrees.college_name# - #qSearchGetFilteredDegrees.college_city#">#qSearchGetFilteredDegrees.college_name# - #qSearchGetFilteredDegrees.college_city#</a></cfoutput><br>
 													<cfoutput>#qSearchGetFilteredDegrees.degree_type#</cfoutput>
 												</td>
 												<td>

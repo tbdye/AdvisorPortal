@@ -1,30 +1,34 @@
-<!--- Manage Departments Model --->
-<!--- Thomas Dye, August 2016 --->
+<!--- View Department Model --->
+<!--- Thomas Dye, September 2016 --->
 <cfif !isDefined("messageBean")>
 	<cflocation url="..">
 </cfif>
 
-<cfmodule template="../../../header.cfm">
-	
-	<pagetitle="Advisor Services Portal - Manage Departments">
+<cfmodule template="../../../header.cfm"
+
+	pagetitle="Advisor Services Portal - View Department">
 	
 	<div class="resize-box">
 		
 	    <article id="content-article" role="article">
 	        <header>
-				<h1>Manage Departments</h1>
+	            <h1><cfoutput>View Department</cfoutput></h1>
 	        </header>
 
 			<div class="breadcrumb">
-				<a href="..">Home</a>
-				&raquo; Manage Departments
+				<a href="../../dashboard">Home</a>
+				&raquo; <cfoutput>View Department</cfoutput>
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
-	            	empty content
-	            	
-	            <p/>
+	                <span property="dc:title" content="View Department" class="rdf-meta element-hidden"></span>
+	
+	                <div class="content">
+				    	empty content
+
+						<p/>
+	                </div>
 	            </div>
 	        </div>
 	    </article>                   
@@ -40,5 +44,5 @@
             	</div>
 		    </div>
 		</aside>
-
+	
 <cfmodule template="../../../footer.cfm">

@@ -45,8 +45,8 @@
 							</p>			
 							
 							<p>			
-							<cfoutput><a href="degrees/?degree=#qPlanGetActivePlan.degrees_id#" title="#qPlanGetActivePlan.degree_name#">#qPlanGetActivePlan.degree_name#</a></cfoutput><br>
-                			<cfoutput><a href="colleges/?college=#qPlanGetActivePlan.colleges_id#" title="#qPlanGetActivePlan.college_name# - #qPlanGetActivePlan.college_city#">#qPlanGetActivePlan.college_name# - #qPlanGetActivePlan.college_city#</a></cfoutput><br>
+							<cfoutput><a href="../view/degrees/?degree=#qPlanGetActivePlan.degrees_id#" title="#qPlanGetActivePlan.degree_name#">#qPlanGetActivePlan.degree_name#</a></cfoutput><br>
+                			<cfoutput><a href="../view/colleges/?college=#qPlanGetActivePlan.colleges_id#" title="#qPlanGetActivePlan.college_name# - #qPlanGetActivePlan.college_city#">#qPlanGetActivePlan.college_name# - #qPlanGetActivePlan.college_city#</a></cfoutput><br>
                 			<cfoutput>#qPlanGetActivePlan.degree_type#</cfoutput>
 							</p>
 							

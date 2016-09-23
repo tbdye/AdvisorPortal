@@ -52,7 +52,7 @@
 	</cfquery>
 	
 	<!--- Refresh the page --->
-	<cflocation url="">
+	<cflocation url=".">
 </cfif>
 
 <cfinclude template="model/manageColleges.cfm">

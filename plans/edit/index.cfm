@@ -442,7 +442,7 @@
 	</cfquery>
 	
 	<!--- Refresh the page --->
-	<cflocation url=".?plan=#URLEncodedFormat(qEditGetPlan.id)#">
+	<cflocation url="./?plan=#URLEncodedFormat(qEditGetPlan.id)#">
 </cfif>
 
 <!--- Load page --->
