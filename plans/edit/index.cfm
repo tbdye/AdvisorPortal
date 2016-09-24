@@ -43,6 +43,9 @@
 		<cfelse>
 			<cfset messageBean.addError('A plan name is required.', 'planName')>
 		</cfif>
+	<cfelse>
+		<!--- Exit edit screen --->
+		<cflocation url="..">
 	</cfif>
 	
 	<!--- Refresh if there were no errors --->
