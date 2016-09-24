@@ -41,20 +41,20 @@
 					<cfif qPlanGetPlans.RecordCount>
 						<cfform>
 							<p>
-								<strong>Active Plan</strong>
-							</p>			
+							<strong>Active Plan: </strong>
+
+							<cfinput type="hidden" name="currentPlanId" value="#qPlanGetActivePlan.id#">
+							<cfselect name="activePlanId" query="qPlanGetPlans" display="plan_name" value="id" selected="#qPlanGetActivePlan.id#"></cfselect>&nbsp;
+							<cfinput type="submit" name="updateActivePlanButton" value="Change">
+							</p>
 							
-							<p>			
+							<p>
 							<cfoutput><a href="../view/degrees/?degree=#qPlanGetActivePlan.degrees_id#" title="#qPlanGetActivePlan.degree_name#">#qPlanGetActivePlan.degree_name#</a></cfoutput><br>
                 			<cfoutput><a href="../view/colleges/?college=#qPlanGetActivePlan.colleges_id#" title="#qPlanGetActivePlan.college_name# - #qPlanGetActivePlan.college_city#">#qPlanGetActivePlan.college_name# - #qPlanGetActivePlan.college_city#</a></cfoutput><br>
                 			<cfoutput>#qPlanGetActivePlan.degree_type#</cfoutput>
 							</p>
 							
-							<p>
-							<cfinput type="hidden" name="currentPlanId" value="#qPlanGetActivePlan.id#">
-							<cfselect name="activePlanId" query="qPlanGetPlans" display="plan_name" value="id" selected="#qPlanGetActivePlan.id#"></cfselect>&nbsp;
-							<cfinput type="submit" name="updateActivePlanButton" value="Change">							
-							</p>
+														
 						</cfform>
 
 							
