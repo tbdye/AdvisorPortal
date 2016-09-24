@@ -8,12 +8,21 @@
 
 <!--- Define the active plan "Change" button --->
 <cfif isDefined("form.updateActivePlanButton")>
-	<cfquery>
-		UPDATE PLAN_ACTIVEPLANS
-		SET plans_id = <cfqueryparam value="#form.activePlanId#" cfsqltype="cf_sql_integer">
-		WHERE plans_id = <cfqueryparam value="#form.currentPlanId#" cfsqltype="cf_sql_integer">
-		AND students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">
-	</cfquery>
+	<cfif form.currentPlanId NEQ form.activePlanId>
+		<cfquery>
+			DELETE
+			FROM PLAN_ACTIVEPLANS
+			WHERE plans_id = <cfqueryparam value="#form.currentPlanId#" cfsqltype="cf_sql_integer">
+			AND students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">
+		
+			INSERT INTO PLAN_ACTIVEPLANS (
+				plans_id, students_accounts_id
+			) VALUES (
+				<cfqueryparam value="#form.activePlanId#" cfsqltype="cf_sql_integer">,
+				<cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">
+			)
+		</cfquery>
+	</cfif>
 </cfif>
 
 <!--- Define the saved degree plans "Delete" button --->

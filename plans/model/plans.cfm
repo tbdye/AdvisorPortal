@@ -84,8 +84,12 @@
 							<cfloop query="qPlanGetPlans">
 								<tr>
 									<td><cfoutput><a href="edit/?plan=#qPlanGetPlans.id#" title="#qPlanGetPlans.plan_name#">#qPlanGetPlans.plan_name#</a></cfoutput></td>
-									<td><cfoutput>#qPlanGetPlans.time_created#</cfoutput></td>
-									<td><cfoutput>#qPlanGetPlans.time_updated#</cfoutput></td>
+									<td><cfoutput>#TimeFormat(qPlanGetPlans.time_created, "short")# - #DateFormat(qPlanGetPlans.time_created, "short")#</cfoutput></td>
+									<cfif len(qPlanGetPlans.time_updated)>
+										<td><cfoutput>#TimeFormat(qPlanGetPlans.time_updated, "short")# - #DateFormat(qPlanGetPlans.time_updated, "short")#</cfoutput></td>
+									<cfelse>
+										<td></td>
+									</cfif>
 									<td>
 										<cfform>
 											<cfinput type="hidden" name="thisPlanId" value="#qPlanGetPlans.id#">
