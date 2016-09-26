@@ -373,17 +373,13 @@
 	<!--- Process remove checkboxes last --->
 	<cfif isDefined("form.remove")>
 		<cfset aRemove=listToArray(trim(form.remove), ",", false, false)>
-		
+
 		<!--- Build a singe query to delete one to many rows --->
 		<cfquery>
-			DELETE
-			FROM PLAN_SELECTEDCOURSES
 			<cfloop from="1" to="#arrayLen(aRemove)#" index="row">
-				<cfif #row# EQ 1>
-					WHERE id = <cfqueryparam value="#aRemove[row]#" cfsqltype="cf_sql_integer">
-				<cfelse>
-					OR id = <cfqueryparam value="#aRemove[row]#" cfsqltype="cf_sql_integer">
-				</cfif>
+				DELETE
+				FROM PLAN_SELECTEDCOURSES
+				WHERE id = <cfqueryparam value="#aRemove[row]#" cfsqltype="cf_sql_integer">
 			</cfloop>
 		</cfquery>
 	</cfif>

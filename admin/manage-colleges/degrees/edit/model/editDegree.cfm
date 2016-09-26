@@ -271,7 +271,7 @@
 	                	<!---------------------Grad requirements by course---------------------------->				
 						<h3>By course</h3>
 						
-						<cfif qEditGetAdmissionCourses.RecordCount>
+						<cfif qEditGetGraduationCourses.RecordCount>
 							<div id="h4-box">
 								<table>																
 									<tr>
@@ -280,14 +280,13 @@
 										<th>Equivalent Course</th>
 										<th></th>
 									</tr>
-									<cfloop query="qEditGetAdmissionCourses">
+									<cfloop query="qEditGetGraduationCourses">
 										<cfform>
 											<tr>
-												<cfinput type="hidden" name="admCoursesId" value="#qEditGetAdmissionCourses.id#">
-												<td width="40%"><cfoutput>#qEditGetAdmissionCourses.course_number#</cfoutput></td>
-												<td width="15%"><cfoutput>#qEditGetAdmissionCourses.category#</cfoutput></td>
-												<td width="35%"><cfoutput>#qEditGetAdmissionCourses.foreign_course_number#</cfoutput></td>
-	                							
+												<cfinput type="hidden" name="grdCoursesId" value="#qEditGetGraduationCourses.id#">
+												<td width="40%"><cfoutput>#qEditGetGraduationCourses.course_number#</cfoutput></td>
+												<td width="15%"><cfoutput>#qEditGetGraduationCourses.category#</cfoutput></td>
+												<td width="35%"><cfoutput>#qEditGetGraduationCourses.foreign_course_number#</cfoutput></td>
 												<td width="10%"><cfinput type="submit" name="delGrdCourseReq" value="Remove"></td>
 											</tr>
 										</cfform>
