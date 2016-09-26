@@ -27,21 +27,28 @@
 						
 						<div id="updateLoginForm">						
 							<cfform>
-								<p><strong>Update Login</strong></p>								
+								<h2>Update login</h2>								
 								<table>
-									<cfif messageBean.hasErrors() && isDefined("form.buttonUpdateEmail")>
-										<tr>
-											<td colspan="2">
-												<div id="form-errors">
-													<ul>
-														<cfloop array="#messageBean.getErrors()#" index="error">
-															<cfoutput><li>#error.message#</li></cfoutput>
-														</cfloop>
-													</ul>
-												</div>											
-											</td>
-										</tr>
-									</cfif>
+									<tr>	
+										<td colspan="2">
+											<div id="form-errors">
+											<cfif messageBean.hasErrors() && isDefined("form.buttonUpdateEmail")>
+												<tr>
+													<td colspan="2">
+														<div id="form-errors">
+															<ul>
+																<cfloop array="#messageBean.getErrors()#" index="error">
+																	<cfoutput><li>#error.message#</li></cfoutput>
+																</cfloop>
+															</ul>
+														</div>											
+													</td>
+												</tr>
+											</cfif>
+											</div>
+										</td>
+									</tr>
+									
 									<tr>
 										<td width="160px">Current email:</td>
 										<td><cfoutput>#qAccountGetAccount.email#</cfoutput></td>
@@ -51,11 +58,11 @@
 										<td><cfinput type="password" name="password" id="password"></td>
 									</tr>
 									<tr>
-										<td><label for="email">New Email:</label></td>
+										<td><label for="email">New email:</label></td>
 										<td><cfinput type="text" name="emailAddress" id="emailAddress"></td>
 									</tr>
 									<tr>
-										<td><label for="email">Re-enter New Email:</label></td>
+										<td><label for="email">Confirm new email:</label></td>
 										<td><cfinput type="text" name="emailAddress2" id="emailAddress2"></td>
 									</tr>
 									<tr>
@@ -70,31 +77,37 @@
 						
 						<div id="updatePasswordForm">
 							<cfform>
-								<p><strong>Update Password</strong></p>	
+							<h2>Update password</h2>
 								<table>
-									<cfif messageBean.hasErrors() && isDefined("form.buttonUpdatePassword")>
-										<tr>
-											<td colspan="2">
-												<div id="form-errors">
-													<ul>
-														<cfloop array="#messageBean.getErrors()#" index="error">
-															<cfoutput><li>#error.message#</li></cfoutput>
-														</cfloop>
-													</ul>
-												</div>											
-											</td>
-										</tr>
-									</cfif>
+									<tr>	
+										<td colspan="2">
+											<div id="form-errors">											
+											<cfif messageBean.hasErrors() && isDefined("form.buttonUpdatePassword")>
+												<tr>
+													<td colspan="2">
+														<div id="form-errors">
+															<ul>
+																<cfloop array="#messageBean.getErrors()#" index="error">
+																	<cfoutput><li>#error.message#</li></cfoutput>
+																</cfloop>
+															</ul>
+														</div>											
+													</td>
+												</tr>
+											</cfif>
+											</div>
+										</td>
+									</tr>
 									<tr>
-										<td width="160px"><label for="password">Current Password:</label></td>
+										<td width="160px"><label for="password">Current password:</label></td>
 										<td><input type="password" name="password" id="password"></td>
 									</tr>
 									<tr>
-										<td><label for="password">New Password:</label></td>
+										<td><label for="password">New password:</label></td>
 										<td><input type="password" name="newPass" id="newPass"></td>
 									</tr>
 									<tr>
-										<td><label for="password">Confirm Password:</label></td>
+										<td><label for="password">Confirm new password:</label></td>
 										<td><input type="password" name="newPass2" id="newPass2"></td>
 									</tr>
 									<tr>
@@ -109,21 +122,27 @@
 
 						<div id="updateAccountForm">
 							<cfform>
-								<p><strong>Update name</strong></p>	
+							<h2>Update name</h2>								
 								<table>
-									<cfif messageBean.hasErrors() && isDefined("form.buttonUpdateAccount")>
-										<tr>
-											<td colspan="2">
-												<div id="form-errors">
-													<ul>
-														<cfloop array="#messageBean.getErrors()#" index="error">
-															<cfoutput><li>#error.message#</li></cfoutput>
-														</cfloop>
-													</ul>
-												</div>											
-											</td>
-										</tr>
-									</cfif>
+									<tr>	
+										<td colspan="2">
+										<div id="form-errors">										
+											<cfif messageBean.hasErrors() && isDefined("form.buttonUpdateAccount")>
+												<tr>
+													<td colspan="2">
+														<div id="form-errors">
+															<ul>
+																<cfloop array="#messageBean.getErrors()#" index="error">
+																	<cfoutput><li>#error.message#</li></cfoutput>
+																</cfloop>
+															</ul>
+														</div>											
+													</td>
+												</tr>
+											</cfif>
+										</div>
+										</td>
+									</tr>
 									<tr>
 										<td width="160px">Current name:</td>
 										<td><cfoutput>#qAccountGetAccount.first_name# #qAccountGetAccount.last_name#</cfoutput></td>

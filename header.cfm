@@ -43,7 +43,7 @@
 	
 	<!-- TOP NAVIGATION -->		
 		<nav role="navigation" >
-			<form class="mini-nav" id="mini-nav-form" style="display: none;" action="/#/" method="post">
+			<form class="mini-nav" id="mini-nav-form" >
 				<select name="mini-nav-list" id="mini-nav-list">				
 					<cfif attributes.includeNavBar>
 						<cfif IsUserInRole("advisor")>

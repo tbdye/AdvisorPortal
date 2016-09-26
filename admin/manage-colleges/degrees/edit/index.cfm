@@ -242,10 +242,10 @@
 	<cfquery name="qEditGetCourse">
 		SELECT id
 		FROM COURSES
+		WHERE course_number = <cfqueryparam value="#trim(form.localAdmCourse)#" cfsqltype="cf_sql_varchar">
 		<cfif !IsUserInRole("administrator")>
-			WHERE use_catalog = 1
+			AND use_catalog = 1
 		</cfif>
-		AND course_number = <cfqueryparam value="#trim(form.localAdmCourse)#" cfsqltype="cf_sql_varchar">
 	</cfquery>
 	
 	<cfif !qEditGetCourse.RecordCount>
@@ -470,10 +470,10 @@
 	<cfquery name="qEditGetCourse">
 		SELECT id
 		FROM COURSES
+		WHERE course_number = <cfqueryparam value="#trim(form.localGrdCourse)#" cfsqltype="cf_sql_varchar">
 		<cfif !IsUserInRole("administrator")>
-			WHERE use_catalog = 1
+			AND use_catalog = 1
 		</cfif>
-		AND course_number = <cfqueryparam value="#trim(form.localGrdCourse)#" cfsqltype="cf_sql_varchar">
 	</cfquery>
 	
 	<cfif !qEditGetCourse.RecordCount>

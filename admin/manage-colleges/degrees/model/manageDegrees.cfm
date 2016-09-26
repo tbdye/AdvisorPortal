@@ -12,7 +12,7 @@
 		
 	    <article id="content-article" role="article">
 	        <header>
-	            <h1>Manage Degrees</h1>
+	            <h1>Manage Degrees for <cfoutput>#qManageGetCollege.college_name#</cfoutput> </h1>
 	        </header>
 
 			<div class="breadcrumb">
@@ -58,7 +58,7 @@
 										</tr>
 									</cfif>
 				    				<tr>
-				    					<td width="90px"><label for="degreeName">Name:</label></td>
+				    					<td width="125px"><label for="degreeName">Name:</label></td>
 				    					<td><cfinput type="text" id="degreeName" name="degreeName"></td>
 				    				</tr>
 				    				<tr>
@@ -82,49 +82,51 @@
 				    		<hr>
 				    	</cfif>
 
-				    	<h2>Select a degree</h2>
+
+				    	<h2>Filter by department</h2>
 			    		<table>
 			    			<cfform>
 						    	<cfif messageBean.hasErrors() && isDefined("form.selectDegreeButton")>
-									<tr>
-										<td colspan="3">
-											<div id="form-errors">
-												<ul>
-													<cfloop array="#messageBean.getErrors()#" index="error">
-														<cfoutput><li>#error.message#</li></cfoutput>
-													</cfloop>
-												</ul>
-											</div>
-										</td>
-										<td></td>
-										<td></td>
-									</tr>
+								<tr>
+									<td colspan="2">
+										<div id="form-errors">
+											<ul>
+												<cfloop array="#messageBean.getErrors()#" index="error">
+													<cfoutput><li>#error.message#</li></cfoutput>
+												</cfloop>
+											</ul>
+										</div>
+									</td>
+								</tr>
 								</cfif>
 								<tr>
-									<td><label for="selectDepartment">Department:</td>
+									<td width="125px"><label for="selectDepartment">Filter:</td>
 									<td>
 										<cfselect name="selectDepartment" query="qManageGetSelectDepartments" display="department_name" value="id" queryPosition="below">
 											<option value="0">Select a department</option>
 										</cfselect>
+										&nbsp;
+										<cfinput type="submit" name="selectDegreeButton" value="Select">	
 									</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td></td>
-									<td><cfinput type="submit" name="selectDegreeButton" value="Select"></td>
-									<td></td>
 								</tr>
 							</cfform>	
+						</table>
+							
+						<table>
 							<cfif isDefined("qManageGetDegrees") && qManageGetDegrees.RecordCount>
 								<tr>
-									<th>Name</th>
-									<th>Type</th>
+									<th width="47%">Name</th>
+									<th width="47%">Type</th>
 									<th>Status</th>
 								</tr>
 								<cfloop query="qManageGetDegrees">
 									<tr>
-										<td><cfoutput><a href="edit/?college=#URLEncodedFormat(qManageGetCollege.id)#&degree=#URLEncodedFormat(qManageGetDegrees.id)#" title="#qManageGetDegrees.degree_name#">#qManageGetDegrees.degree_name#</cfoutput></a></td>
-										<td><cfoutput>#qManageGetDegrees.degree_type#</cfoutput></td>
+										<td>
+											<cfoutput><a href="edit/?college=#URLEncodedFormat(qManageGetCollege.id)#&degree=#URLEncodedFormat(qManageGetDegrees.id)#" title="#qManageGetDegrees.degree_name#">#qManageGetDegrees.degree_name#</cfoutput></a>											
+										</td>
+										<td>
+											<cfoutput>#qManageGetDegrees.degree_type#</cfoutput>
+										</td>
 										<cfif qManageGetDegrees.use_catalog>
 											<td>Active</td>
 										<cfelse>
@@ -135,7 +137,6 @@
 							</cfif>
 						</table>
 
-	                	<p/>
 	                </div>
 	            </div>
 	        </div>

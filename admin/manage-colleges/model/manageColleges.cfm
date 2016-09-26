@@ -25,23 +25,29 @@
 	
 	                <div class="content">
 				    	<cfif IsUserInRole("administrator")>
-				    		<h2>Add a college</h2>
-				    		<cfform>
+				    		<h2>Add a new college</h2>
+				
 				    			<table>
-				    				<cfif messageBean.hasErrors() && isDefined("form.addCollegeButton")>
-										<tr>
-											<td colspan="2">
-												<div id="form-errors">
-													<ul>
-														<cfloop array="#messageBean.getErrors()#" index="error">
-															<cfoutput><li>#error.message#</li></cfoutput>
-														</cfloop>
-													</ul>
-												</div>
-											</td>
-											<td></td>
-										</tr>
-									</cfif>
+									<tr>
+										<td colspan="2">
+										    <div id="form-errors">				    				
+						    				<cfif messageBean.hasErrors() && isDefined("form.addCollegeButton")>
+												<tr>
+													<td colspan="2">
+														<div id="form-errors">
+															<ul>
+																<cfloop array="#messageBean.getErrors()#" index="error">
+																	<cfoutput><li>#error.message#</li></cfoutput>
+																</cfloop>
+															</ul>
+														</div>
+													</td>
+													<td></td>
+												</tr>
+											</cfif>
+										</td>
+									</tr>
+									<cfform>
 				    				<tr>
 				    					<td width="90px"><label for="collegeName">Name:</label></td>
 				    					<td><cfinput type="text" id="collegeName" name="collegeName"></td>
@@ -58,20 +64,20 @@
 				    					<td></td>
 				    					<td><cfinput type="submit" name="addCollegeButton" value="Add college"></td>
 				    				</tr>
+				    				</cfform>
 				    			</table>
-				    		</cfform>
 				    	</cfif>
 				    	
 				    	<hr>
 				    	
 				    	<cfif isDefined("qManageGetColleges") && qManageGetColleges.RecordCount>
-				    		<h2>Select a college</h2>
+				    		<h2>Select a college to edit</h2>
 				    		<table>
 				    			<tr>
-				    				<th width="240px">Name</th>
-				    				<th width="120px">City</th>
-				    				<th>Status</th>
-				    				<th></th>
+				    				<th width="60%">Name</th>
+				    				<th width="30%">City</th>
+				    				<th >Status</th>
+
 				    			</tr>
 				    			<cfloop query="qManageGetColleges">
 				    				<tr>

@@ -28,7 +28,7 @@
 	                <div class="content">
 
 						<h2>Edit Course</h2>
-						<h3>Course Information</h3>
+						<h3>Basic Details</h3>
 				    	<table>
 				    		<cfform>
 						    	<cfif messageBean.hasErrors() && isDefined("form.updateCourseInfoButton")>
@@ -45,7 +45,7 @@
 									</tr>
 								</cfif>
 						    	<tr>
-						    		<td><label for="courseNumber">Number:</label></td>
+						    		<td width="125px"><label for="courseNumber">Number:</label></td>
 						    		<td colspan="2"><cfinput type="text" id="courseNumber" name="courseNumber" value="#qEditGetCourse.course_number#"></td>
 						    	</tr>
 						    	<tr>
@@ -94,7 +94,7 @@
 				    	<table>
 				    		<cfform>
 						    	<tr>
-						    		<td><textarea name="courseDescription" rows="5" cols="80"><cfoutput>#qEditGetCourse.course_description#</cfoutput></textarea></td>
+						    		<td><textarea name="courseDescription" rows="5" cols="70"><cfoutput>#qEditGetCourse.course_description#</cfoutput></textarea></td>
 						    	</tr>
 						    	<tr>
 						    		<td><cfinput type="submit" name="updateCourseDescButton" value="Update course description"></td>
