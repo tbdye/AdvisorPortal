@@ -28,7 +28,7 @@
 	
 	                <div class="content">
 				    	<cfif IsUserInRole("administrator")>
-				    		<h2>Add a degree</h2>
+				    		<h2>Add a Degree</h2>
 				    		<cfform>
 				    			<table>
 				    				<cfif messageBean.hasErrors() && isDefined("form.addDegreeButton")>
@@ -79,11 +79,11 @@
 				    				</tr>
 				    			</table>
 				    		</cfform>
-				    		<hr>
+				    		
 				    	</cfif>
 
 
-				    	<h2>Filter by department</h2>
+				    	<h2>Find a Department to Edit</h2>
 			    		<table>
 			    			<cfform>
 						    	<cfif messageBean.hasErrors() && isDefined("form.selectDegreeButton")>
@@ -100,13 +100,13 @@
 								</tr>
 								</cfif>
 								<tr>
-									<td width="125px"><label for="selectDepartment">Filter:</td>
+									<td><label for="selectDepartment">Filter:</td>
 									<td>
 										<cfselect name="selectDepartment" query="qManageGetSelectDepartments" display="department_name" value="id" queryPosition="below">
 											<option value="0">Select a department</option>
 										</cfselect>
 										&nbsp;
-										<cfinput type="submit" name="selectDegreeButton" value="Select">	
+										<cfinput type="submit" name="selectDegreeButton" value="Find">	
 									</td>
 								</tr>
 							</cfform>	
@@ -134,6 +134,8 @@
 										</cfif>
 									</tr>
 								</cfloop>
+							<cfelse>	
+								<p>No departments selected.</p>							
 							</cfif>
 						</table>
 

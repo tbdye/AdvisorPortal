@@ -48,16 +48,14 @@
 										[Update][Cancel]--->
 
 						<cfif qDashboardGetActivePlan.RecordCount && qDashboardGetCourses.RecordCount>
-							<h3>Courses remaining for this plan</h3>
+							<h2>Courses remaining for this plan</h2>
 						<cfelse>
-							<h3>There are no courses specified in this plan</h3>
+							<h2>There are no courses specified in this plan</h2>
 						</cfif>
-						
-						<table>
-							<cfif arrayLen(aCategoryC)>
-								<tr>
-									<td colspan="4"><h4>English Composition</h4></td>
-								</tr>
+
+						<cfif arrayLen(aCategoryC)>
+							<h3>English Composition</h3></td>
+							<table>
 								<tr>
 									<th>Code</th>
 									<th>Title</th>
@@ -98,15 +96,12 @@
 	                                    </cfoutput>
 									</tr>
 								</cfloop>
-							</cfif>
+							</table>
+						</cfif>
 						
-							<cfif arrayLen(aCategoryW)>
-								<tr>
-									<td colspan="4">
-										<hr>
-										<h4>Writing and Additional Composition</h4>
-									</td>
-								</tr>
+						<cfif arrayLen(aCategoryW)>
+							<h3>Writing and Additional Composition</h3>
+							<table>
 								<tr>
 									<th>Code</th>
 									<th>Title</th>
@@ -147,15 +142,12 @@
 	                                    </cfoutput>
 									</tr>
 								</cfloop>
-							</cfif>
+							</table>
+						</cfif>
 						
-							<cfif arrayLen(aCategoryQSR)>
-								<tr>
-									<td colspan="4">
-										<hr>
-										<h4>Quantitative and Symbolic Reasoning</h4>
-									</td>
-								</tr>
+						<cfif arrayLen(aCategoryQSR)>
+							<h3>Quantitative and Symbolic Reasoning</h3>
+							<table>
 								<tr>
 									<th>Code</th>
 									<th>Title</th>
@@ -196,15 +188,12 @@
 	                                    </cfoutput>
 									</tr>
 								</cfloop>
-							</cfif>
+							</table>
+						</cfif>
 						
-							<cfif arrayLen(aCategoryNW)>
-								<tr>
-									<td colspan="4">
-										<hr>
-										<h4>The Natural World</h4>
-									</td>
-								</tr>
+						<cfif arrayLen(aCategoryNW)>
+							<h3>The Natural World</h3>
+							<table>
 								<tr>
 									<th>Code</th>
 									<th>Title</th>
@@ -245,15 +234,12 @@
 	                                    </cfoutput>
 									</tr>
 								</cfloop>
-							</cfif>
+							</table>
+						</cfif>
 						
-							<cfif arrayLen(aCategoryVLPA)>
-								<tr>
-									<td colspan="4">
-										<hr>
-										<h4>Visual, Literary, and Performing Arts</h4>
-									</td>
-								</tr>
+						<cfif arrayLen(aCategoryVLPA)>
+							<h3>Visual, Literary, and Performing Arts</h3>
+							<table>
 								<tr>
 									<th>Code</th>
 									<th>Title</th>
@@ -294,15 +280,12 @@
 	                                    </cfoutput>
 									</tr>
 								</cfloop>
-							</cfif>
+							</table>
+						</cfif>
 						
-							<cfif arrayLen(aCategoryIS)>
-								<tr>
-									<td colspan="4">
-										<hr>
-										<h4>Individuals and Societies</h4>
-									</td>
-								</tr>
+						<cfif arrayLen(aCategoryIS)>
+							<h3>Individuals and Societies</h3>
+							<table>
 								<tr>
 									<th>Code</th>
 									<th>Title</th>
@@ -343,15 +326,12 @@
 	                                    </cfoutput>
 									</tr>
 								</cfloop>
-							</cfif>
+							</table>
+						</cfif>
 							
-							<cfif arrayLen(aCategoryDIV)>
-								<tr>
-									<td colspan="4">
-										<hr>
-										<h4>Diversity</h4>
-									</td>
-								</tr>
+						<cfif arrayLen(aCategoryDIV)>
+							<h3>Diversity</h3>
+							<table>
 								<tr>
 									<th>Code</th>
 									<th>Title</th>
@@ -392,15 +372,12 @@
 	                                    </cfoutput>
 									</tr>
 								</cfloop>
-							</cfif>
+							</table>
+						</cfif>
 							
-							<cfif arrayLen(aCategoryE)>
-								<tr>
-									<td colspan="4">
-										<hr>
-										<h4>General Electives</h4>
-									</td>
-								</tr>
+						<cfif arrayLen(aCategoryE)>
+							<h3>General Electives</h3>
+							<table>
 								<tr>
 									<th>Code</th>
 									<th>Title</th>
@@ -441,10 +418,8 @@
 	                                    </cfoutput>
 									</tr>
 								</cfloop>
-							</cfif>
-							
-						</table>
-						
+							</table>
+						</cfif>
 					<cfelse>
 						<h2>Get Started</h2>
 						<a href="../courses/" title="Enter your completed courses">Enter your completed courses</a>

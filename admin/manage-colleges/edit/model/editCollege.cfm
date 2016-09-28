@@ -12,20 +12,20 @@
 		
 	    <article id="content-article" role="article">
 	        <header>
-	            <h1>Edit <cfoutput>#qEditGetCollege.college_name#</cfoutput></h1>
+	            <h1>Edit College - <cfoutput>#qEditGetCollege.college_name#</cfoutput></h1>
 	        </header>
 
 			<div class="breadcrumb">
 				<a href="../..">Home</a>
 				&raquo; <a href="..">Manage Colleges</a>
-				&raquo; <cfoutput>#qEditGetCollege.college_name#</cfoutput>
+				&raquo; Edit College - <cfoutput>#qEditGetCollege.college_name#</cfoutput>
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
 	                <span property="dc:title" content="Edit College" class="rdf-meta element-hidden"></span>
 	
-			    	<h2>Basic details</h2>
+			    	<h2>Basic Details</h2>
 						<cfform>
 							<table>
 								<cfif messageBean.hasErrors() && isDefined("form.updateButton")>
@@ -67,21 +67,21 @@
 								<tr>
 									<td></td>
 									<td>
-										<cfinput type="submit" name="updateButton" value="Update college">										
+										<cfinput type="submit" name="updateButton" value="Update details">										
 									</td>
 								</tr>
 							</table>
 						</cfform>
 						
-						<hr>
+						
 						
 						<h2>Degrees</h2>
 						<a href="../degrees/?college=<cfoutput>#qEditGetCollege.id#</cfoutput>" title="View Degrees">View Degrees</a><p/>
 		
-						<h2>Admission requirements</h2>
+						<h2>Admission Requirements</h2>
 
 						<!---------------------Requirements by course---------------------------->				
-						<h3>By course</h3>
+						<h3>By Course</h3>
 
 						<cfif qEditGetAdmissionCourses.RecordCount>
 							<div id="h4-box">
@@ -110,7 +110,7 @@
 						<div id="h4-box">
 							<table>
 								<tr>
-									<td colspan="2"><h4>Add new course</h4></td>
+									<td colspan="2"><h4>Add New Course</h4></td>
 								</tr>
 
 								<cfif messageBean.hasErrors() && isDefined("form.addCourseReq")>
@@ -153,7 +153,7 @@
 						<div id="h4-box">
 							<table>
 								<tr>
-									<td colspan="2"><h4>Add notes</h4></td>
+									<td colspan="2"><h4>Add Notes</h4></td>
 								</tr>								
 								<cfform>
 									<tr>
@@ -172,7 +172,7 @@
 						
 						<!---------------------Requirements by department ---------------------------->		
 						
-						<h3>By department</h3>						
+						<h3>By Department</h3>						
 						<cfif qEditGetAdmissionDepartments.RecordCount>
 							<div id="h4-box">
 								<table>										
@@ -199,7 +199,7 @@
 
 							<table>
 								<tr>
-									<td colspan="2"><h4>Add new department</h4></td>
+									<td colspan="2"><h4>Add New Department</h4></td>
 								</tr>
 
 								<cfif messageBean.hasErrors() && isDefined("form.addDepartmentReq")>
@@ -241,7 +241,7 @@
 						<div id="h4-box">
 							<table>
 								<tr>
-									<td colspan="2"><h4>Add notes</h4></td>									
+									<td colspan="2"><h4>Add Notes</h4></td>									
 								</tr>	
 								<cfform>
 	                				<tr>
@@ -260,7 +260,7 @@
 						
 						<!---------------------Requirements by discipline ---------------------------->
 						
-						<h3>By academic discipline</h3>
+						<h3>By Academic Discipline</h3>
 						
 						<cfif qEditGetAdmissionCodekeys.RecordCount>
 							<div id="h4-box">
@@ -330,7 +330,7 @@
 						<div id="h4-box">
 							<table>
 								<tr>
-									<td colspan="2"><h4>Add notes</h4></td>									
+									<td colspan="2"><h4>Add Notes</h4></td>									
 								</tr>	
 								<cfform>
 	                				<tr>

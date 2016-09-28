@@ -24,7 +24,7 @@
 
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
-	            	<h2>College Basics</h2>
+	            	<h2>Basic Details</h2>
 	            	<table>
 	            		<tr>
 							<td width="90px">Name:</td>
@@ -41,7 +41,7 @@
 	            	</table>
 	            	
 	            	<cfif len(qViewGetCollegeNotes.courses_note) || qViewGetAdmissionCourses.RecordCount>
-	            		<hr>
+	            		
 	            		<h2>Admission Requirements by Course</h2>
 	            		<table>
 		            		<cfif len(qViewGetCollegeNotes.courses_note)>
@@ -52,15 +52,15 @@
 		            		</cfif>
 		            		<cfif qViewGetAdmissionCourses.RecordCount>
 		            			<tr>
-									<th>EvCC Course</th>
-									<th>Category</th>
-									<th>Equivalent Course</th>
+									<th width="33%">EvCC Course</th>
+									<th width="33%">Category</th>
+									<th width="33%">Equivalent Course</th>
 								</tr>
 								<cfloop query="qViewGetAdmissionCourses">
 									<tr>
-										<td width="20%"><cfoutput><a href="../courses/?course=#URLEncodedFormat(qViewGetAdmissionCourses.id)#" title="#qViewGetAdmissionCourses.course_number#">#qViewGetAdmissionCourses.course_number#</a></cfoutput></td>
-										<td width="50%"><cfoutput>#qViewGetAdmissionCourses.category# (#qViewGetAdmissionCourses.description#)</cfoutput></td>
-										<td width="30%"><cfoutput>#qViewGetAdmissionCourses.foreign_course_number#</cfoutput></td>
+										<td><cfoutput><a href="../courses/?course=#URLEncodedFormat(qViewGetAdmissionCourses.id)#" title="#qViewGetAdmissionCourses.course_number#">#qViewGetAdmissionCourses.course_number#</a></cfoutput></td>
+										<td><cfoutput>#qViewGetAdmissionCourses.category# (#qViewGetAdmissionCourses.description#)</cfoutput></td>
+										<td><cfoutput>#qViewGetAdmissionCourses.foreign_course_number#</cfoutput></td>
 									</tr>
 								</cfloop>
 		            		</cfif>
@@ -68,7 +68,7 @@
 	            	</cfif>
 	            	
 	            	<cfif len(qViewGetCollegeNotes.departments_note) || qViewGetAdmissionDepartments.RecordCount>
-	            		<hr>
+	            	
 	            		<h2>Admission Requirements by Department</h2>
 	            		<table>
 	            			<cfif len(qViewGetCollegeNotes.departments_note)>
@@ -79,13 +79,13 @@
 		            		</cfif>
 		            		<cfif qViewGetAdmissionDepartments.RecordCount>
 		            			<tr>
-									<th>EvCC Department</th>
-									<th>Credit Required</th>
+									<th width="66%">EvCC Department</th>
+									<th width="33%">Credit Required</th>
 								</tr>
 								<cfloop query="qViewGetAdmissionDepartments">
 									<tr>
-										<td width="55%"><cfoutput>#qViewGetAdmissionDepartments.department_name#</cfoutput></td>
-										<td width="35%"><cfoutput>#qViewGetAdmissionDepartments.credit#</cfoutput></td>
+										<td><cfoutput>#qViewGetAdmissionDepartments.department_name#</cfoutput></td>
+										<td><cfoutput>#qViewGetAdmissionDepartments.credit#</cfoutput></td>
 									</tr>
 								</cfloop>
 		            		</cfif>
@@ -93,7 +93,7 @@
 	            	</cfif>
 	            	
 	            	<cfif len(qViewGetCollegeNotes.codekeys_note) || qViewGetAdmissionCodekeys.RecordCount>
-	            		<hr>
+	            		
 	            		<h2>Admission Requirements by Academic Discipline</h2>
 	            		<table>
 	            			<cfif len(qViewGetCollegeNotes.codekeys_note)>

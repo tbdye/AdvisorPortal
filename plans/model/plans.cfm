@@ -29,20 +29,18 @@
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
             	<!-- Form START -->
-						<h2>Explore your educational goals</h2>
+						<h2>Create a New Degree Plan</h2>
 						<p>
 							<a href="create-plan/" title="Create a new degree plan">Create a new degree plan</a>
 						</p>
 
                 	<!-- Form END -->
-	            	
-					<hr>	        
+	                    
 	            	
 					<cfif qPlanGetPlans.RecordCount>
 						<cfform>
+						<h2>Active Degree Plan</h2>
 							<p>
-							<strong>Active Plan: </strong>
-
 							<cfinput type="hidden" name="currentPlanId" value="#qPlanGetActivePlan.id#">
 							<cfselect name="activePlanId" query="qPlanGetPlans" display="plan_name" value="id" selected="#qPlanGetActivePlan.id#"></cfselect>&nbsp;
 							<cfinput type="submit" name="updateActivePlanButton" value="Change">
@@ -58,7 +56,7 @@
 						</cfform>
 
 							
-						<h2>Saved degree plans</h2>
+						<h2>Saved Degree Plans</h2>
 						<div id="search-results">						
 						<table>
 							<cfif messageBean.hasErrors() && isDefined("form.deletePlanButton")>

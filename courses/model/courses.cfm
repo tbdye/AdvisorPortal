@@ -33,9 +33,8 @@
 	                	
 	                	<!-- Form START -->
 						<cfform>
-							<p>
-								<strong>Add a completed course by number</strong>
-							</p>
+							<h2>Add a Course by Number</h2>
+
 							<cfif messageBean.hasErrors() && isDefined("form.searchButton")>
 								<table>
 									<tr>
@@ -59,19 +58,21 @@
 							</p>	
 						</cfform>
 	                	<!-- Form END -->
+	                	
+	                	
 
 	                	<!-- Search Results START -->
 						<!--- After search form is submitted, display results. --->
 						<div id="search-results">
 						<cfif isDefined("form.searchButton") && isDefined("qCoursesGetCourse") && qCoursesGetCourse.RecordCount>
-							<h2>Search results</h2>
+							<h2>Search Results</h2>
 							<cfif isDefined("url.add") || isDefined("qCoursesGetCourse") && qCoursesGetCourse.RecordCount>
 								<a href="../courses/" title="Clear search">Clear search</a>
 							<cfelse>
 							</cfif>
 							<table>
 								<tr>
-									<th width="120px">Number</th>
+									<th width="125px">Number</th>
 									<th>Title</th>
 									<th>Credits</th>
 									<th></th>
@@ -104,7 +105,7 @@
 						<div id="search-results">
 						<cfif isDefined("qCoursesCheckCourse") && qCoursesCheckCourse.RecordCount>
 							<cfif IsNumeric(qCoursesCheckCourse.min_credit) || qCoursesGetPrerequisite.RecordCount || qCoursesGetPermission.RecordCount || qCoursesGetPlacement.RecordCount>
-								<h2>Verify course eligibility</h2>
+								<h2>Verify Course Eligibility</h2>
 								<h3><cfoutput>#qCoursesCheckCourse.course_number# - #qCoursesCheckCourse.title#</cfoutput></h3>
 								<table>
 									<cfif messageBean.hasErrors() && isDefined("form.addCourseButton")>
@@ -147,8 +148,8 @@
 											</tr>
 										</cfif>
 										<tr>
-											<td></td>
 											<td><cfinput type="submit" name="addCourseButton" value="Add course"></td>
+											<td></td>
 										</tr>
 									</cfform>
 								</table>
@@ -165,7 +166,7 @@
 								<cfif qCoursesGetStudentCourses.RecordCount>
 									<table>
 										<tr>
-											<th width="120px">Number</th>
+											<th width="125px">Number</th>
 											<th>Title</th>
 											<th>Credits</th>
 											<th></th>

@@ -65,7 +65,7 @@
 					    
 						
 						<h2>
-							First time user?
+							First Time User?
 						</h2>
 						
 						<div id="createAccountForm">

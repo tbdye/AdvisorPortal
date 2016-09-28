@@ -12,13 +12,13 @@
 		
 	    <article id="content-article" role="article">
 	        <header>
-	            <h1>Edit User</h1>
+	            <h1>Edit User -<cfoutput>#qUserGetAccount.first_name# #qUserGetAccount.last_name#</cfoutput></h1>
 	        </header>
 
 			<div class="breadcrumb">
 				<a href="../..">Home</a>
 				&raquo; <a href="..">Manage Users</a>
-				&raquo; Edit User
+				&raquo; Edit User - <cfoutput>#qUserGetAccount.first_name# #qUserGetAccount.last_name#</cfoutput>
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
@@ -26,8 +26,7 @@
 	                <span property="dc:title" content="Administration" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
-				    	<h2><cfoutput>#qUserGetAccount.first_name# #qUserGetAccount.last_name#</cfoutput></h2>
-						<div id="createForm">
+
 							<cfform>
 								<table>
 									<cfif messageBean.hasErrors()>
@@ -43,26 +42,21 @@
 											</td>
 										</tr>
 									</cfif>
-									<tr>
-										<h3>Status</h3>
-										<cfinput type="radio" id="active" name="status" value="1" checked="#status1#">
-										<cfoutput><label for="active">Account is available for use.</label></cfoutput><br>
-										<cfinput type="radio" id="inactive" name="status" value="0" checked="#status2#">
-										<cfoutput><label for="inactive">Account is deactivated.</label></cfoutput><br>
-									</tr>
 									<cfif IsValid("integer", qUserGetAccount.f_accounts_id)>
 										<tr>
-											<h3>Role</h3>
-											<cfinput type="radio" id="advisor" name="role" value="1" checked="#role1#">
-											<cfoutput><label for="advisor">Advisor</label></cfoutput><br>
-											<cfinput type="radio" id="editor" name="role" value="2" checked="#role2#">
-											<cfoutput><label for="editor">Editor</label></cfoutput><br>
-											<cfinput type="radio" id="administrator" name="role" value="3" checked="#role3#">
-											<cfoutput><label for="administrator">Administrator</label></cfoutput>
+											<td width="125px">Role:</td>
+											<td>
+												<cfinput type="radio" id="advisor" name="role" value="1" checked="#role1#">
+												<cfoutput><label for="advisor">Advisor</label></cfoutput><br>
+												<cfinput type="radio" id="editor" name="role" value="2" checked="#role2#">
+												<cfoutput><label for="editor">Editor</label></cfoutput><br>
+												<cfinput type="radio" id="administrator" name="role" value="3" checked="#role3#">
+												<cfoutput><label for="administrator">Administrator</label></cfoutput>
+											</td>
 										</tr>
 									</cfif>
 									<tr>
-										<h3>Account</h3>
+										<h2>Account</h2>
 										<td width="130px"><label for="emailAddress">Email address:</label></td>
 										<td><cfinput type="text" id="emailAddress" name="emailAddress" value="#qUserGetAccount.email#"></td>
 									</tr>
@@ -89,6 +83,15 @@
 										<td><cfinput type="password" id="password2" name="password2"></td>
 									</tr>
 									<tr>
+										<td width="125px">Status:</td>
+											<td>
+												<cfinput type="radio" id="active" name="status" value="1" checked="#status1#">
+												<cfoutput><label for="active">Account is available for use.</label></cfoutput><br>
+												<cfinput type="radio" id="inactive" name="status" value="0" checked="#status2#">
+												<cfoutput><label for="inactive">Account is deactivated.</label></cfoutput><br>
+											</td>
+									</tr>
+									<tr>
 										<td></td>
 										<td>
 											<cfinput type="submit" name="saveButton" value="Save changes">										
@@ -102,7 +105,7 @@
 									</tr>
 								</table>
 							</cfform>
-						</div>
+
 						<p/>
 	                </div>
 	            </div>

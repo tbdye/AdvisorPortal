@@ -29,7 +29,7 @@
 
 						<cfform>
 							<p>
-								<strong>Search for a degree</strong>
+								<strong>Search for a Degree</strong>
 							</p>			
 							<p>
 								<cfif isDefined("session.searchFilter")>
@@ -83,25 +83,17 @@
 		<aside id="content-sidebar">
 		    <div class="region region-sidebar">			
                 <div class="content">
-                	<p>
-                		<strong>About</strong>                		
-                	</p>
-			    	<p>The Advising Services Portal is an online student-transfer information system... describe some info, helps with visits with faculty advisors.</p>
-					<p>More description... explain about intended use.  Private system, info is not shared or sold.</p>
-					
-					<hr/>
-					
-					<p><strong>Search filters</strong></p>
+					<p><strong>Search Filters</strong></p>
 						<table>
 							<tr>
-								<th>Colleges</th>
-								<th style="text-align:right;">
+								<td><strong>Colleges</strong></td>
+								<td style="text-align:right;">
 									<cfif isDefined("url.colleges") && url.colleges EQ 'all'>
 										<a href="" title="see fewer colleges">see less</a>
 									<cfelse>
 										<a href="?colleges=all" title="see all colleges">see more</a>
 									</cfif>
-								</th>
+								</td>
 							</tr>
 							<cfform>
 								<tr>
@@ -165,14 +157,14 @@
 						
 						<table>
 							<tr>
-								<th>Departments</th>
-								<th style="text-align:right;">
+								<td><strong>Departments</strong></td>
+								<td style="text-align:right;">
 									<cfif isDefined("url.departments") && url.departments EQ 'all'>
 										<a href="" title="see fewer departments">see less</a>
 									<cfelse>
 										<a href="?departments=all" title="see all departments">see more</a>
 									</cfif>
-								</th>
+								</td>
 							</tr>
 							<cfform>
 								<tr>

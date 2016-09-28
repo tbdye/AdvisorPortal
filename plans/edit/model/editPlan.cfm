@@ -12,13 +12,13 @@
 		
 	    <article id="content-article" role="article">
 	        <header>
-				<h1>Edit Plan</h1>
+				<h1>Edit Plan - "<cfoutput>#qEditGetPlan.plan_name#</cfoutput>"</h1>
 			</header>
 
 			<div class="breadcrumb">
 				<a href="../../dashboard/">Home</a>
 				&raquo; <a href="..">Degree Plans</a>
-				&raquo; Edit Plan
+				&raquo; Edit Plan - "<cfoutput>#qEditGetPlan.plan_name#</cfoutput>"
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
@@ -26,7 +26,7 @@
 	                <span property="dc:title" content="Edit Plan" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">               	
-						<h2>Edit details for "<cfoutput>#qEditGetPlan.plan_name#</cfoutput>"</h2>
+						<h2>Basic Details</h2>
 
 						<table>
 							<cfif messageBean.hasErrors() && isDefined("form.saveButton")>
@@ -45,7 +45,7 @@
 	
 							<cfform>
 		                		<tr>
-		                			<td><label for="planName">Plan name:</label></td>
+		                			<td width="125px"><label for="planName">Plan name:</label></td>
 		                			<td><cfinput type="text" size="#len(qEditGetPlan.plan_name)#" id="planName" name="planName" value="#qEditGetPlan.plan_name#"> &nbsp; <cfinput type="submit" name="saveButton" value="Save"></td>			                			
 		                		</tr>
 		                	</cfform>
@@ -59,7 +59,7 @@
 	                		</tr>
 
 							<tr>
-								<td colspan="2"><h3>Add a course to this degree plan by course number</h3></td>
+								<td colspan="2"><h2>Add a Course to Plan</h2></td>
 							</tr>
 							<cfif messageBean.hasErrors() && isDefined("form.addCourseButton")>
 								<tr>
@@ -76,7 +76,7 @@
 							</cfif>
 							<cfform>
 								<tr>
-									<td><label for="courseNumber">Course number:</label></td>
+									<td width="125px"><label for="courseNumber">Course number:</label></td>
 									<td><cfinput width="275px" type="text" id="courseNumber" name="courseNumber"></td>
 								</tr>
 								<tr>
@@ -100,19 +100,17 @@
 							</tr>
 						</table>
 						
-						<h3>Courses remaining for this plan</h3>
+						<h2>Courses Remaining for Plan</h2>
+						<h3>English Composition</h3>
+						
+						<div id = "h4-box">
 						<table>
 							<tr>
-								<td colspan="5">
-									<h4>English Composition</h4>
-								</td>
-							</tr>
-							<tr>
-								<th>Code</th>
+								<th width="20%">Code</th>
 								<th>Title</th>
-								<th>Credits</th>
-								<th>Status</th>
-								<th>Remove</th>
+								<th width="15%">Credits</th>
+								<th width="15%">Status</th>
+								<th width="10%">Remove</th>
 							</tr>
 							<cfform>
 								<cfloop from=1 to="#arrayLen(aCategoryC)#" index="Counter">
@@ -184,24 +182,23 @@
 										<td></td>
 										<td></td>
 										<td></td>
-										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
 										<td></td>
+										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
 									</tr>
 								</cfif>
 							</cfform>
-							
+						</table>
+						</div>
+						
+						<h3>Writing and Additional Composition</h3>
+						<div id = "h4-box">						
+						<table>
 							<tr>
-								<td colspan="5">
-									<hr>
-									<h4>Writing and Additional Composition</h4>
-								</td>
-							</tr>
-							<tr>
-								<th>Code</th>
+								<th width="20%">Code</th>
 								<th>Title</th>
-								<th>Credits</th>
-								<th>Status</th>
-								<th>Remove</th>
+								<th width="15%">Credits</th>
+								<th width="15%">Status</th>
+								<th width="10%">Remove</th>
 							</tr>
 							<cfform>
 								<cfloop from=1 to="#arrayLen(aCategoryW)#" index="Counter">
@@ -273,24 +270,23 @@
 										<td></td>
 										<td></td>
 										<td></td>
-										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
 										<td></td>
+										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
 									</tr>
 								</cfif>
 							</cfform>
+						</table>
+						</div>
 						
+						<h3>Quantitative and Symbolic Reasoning</h3>
+						<div id = "h4-box">
+						<table>
 							<tr>
-								<td colspan="5">
-									<hr>
-									<h4>Quantitative and Symbolic Reasoning</h4>
-								</td>
-							</tr>
-							<tr>
-								<th>Code</th>
+								<th width="20%">Code</th>
 								<th>Title</th>
-								<th>Credits</th>
-								<th>Status</th>
-								<th>Remove</th>
+								<th width="15%">Credits</th>
+								<th width="15%">Status</th>
+								<th width="10%">Remove</th>
 							</tr>
 							<cfform>
 								<cfloop from=1 to="#arrayLen(aCategoryQSR)#" index="Counter">
@@ -362,24 +358,23 @@
 										<td></td>
 										<td></td>
 										<td></td>
-										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
 										<td></td>
+										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
 									</tr>
 								</cfif>
 							</cfform>
-							
+						</table>
+						</div>
+						
+						<h3>The Natural World</h3>
+						<div id = "h4-box">
+						<table>
 							<tr>
-								<td colspan="5">
-									<hr>
-									<h4>The Natural World</h4>
-								</td>
-							</tr>
-							<tr>
-								<th>Code</th>
+								<th width="20%">Code</th>
 								<th>Title</th>
-								<th>Credits</th>
-								<th>Status</th>
-								<th>Remove</th>
+								<th width="15%">Credits</th>
+								<th width="15%">Status</th>
+								<th width="10%">Remove</th>
 							</tr>
 							<cfform>
 								<cfloop from=1 to="#arrayLen(aCategoryNW)#" index="Counter">
@@ -451,24 +446,23 @@
 										<td></td>
 										<td></td>
 										<td></td>
-										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
 										<td></td>
+										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
 									</tr>
 								</cfif>
 							</cfform>
+						</table>
+						</div>
 							
+						<h3>Visual, Literary, and Performing Arts</h3>
+						<div id = "h4-box">
+						<table>
 							<tr>
-								<td colspan="5">
-									<hr>
-									<h4>Visual, Literary, and Performing Arts</h4>
-								</td>
-							</tr>
-							<tr>
-								<th>Code</th>
+								<th width="20%">Code</th>
 								<th>Title</th>
-								<th>Credits</th>
-								<th>Status</th>
-								<th>Remove</th>
+								<th width="15%">Credits</th>
+								<th width="15%">Status</th>
+								<th width="10%">Remove</th>
 							</tr>
 							<cfform>
 								<cfloop from=1 to="#arrayLen(aCategoryVLPA)#" index="Counter">
@@ -540,24 +534,23 @@
 										<td></td>
 										<td></td>
 										<td></td>
-										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
 										<td></td>
+										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
 									</tr>
 								</cfif>
 							</cfform>
-							
+						</table>
+						</div>
+						
+						<h3>Individuals and Societies</h3>
+						<div id = "h4-box">
+						<table>
 							<tr>
-								<td colspan="5">
-									<hr>
-									<h4>Individuals and Societies</h4>
-								</td>
-							</tr>
-							<tr>
-								<th>Code</th>
+								<th width="20%">Code</th>
 								<th>Title</th>
-								<th>Credits</th>
-								<th>Status</th>
-								<th>Remove</th>
+								<th width="15%">Credits</th>
+								<th width="15%">Status</th>
+								<th width="10%">Remove</th>
 							</tr>
 							<cfform>
 								<cfloop from=1 to="#arrayLen(aCategoryIS)#" index="Counter">
@@ -629,24 +622,23 @@
 										<td></td>
 										<td></td>
 										<td></td>
-										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
 										<td></td>
+										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
 									</tr>
 								</cfif>
 							</cfform>
-							
+						</table>
+						</div>
+						
+						<h3>Diversity</h3>
+						<div id = "h4-box">
+						<table>
 							<tr>
-								<td colspan="5">
-									<hr>
-									<h4>Diversity</h4>
-								</td>
-							</tr>
-							<tr>
-								<th>Code</th>
+								<th width="20%">Code</th>
 								<th>Title</th>
-								<th>Credits</th>
-								<th>Status</th>
-								<th>Remove</th>
+								<th width="15%">Credits</th>
+								<th width="15%">Status</th>
+								<th width="10%">Remove</th>
 							</tr>
 							<cfform>
 								<cfloop from=1 to="#arrayLen(aCategoryDIV)#" index="Counter">
@@ -718,16 +710,19 @@
 										<td></td>
 										<td></td>
 										<td></td>
-										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
 										<td></td>
+										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
 									</tr>
 								</cfif>
 							</cfform>
-							
+						</table>
+						</div>
+						
+						<h3>General Electives</h3>
+						<div id = "h4-box">
+						<table>
 							<tr>
 								<td colspan="5">
-									<hr>
-									<h4>General Electives</h4>
 									<!--- Evaluate required department credits --->
 									<cfif qEditGetDepartmentCreditsE.RecordCount>
 										<!--- Evaluate for each department specified --->
@@ -753,11 +748,11 @@
 								</td>
 							</tr>
 							<tr>
-								<th>Code</th>
+								<th width="20%">Code</th>
 								<th>Title</th>
-								<th>Credits</th>
-								<th>Status</th>
-								<th>Remove</th>
+								<th width="15%">Credits</th>
+								<th width="15%">Status</th>
+								<th width="10%">Remove</th>
 							</tr>
 							<cfform>
 								<cfloop from=1 to="#arrayLen(aCategoryE)#" index="Counter">
@@ -829,13 +824,13 @@
 										<td></td>
 										<td></td>
 										<td></td>
-										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
 										<td></td>
+										<td><cfinput type="submit" name="updateCourseButton" value="Update"></td>
 									</tr>
 								</cfif>
 							</cfform>
 						</table>
-						             	
+						</div>             	
 	                </div>
 	            </div>
 	        </div>

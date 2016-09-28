@@ -25,7 +25,7 @@
 	            	
 	            	<!-- Search Form START -->
 					<cfform>
-						<h2>Search by course number</h2>
+						<h2>Search by Course Number</h2>
 						<cfif messageBean.hasErrors() && isDefined("form.searchButton")>
 							<table>
 								<tr>
@@ -56,7 +56,7 @@
 					<cfif isDefined("form.searchButton") && isDefined("qCoursesGetCourse") && qCoursesGetCourse.RecordCount>
 
 						
-						<h2>Search results</h2>
+						<h2>Search Results</h2>
 						<a href="./" title="Clear search">Clear</a>
 						
 						<table>

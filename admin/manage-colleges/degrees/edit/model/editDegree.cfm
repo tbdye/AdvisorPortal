@@ -28,7 +28,7 @@
 	                <span property="dc:title" content="Edit Degree" class="rdf-meta element-hidden"></span>
 	
 	                <div class="content">
-	                	<h2>Basic details</h2>
+	                	<h2>Basic Details</h2>
 	                	<cfform>
 	                		<table>
 	                			<cfif messageBean.hasErrors() && isDefined("form.updateDegreeButton")>
@@ -73,17 +73,17 @@
 							</cfif>
 		    				<tr>
 		    					<td></td>
-		    					<td><cfinput type="submit" name="updateDegreeButton" value="Update degree"></td>
+		    					<td><cfinput type="submit" name="updateDegreeButton" value="Update details"></td>
 		    				</tr>
 	                		</table>
 	                	</cfform>
 	                	
-	                	<hr>
+	                	
 	                		
-	                	<h2>Admission requirements</h2>
+	                	<h2>Admission Requirements</h2>
 	                	
 						<!---------------------Admission requirements by course---------------------------->				
-						<h3>By course</h3>
+						<h3>By Course</h3>
 						
 						<cfif qEditGetAdmissionCourses.RecordCount>
 							<div id="h4-box">
@@ -112,7 +112,7 @@
 						<div id="h4-box">
 							<table>
 								<tr>
-									<td colspan="2"><h4>Add new course</h4></td>
+									<td colspan="2"><h4>Add New Course</h4></td>
 								</tr>								
 	                			<cfif messageBean.hasErrors() && isDefined("form.addAdmCourseReq")>
 								<tr>
@@ -159,7 +159,7 @@
 						<div id="h4-box">
 	                		<table>
 	                			<tr>
-	                				<td colspan="2"><h4>Add notes</h4></td>
+	                				<td colspan="2"><h4>Add Notes</h4></td>
 	                			</tr>
 	                			<cfform>
 	                				<tr>
@@ -177,7 +177,7 @@
 						
 						<!---------------------Admission requirements by discipline ---------------------------->		
 						
-	                	<h3>By academic discipline</h3>
+	                	<h3>By Academic Discipline</h3>
 	                	
 						<cfif qEditGetAdmissionCodekeys.RecordCount>	                	
 		                	<div id="h4-box">
@@ -205,7 +205,7 @@
 						<div id="h4-box">
 							<table>
 								<tr>
-									<td colspan="2"><h4>Add new discipline</h4></td>
+									<td colspan="2"><h4>Add New Discipline</h4></td>
 								</tr>
 			                	<cfif messageBean.hasErrors() && isDefined("form.addAdmCodekeyReq")>
 									<tr>
@@ -248,7 +248,7 @@
 						<div id="h4-box">
 							<table>
 								<tr>
-									<td colspan="2"><h4>Add notes</h4></td>									
+									<td colspan="2"><h4>Add Notes</h4></td>									
 								</tr>	
 								<cfform>
 	                				<tr>
@@ -266,10 +266,10 @@
 
 						<p/>
               		
-	                	<h2>Optional graduation requirements</h2>	                	
+	                	<h2>Optional Graduation Requirements</h2>	                	
 	                	
 	                	<!---------------------Grad requirements by course---------------------------->				
-						<h3>By course</h3>
+						<h3>By Course</h3>
 						
 						<cfif qEditGetGraduationCourses.RecordCount>
 							<div id="h4-box">
@@ -299,7 +299,7 @@
 						<div id="h4-box">
 							<table>
 								<tr>
-									<td colspan="2"><h4>Add new course</h4></td>
+									<td colspan="2"><h4>Add New Course</h4></td>
 								</tr>								
 	                			<cfif messageBean.hasErrors() && isDefined("form.addGrdCourseReq")>
 									<tr>
@@ -344,7 +344,7 @@
 						<div id="h4-box">
 	                		<table>
 	                			<tr>
-	                				<td colspan="2"><h4>Add notes</h4></td>
+	                				<td colspan="2"><h4>Add Notes</h4></td>
 	                			</tr>
 	                			<cfform>
 	                				<tr>
@@ -362,7 +362,7 @@
 	                	
 	                	           	
 	                	<!--------------------- Grad requirements by discipline---------------------------->		                	
-	                	<h3>By academic discipline</h3>
+	                	<h3>By Academic Discipline</h3>
 	                	
 	                	
 	                	<cfif qEditGetGraduationCodekeys.RecordCount>	   	
@@ -391,7 +391,7 @@
 	                	<div id="h4-box">
 							<table>
 								<tr>
-									<td colspan="2"><h4>Add new discipline</h4></td>
+									<td colspan="2"><h4>Add New Discipline</h4></td>
 								</tr>								
 
 							
@@ -434,7 +434,7 @@
 	                	<div id="h4-box">
 	                	<table>
 							<tr>
-								<td colspan="2"><h4>Add notes</h4></td>									
+								<td colspan="2"><h4>Add Notes</h4></td>									
 							</tr>
 							<cfform>
                 				<tr>
@@ -455,7 +455,7 @@
 						<div id="h4-box">
 							<table>
 								<tr>
-									<td colspan="2"><h4>Add notes</h4></td>									
+									<td colspan="2"><h4>Add Notes</h4></td>									
 								</tr>	
 								<cfform>
 	                				<tr>

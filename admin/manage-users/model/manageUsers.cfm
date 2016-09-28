@@ -24,7 +24,7 @@
 	            <div class="content">
 	                <span property="dc:title" content="Administration" class="rdf-meta element-hidden"></span>
     
-							<h2>Add a user</h2>
+							<h2>Add a User</h2>
 						
 							<div id="createForm">
 								<cfform>
@@ -83,46 +83,45 @@
 								</cfform>
 							</div>
 	
-						<hr/>
+						
 	
-				    	<h2>Select a user</h2>
+				    	<h2>Search by Name, Student ID, or Email Address</h2>
 						<cfform>
 							<table>
 								<cfif messageBean.hasErrors() && isDefined("form.searchButton")>
-									<tr>
-										<td colspan="2">
-											<div id="form-errors">
-												<ul>
-													<cfloop array="#messageBean.getErrors()#" index="error">
-														<cfoutput><li>#error.message#</li></cfoutput>
-													</cfloop>
-												</ul>
-											</div>
-										</td>
-										<td></td>
-									</tr>
+								<tr>
+									<td>
+										<div id="form-errors">
+											<ul>
+												<cfloop array="#messageBean.getErrors()#" index="error">
+													<cfoutput><li>#error.message#</li></cfoutput>
+												</cfloop>
+											</ul>
+										</div>
+									</td>
+								</tr>
 								</cfif>	
 								<tr>
-									<td colspan="2">Find an user by name, student ID, or email address</td>
-								</tr>
+									<td>
+										<cfinput type="text" id="searchTerm" name="searchTerm">&nbsp;<cfinput type="submit" name="searchButton" value="Search">
+									</td>								
+								</tr>	
 								<tr>
-									<td width="120px"><cfinput type="text" id="searchTerm" name="searchTerm"></td>
-									<td><cfinput type="submit" name="searchButton" value="Search"></td>								
-								</tr>
-								<tr>
-									<td colspan="2">
-										<cfif isDefined("url.search") || isDefined("qAdminSearchAccount") && qAdminSearchAccount.RecordCount>
+									<td>
+									<cfif isDefined("url.search") || isDefined("qAdminSearchAccount") && qAdminSearchAccount.RecordCount>
 											<a href="." title="hide all users">Hide all users</a>
 										<cfelse>
 											<a href="?search=all" title="view all users">View all users</a>
-										</cfif>
+									</cfif>
 									</td>
-									<td></td>
-								</tr>						
+								</tr>		
 							</table>
 						</cfform>
+						
+						
 
 						<cfif isDefined("qAdminSearchAccount") && qAdminSearchAccount.RecordCount>
+							<h3>Search Results</h3>
 							<table>
 								<tr>
 									<th>Name</th>
@@ -164,7 +163,7 @@
 								</cfloop>
 							</table>
 						<cfelse>	
-							<p>No users selected.</p>
+							<p>No users found.</p>
 							
 						</cfif>
 						

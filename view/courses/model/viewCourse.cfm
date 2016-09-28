@@ -12,24 +12,23 @@
 		
 	    <article id="content-article" role="article">
 	        <header>
-	            <h1>View <cfoutput>#qViewGetCourse.course_number#</cfoutput></h1>
+	            <h1>View Course - <cfoutput>#qViewGetCourse.course_number#</cfoutput></h1>
 	        </header>
 
 			<div class="breadcrumb">
 				<a href="../../dashboard/">Home</a>
-				&raquo; View <cfoutput>#qViewGetCourse.course_number#</cfoutput>
+				&raquo; View Course - <cfoutput>#qViewGetCourse.course_number#</cfoutput>
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
 	                <span property="dc:title" content="View Course" class="rdf-meta element-hidden"></span>
 	
-	                <div class="content">
-				    	<h2>View Course</h2>
-						<h3>Course Information</h3>
+	                <div class="content">				    	
+						<h2>Basic Details</h2>
 				    	<table>
 					    	<tr>
-					    		<td>Number:</td>
+					    		<td width="125px">Number:</td>
 					    		<td colspan="2"><cfoutput>#qViewGetCourse.course_number#</cfoutput></td>
 					    	</tr>
 					    	<tr>
@@ -62,8 +61,8 @@
 					    	</cfif>
 				    	</table>
 				    	
-				    	<hr>
-				    	<h3>Course Description</h3>
+				    	
+				    	<h2>Course Description</h2>
 				    	<table>
 					    	<tr>
 					    		<td><cfoutput>#qViewGetCourse.course_description#</cfoutput></td>
@@ -71,7 +70,6 @@
 				    	</table>
 						
 						<cfif qViewGetPlacement.RecordCount>
-							<hr>
 							<h3>Placement Scores</h3>
 							<table>
 								<tr>
@@ -80,8 +78,8 @@
 							</table>
 						</cfif>
 						
-						<hr>
-				    	<h3>Prerequisites</h3>
+						
+				    	<h2>Prerequisites</h2>
 			    		<table>
 			    			<tr>
 								<td>

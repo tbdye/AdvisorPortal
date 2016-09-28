@@ -22,7 +22,7 @@
 
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
-	            	<h2>Degree Basics</h2>
+	            	<h2>Basic Details</h2>
 	            	<table>
 	            		<tr>
 							<td>College:</td>
@@ -53,7 +53,7 @@
 	            	</table>
 	            	
 	            	<cfif len(qViewGetDegreeNotes.admission_courses_note) || qViewGetAdmissionCourses.RecordCount>
-	            		<hr>
+	            		
 	            		<h2>Admission Requirements by Course</h2>
 	            		<table>
 		            		<cfif len(qViewGetDegreeNotes.admission_courses_note)>
@@ -80,7 +80,7 @@
 	            	</cfif>
 	            	
 	            	<cfif len(qViewGetDegreeNotes.admission_codekeys_note) || qViewGetAdmissionCodekeys.RecordCount>
-	            		<hr>
+	            		
 	            		<h2>Admission Requirements by Academic Discipline</h2>
 	            		<table>
 	            			<cfif len(qViewGetDegreeNotes.admission_codekeys_note)>
@@ -105,7 +105,7 @@
 	            	</cfif>
 	            	
 	            	<cfif len(qViewGetDegreeNotes.graduation_courses_note) || qViewGetGraduationCourses.RecordCount>
-	            		<hr>
+	            		
 	            		<h2>Optional Graduation Requirements by Course</h2>
 	            		<table>
 		            		<cfif len(qViewGetDegreeNotes.graduation_courses_note)>
@@ -130,7 +130,7 @@
 	            	</cfif>
 	            	
 	            	<cfif len(qViewGetDegreeNotes.graduation_codekeys_note) || qViewGetGraduationCodekeys.RecordCount>
-	            		<hr>
+	            		
 	            		<h2>Optional Graduation Requirements by Academic Discipline</h2>
 	            		<table>
 	            			<cfif len(qViewGetDegreeNotes.graduation_codekeys_note)>
@@ -155,8 +155,8 @@
 	            	</cfif>
 	            	
 	            	<cfif len(qViewGetDegreeNotes.general_note)>
-	            		<hr>
-	            		<h2>Degree Notes</h2>
+	            		
+	            		<h2>Notes</h2>
 	            		<table>
 	            			<tr>
             					<td colspan="2"><cfoutput>#qViewGetDegreeNotes.general_note#</cfoutput></td>

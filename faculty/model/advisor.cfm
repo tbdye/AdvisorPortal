@@ -26,26 +26,12 @@
 	
 	                <div class="content">
 
-					<!-- Form START -->
+				    	<h2>Search by Name, Student ID, or Email Address</h2>
 						<cfform>
-							<p>
-								<p><strong>Search for a student by name, student ID, or email address to advise</strong></p>
-							</p>
-							<p>
-								<cfinput type="text" id="searchTerm" name="searchTerm">&nbsp;<cfinput type="submit" name="selectButton" value="Search">
-							</p>
-							<p>
-								<cfif isDefined("url.search") || isDefined("qAdvisorGetStudent") && qAdvisorGetStudent.RecordCount>
-									<a href="." title="hide all students">Hide all students</a>
-								<cfelse>
-									<a href="?search=all" title="view all students">View all students</a>
-								</cfif>	
-							</p>
-							
 							<table>
 								<cfif messageBean.hasErrors() && isDefined("form.selectButton")>
 									<tr>
-										<td colspan="2">
+										<td>
 											<div id="form-errors">
 												<ul>
 													<cfloop array="#messageBean.getErrors()#" index="error">
@@ -57,11 +43,25 @@
 										<td></td>
 									</tr>
 								</cfif>
-							</table>	
+																
+								<tr>
+									<td>
+										<cfinput type="text" id="searchTerm" name="searchTerm">&nbsp;<cfinput type="submit" name="selectButton" value="Find">
+									</td>								
+								</tr>
+								<tr>
+									<td>
+									<cfif isDefined("url.search") || isDefined("qAdvisorGetStudent") && qAdvisorGetStudent.RecordCount>
+										<a href="." title="hide all students">Hide all students</a>
+									<cfelse>
+										<a href="?search=all" title="view all students">View all students</a>
+									</cfif>	
+									</td>
+								</tr>			
+							</table>
 						</cfform>
-	                	<!-- Form END -->
 
-
+						
 
 						<cfif messageBean.hasErrors() && isDefined("url.advise")>
 							<div id="form-errors">		
@@ -72,8 +72,10 @@
 								</ul>
 							</div>
 						<cfelseif isDefined("qAdvisorGetStudent") && qAdvisorGetStudent.RecordCount>
-							<h2>Search results</h2>
+
 							<div id="search-results">
+								<h3>Search Results</h3>
+								
 								<table>
 									<tr>
 										<th>Name</th>
@@ -103,7 +105,7 @@
 									<cfinput type="submit" name="stopAdvisingButton" value="Stop advising #session.studentName#">
 								</cfform>
 							<cfelse>
-								<p>No student selected.</p>
+								<p>No student found.</p>
 							</cfif>
 						</cfif>
 						<p/>
