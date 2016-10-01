@@ -25,7 +25,7 @@
 	
 	                <div class="content">
 				    	<cfif IsUserInRole("administrator")>
-				    		<h2>Add a new college</h2>
+				    		<h2>Add a New College</h2>
 				
 				    			<table>
 									<tr>
@@ -71,7 +71,7 @@
 				    	<hr>
 				    	
 				    	<cfif isDefined("qManageGetColleges") && qManageGetColleges.RecordCount>
-				    		<h2>Select a college to edit</h2>
+				    		<h2>Select a College to Edit</h2>
 				    		<table>
 				    			<tr>
 				    				<th width="60%">Name</th>

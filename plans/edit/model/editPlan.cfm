@@ -25,6 +25,7 @@
 	            <div class="content">
 	                <span property="dc:title" content="Edit Plan" class="rdf-meta element-hidden"></span>
 	
+					
 	                <div class="content">               	
 						<h2>Basic Details</h2>
 
@@ -44,11 +45,8 @@
 							</cfif>
 	
 							<cfform>
-		                		<tr>
-		                			<td width="125px"><label for="planName">Plan name:</label></td>
-		                			<td><cfinput type="text" size="#len(qEditGetPlan.plan_name)#" id="planName" name="planName" value="#qEditGetPlan.plan_name#"> &nbsp; <cfinput type="submit" name="saveButton" value="Save"></td>			                			
-		                		</tr>
-		                	</cfform>
+
+
 	                		<tr>
 	                			<td>Degree:</td>
 	                			<td>
@@ -57,10 +55,22 @@
 	                				<cfoutput>#qEditGetPlan.degree_type#</cfoutput>
 	                			</td>
 	                		</tr>
+	                		<tr>
+		                			<td width="125px"><label for="planName">Plan name:</label></td>
+		                			<td><cfinput type="text" id="planName" name="planName" value="#qEditGetPlan.plan_name#"></td>			                			
+		                		</tr>
+	                		<tr>
+	                			<td></td>
+	                			<td><cfinput type="submit" name="saveButton" value="Save"></td>
+	                		</tr>
+		                	</cfform>
+						</table>
+						
+						
+						<h2>Courses Remaining for Plan</h2>
+						<h3>Add a Course to Plan</h3>
 
-							<tr>
-								<td colspan="2"><h2>Add a Course to Plan</h2></td>
-							</tr>
+						<table>
 							<cfif messageBean.hasErrors() && isDefined("form.addCourseButton")>
 								<tr>
 									<td colspan="2">
@@ -100,7 +110,8 @@
 							</tr>
 						</table>
 						
-						<h2>Courses Remaining for Plan</h2>
+						<hr/>
+						
 						<h3>English Composition</h3>
 						
 						<div id = "h4-box">
@@ -109,7 +120,7 @@
 								<th width="20%">Code</th>
 								<th>Title</th>
 								<th width="15%">Credits</th>
-								<th width="15%">Status</th>
+								<th width="20%">Status</th>
 								<th width="10%">Remove</th>
 							</tr>
 							<cfform>
@@ -159,7 +170,7 @@
 															<cfif len(aCategoryC[Counter][9])>
 																Completed
 															<cfelse>
-																Select completed course
+																Select course
 															</cfif>
 														</option>
 													</cfselect>
@@ -197,7 +208,7 @@
 								<th width="20%">Code</th>
 								<th>Title</th>
 								<th width="15%">Credits</th>
-								<th width="15%">Status</th>
+								<th width="20%">Status</th>
 								<th width="10%">Remove</th>
 							</tr>
 							<cfform>
@@ -247,7 +258,7 @@
 															<cfif len(aCategoryW[Counter][9])>
 																Completed
 															<cfelse>
-																Select completed course
+																Select course
 															</cfif>
 														</option>
 													</cfselect>
@@ -285,7 +296,7 @@
 								<th width="20%">Code</th>
 								<th>Title</th>
 								<th width="15%">Credits</th>
-								<th width="15%">Status</th>
+								<th width="20%">Status</th>
 								<th width="10%">Remove</th>
 							</tr>
 							<cfform>
@@ -335,7 +346,7 @@
 															<cfif len(aCategoryQSR[Counter][9])>
 																Completed
 															<cfelse>
-																Select completed course
+																Select course
 															</cfif>
 														</option>
 													</cfselect>
@@ -373,7 +384,7 @@
 								<th width="20%">Code</th>
 								<th>Title</th>
 								<th width="15%">Credits</th>
-								<th width="15%">Status</th>
+								<th width="20%">Status</th>
 								<th width="10%">Remove</th>
 							</tr>
 							<cfform>
@@ -423,7 +434,7 @@
 															<cfif len(aCategoryNW[Counter][9])>
 																Completed
 															<cfelse>
-																Select completed course
+																Select course
 															</cfif>
 														</option>
 													</cfselect>
@@ -461,7 +472,7 @@
 								<th width="20%">Code</th>
 								<th>Title</th>
 								<th width="15%">Credits</th>
-								<th width="15%">Status</th>
+								<th width="20%">Status</th>
 								<th width="10%">Remove</th>
 							</tr>
 							<cfform>
@@ -511,7 +522,7 @@
 															<cfif len(aCategoryVLPA[Counter][9])>
 																Completed
 															<cfelse>
-																Select completed course
+																Select course
 															</cfif>
 														</option>
 													</cfselect>
@@ -549,7 +560,7 @@
 								<th width="20%">Code</th>
 								<th>Title</th>
 								<th width="15%">Credits</th>
-								<th width="15%">Status</th>
+								<th width="20%">Status</th>
 								<th width="10%">Remove</th>
 							</tr>
 							<cfform>
@@ -599,7 +610,7 @@
 															<cfif len(aCategoryIS[Counter][9])>
 																Completed
 															<cfelse>
-																Select completed course
+																Select course
 															</cfif>
 														</option>
 													</cfselect>
@@ -637,7 +648,7 @@
 								<th width="20%">Code</th>
 								<th>Title</th>
 								<th width="15%">Credits</th>
-								<th width="15%">Status</th>
+								<th width="20%">Status</th>
 								<th width="10%">Remove</th>
 							</tr>
 							<cfform>
@@ -687,7 +698,7 @@
 															<cfif len(aCategoryDIV[Counter][9])>
 																Completed
 															<cfelse>
-																Select completed course
+																Select course
 															</cfif>
 														</option>
 													</cfselect>
@@ -751,7 +762,7 @@
 								<th width="20%">Code</th>
 								<th>Title</th>
 								<th width="15%">Credits</th>
-								<th width="15%">Status</th>
+								<th width="20%">Status</th>
 								<th width="10%">Remove</th>
 							</tr>
 							<cfform>
@@ -801,7 +812,7 @@
 															<cfif len(aCategoryE[Counter][9])>
 																Completed
 															<cfelse>
-																Select completed course
+																Select course
 															</cfif>
 														</option>
 													</cfselect>

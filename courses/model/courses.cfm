@@ -22,7 +22,7 @@
 
 			<div class="breadcrumb">
 				<a href="../dashboard/">Home</a>
-				&raquo; Completed Courses
+				&raquo; Completed Courses for <cfoutput>#session.studentName#</cfoutput>
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">

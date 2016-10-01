@@ -28,9 +28,9 @@
 	                <div class="content">
 
 						<cfform>
-							<p>
-								<strong>Search for a Degree</strong>
-							</p>			
+							<h2>
+								Search for a Degree
+							</h2>			
 							<p>
 								<cfif isDefined("session.searchFilter")>
 									<cfinput type="text" id="searchTerm" name="searchTerm" value="#session.searchFilter#">
@@ -40,10 +40,15 @@
 							<cfinput type="submit" name="searchButton" value="Search"></p>
 						</cfform>
 
+						<p></p>
+
 						<div id="search-results">
 						<table>
 							<cfif isDefined("session.searchFilter") || isDefined("session.aColleges") || isDefined("session.aDepartments")>
 								<cfif qSearchGetFilteredDegrees.RecordCount>
+									<h3>
+										Search Results
+									</h3>
 									<cfloop query="qSearchGetFilteredDegrees">
 										<cfform>
 											<tr>
@@ -57,6 +62,11 @@
 													<cfinput type="hidden" name="degreeId" value="#qSearchGetFilteredDegrees.id#">
 													<cfinput type="hidden" name="degreeName" value="#qSearchGetFilteredDegrees.degree_name#">
 													<cfinput type="submit" name="addDegreeButton" value="Select">
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">
+													<hr/>
 												</td>
 											</tr>
 										</cfform>
@@ -83,7 +93,7 @@
 		<aside id="content-sidebar">
 		    <div class="region region-sidebar">			
                 <div class="content">
-					<p><strong>Search Filters</strong></p>
+					<p><strong>Filters</strong></p>
 						<table>
 							<tr>
 								<td><strong>Colleges</strong></td>

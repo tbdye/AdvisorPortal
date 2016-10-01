@@ -83,7 +83,7 @@
 								</cfform>
 							</div>
 	
-						
+						<hr/>
 	
 				    	<h2>Search by Name, Student ID, or Email Address</h2>
 						<cfform>

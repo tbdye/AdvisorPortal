@@ -81,7 +81,8 @@
 				    		</cfform>
 				    		
 				    	</cfif>
-
+						
+						<hr/>
 
 				    	<h2>Find a Department to Edit</h2>
 			    		<table>

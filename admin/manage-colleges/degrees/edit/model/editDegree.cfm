@@ -20,7 +20,7 @@
 				&raquo; <a href="../..">Manage Colleges</a>
 				&raquo; <a href="../../edit/?college=<cfoutput>#qEditGetCollege.id#</cfoutput>"><cfoutput>#qEditGetCollege.college_name#</cfoutput></a>
 				&raquo; <a href="../?college=<cfoutput>#qEditGetCollege.id#</cfoutput>"><cfoutput>Manage Degrees</cfoutput></a>
-				&raquo; <cfoutput>#qEditGetDegree.degree_name#</cfoutput>
+				&raquo; Edit Degree - <cfoutput>#qEditGetDegree.degree_name#</cfoutput>
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">

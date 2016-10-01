@@ -33,10 +33,13 @@
 	                <span property="dc:title" content="Dashboard" class="rdf-meta element-hidden"></span>
 	
                 	<cfif qDashboardGetActivePlan.RecordCount>
-						<h2>Active plan: <cfoutput>#qDashboardGetActivePlan.plan_name#</cfoutput></h2>
+						<h2>Active Plan: <cfoutput>#qDashboardGetActivePlan.plan_name#</cfoutput></h2>
+
+						<p>
 						<cfoutput><a href="../view/degrees/?degree=#qDashboardGetActivePlan.degrees_id#" title="#qDashboardGetActivePlan.degree_name#">#qDashboardGetActivePlan.degree_name#</a></cfoutput><br>
 						<cfoutput><a href="../view/colleges/?college=#qDashboardGetActivePlan.colleges_id#" title="#qDashboardGetActivePlan.college_name# - #qDashboardGetActivePlan.college_city#">#qDashboardGetActivePlan.college_name# - #qDashboardGetActivePlan.college_city#</a></cfoutput><br>
-						<cfoutput>#qDashboardGetActivePlan.degree_type#</cfoutput></p>
+						<cfoutput>#qDashboardGetActivePlan.degree_type#</cfoutput>
+						</p>
 						
 						<!---My schedule [<][>]
 						[Quarter 1 | Quarter 2 | Quarter 3 | Quarter 4]
@@ -47,6 +50,12 @@
 						[list 1] [>][<] [list 2]
 										[Update][Cancel]--->
 
+						<p/>
+
+						<hr/>
+
+						<p/>
+
 						<cfif qDashboardGetActivePlan.RecordCount && qDashboardGetCourses.RecordCount>
 							<h2>Courses remaining for this plan</h2>
 						<cfelse>
@@ -55,12 +64,13 @@
 
 						<cfif arrayLen(aCategoryC)>
 							<h3>English Composition</h3></td>
+							<div id="h4-box">
 							<table>
 								<tr>
-									<th>Code</th>
+									<th width="20%">Code</th>
 									<th>Title</th>
-									<th>Credits</th>
-									<th>Status</th>
+									<th width="15%">Credits</th>
+									<th width="20%">Status</th>
 								</tr>
 								<cfloop from=1 to="#arrayLen(aCategoryC)#" index="Counter">
 									<tr>
@@ -97,16 +107,18 @@
 									</tr>
 								</cfloop>
 							</table>
+							</div>
 						</cfif>
 						
 						<cfif arrayLen(aCategoryW)>
 							<h3>Writing and Additional Composition</h3>
+							<div id="h4-box">
 							<table>
 								<tr>
-									<th>Code</th>
+									<th width="20%">Code</th>
 									<th>Title</th>
-									<th>Credits</th>
-									<th>Status</th>
+									<th width="15%">Credits</th>
+									<th width="20%">Status</th>
 								</tr>
 								<cfloop from=1 to="#arrayLen(aCategoryW)#" index="Counter">
 									<tr>
@@ -143,16 +155,18 @@
 									</tr>
 								</cfloop>
 							</table>
+							</div>
 						</cfif>
 						
 						<cfif arrayLen(aCategoryQSR)>
 							<h3>Quantitative and Symbolic Reasoning</h3>
+							<div id="h4-box">
 							<table>
 								<tr>
-									<th>Code</th>
+									<th width="20%">Code</th>
 									<th>Title</th>
-									<th>Credits</th>
-									<th>Status</th>
+									<th width="15%">Credits</th>
+									<th width="20%">Status</th>
 								</tr>
 								<cfloop from=1 to="#arrayLen(aCategoryQSR)#" index="Counter">
 									<tr>
@@ -189,16 +203,18 @@
 									</tr>
 								</cfloop>
 							</table>
+							</div>
 						</cfif>
 						
 						<cfif arrayLen(aCategoryNW)>
 							<h3>The Natural World</h3>
+							<div id="h4-box">
 							<table>
 								<tr>
-									<th>Code</th>
+									<th width="20%">Code</th>
 									<th>Title</th>
-									<th>Credits</th>
-									<th>Status</th>
+									<th width="15%">Credits</th>
+									<th width="20%">Status</th>
 								</tr>
 								<cfloop from=1 to="#arrayLen(aCategoryNW)#" index="Counter">
 									<tr>
@@ -235,16 +251,18 @@
 									</tr>
 								</cfloop>
 							</table>
+							</div>
 						</cfif>
 						
 						<cfif arrayLen(aCategoryVLPA)>
 							<h3>Visual, Literary, and Performing Arts</h3>
+							<div id="h4-box">
 							<table>
 								<tr>
-									<th>Code</th>
+									<th width="20%">Code</th>
 									<th>Title</th>
-									<th>Credits</th>
-									<th>Status</th>
+									<th width="15%">Credits</th>
+									<th width="20%">Status</th>
 								</tr>
 								<cfloop from=1 to="#arrayLen(aCategoryVLPA)#" index="Counter">
 									<tr>
@@ -281,16 +299,18 @@
 									</tr>
 								</cfloop>
 							</table>
+							</div>
 						</cfif>
 						
 						<cfif arrayLen(aCategoryIS)>
 							<h3>Individuals and Societies</h3>
+							<div id="h4-box">
 							<table>
 								<tr>
-									<th>Code</th>
+									<th width="20%">Code</th>
 									<th>Title</th>
-									<th>Credits</th>
-									<th>Status</th>
+									<th width="15%">Credits</th>
+									<th width="20%">Status</th>
 								</tr>
 								<cfloop from=1 to="#arrayLen(aCategoryIS)#" index="Counter">
 									<tr>
@@ -327,16 +347,18 @@
 									</tr>
 								</cfloop>
 							</table>
+							</div>
 						</cfif>
 							
 						<cfif arrayLen(aCategoryDIV)>
 							<h3>Diversity</h3>
+							<div id="h4-box">
 							<table>
 								<tr>
-									<th>Code</th>
+									<th width="20%">Code</th>
 									<th>Title</th>
-									<th>Credits</th>
-									<th>Status</th>
+									<th width="15%">Credits</th>
+									<th width="20%">Status</th>
 								</tr>
 								<cfloop from=1 to="#arrayLen(aCategoryDIV)#" index="Counter">
 									<tr>
@@ -373,16 +395,18 @@
 									</tr>
 								</cfloop>
 							</table>
+							</div>
 						</cfif>
 							
 						<cfif arrayLen(aCategoryE)>
 							<h3>General Electives</h3>
+							<div id="h4-box">
 							<table>
 								<tr>
-									<th>Code</th>
+									<th width="20%">Code</th>
 									<th>Title</th>
-									<th>Credits</th>
-									<th>Status</th>
+									<th width="15%">Credits</th>
+									<th width="20%">Status</th>
 								</tr>
 								<cfloop from=1 to="#arrayLen(aCategoryE)#" index="Counter">
 									<tr>
@@ -419,6 +443,7 @@
 									</tr>
 								</cfloop>
 							</table>
+							</div>
 						</cfif>
 					<cfelse>
 						<h2>Get Started</h2>

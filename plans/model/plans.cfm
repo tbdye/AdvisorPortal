@@ -23,39 +23,32 @@
 
 			<div class="breadcrumb">
 				<a href="../dashboard/">Home</a>
-				&raquo; Degree Plans
+				&raquo; Degree Plans for <cfoutput>#session.studentName#</cfoutput>
 			</div>	
 
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
-            	<!-- Form START -->
-						<h2>Create a New Degree Plan</h2>
-						<p>
-							<a href="create-plan/" title="Create a new degree plan">Create a new degree plan</a>
-						</p>
-
-                	<!-- Form END -->
-	                    
 	            	
 					<cfif qPlanGetPlans.RecordCount>
-						<cfform>
+						
 						<h2>Active Degree Plan</h2>
-							<p>
-							<cfinput type="hidden" name="currentPlanId" value="#qPlanGetActivePlan.id#">
-							<cfselect name="activePlanId" query="qPlanGetPlans" display="plan_name" value="id" selected="#qPlanGetActivePlan.id#"></cfselect>&nbsp;
-							<cfinput type="submit" name="updateActivePlanButton" value="Change">
-							</p>
-							
+							<div id="h4-box">
+							<cfform>							
 							<p>
 							<cfoutput><a href="../view/degrees/?degree=#qPlanGetActivePlan.degrees_id#" title="#qPlanGetActivePlan.degree_name#">#qPlanGetActivePlan.degree_name#</a></cfoutput><br>
                 			<cfoutput><a href="../view/colleges/?college=#qPlanGetActivePlan.colleges_id#" title="#qPlanGetActivePlan.college_name# - #qPlanGetActivePlan.college_city#">#qPlanGetActivePlan.college_name# - #qPlanGetActivePlan.college_city#</a></cfoutput><br>
                 			<cfoutput>#qPlanGetActivePlan.degree_type#</cfoutput>
 							</p>
 							
-														
-						</cfform>
-
+							<p>
+							<cfinput type="hidden" name="currentPlanId" value="#qPlanGetActivePlan.id#">
+							<cfselect name="activePlanId" query="qPlanGetPlans" display="plan_name" value="id" selected="#qPlanGetActivePlan.id#"></cfselect>&nbsp;
+							<cfinput type="submit" name="updateActivePlanButton" value="Change">
+							</p>
 							
+							</cfform>
+							</div>
+														
 						<h2>Saved Degree Plans</h2>
 						<div id="search-results">						
 						<table>
@@ -105,6 +98,11 @@
 						</table>
 						</div>
 					</cfif>
+					
+					<h2>Create a New Degree Plan</h2>
+						<p>
+							<a href="create-plan/" title="Create a new degree plan">Create a new degree plan</a>
+						</p>
 					
 	                <p/>
 	            </div>
