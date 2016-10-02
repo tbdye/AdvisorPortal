@@ -158,8 +158,7 @@
 								<cfform>
 									<tr>
 										<td width="125px">Notes:</td>
-										<td><textarea name="courseReqNote" rows="5" cols="50">	                						
-	                						<cfoutput>#qEditGetCollegeNotes.courses_note#</cfoutput></textarea>
+										<td><textarea name="courseReqNote" rows="5" cols="50"><cfoutput>#qEditGetCollegeNotes.courses_note#</cfoutput></textarea>
 	                					</td>
 									</tr>
 	                				<tr>

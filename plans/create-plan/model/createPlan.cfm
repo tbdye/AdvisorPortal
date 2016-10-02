@@ -99,7 +99,7 @@
 								<td><strong>Colleges</strong></td>
 								<td style="text-align:right;">
 									<cfif isDefined("url.colleges") && url.colleges EQ 'all'>
-										<a href="" title="see fewer colleges">see less</a>
+										<a href="./" title="see fewer colleges">see less</a>
 									<cfelse>
 										<a href="?colleges=all" title="see all colleges">see more</a>
 									</cfif>
@@ -170,7 +170,7 @@
 								<td><strong>Departments</strong></td>
 								<td style="text-align:right;">
 									<cfif isDefined("url.departments") && url.departments EQ 'all'>
-										<a href="" title="see fewer departments">see less</a>
+										<a href="./" title="see fewer departments">see less</a>
 									<cfelse>
 										<a href="?departments=all" title="see all departments">see more</a>
 									</cfif>
