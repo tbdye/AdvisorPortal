@@ -84,7 +84,7 @@
 						
 						<hr/>
 
-				    	<h2>Find a Department to Edit</h2>
+				    	<h2>Find a Degree to Edit by Department</h2>
 			    		<table>
 			    			<cfform>
 						    	<cfif messageBean.hasErrors() && isDefined("form.selectDegreeButton")>

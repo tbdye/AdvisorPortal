@@ -111,7 +111,7 @@
 		            		<cfif len(qViewGetDegreeNotes.graduation_courses_note)>
 		            			<tr>
 		            				<!--- ToDo:  convert this to preformatted text --->
-		            				<td colspan="2"><cfoutput>#qViewGetDegreeNotes.graduation_courses_note#</cfoutput></td>
+		            				<td colspan="3"><cfoutput>#qViewGetDegreeNotes.graduation_courses_note#</cfoutput></td>
 		            			</tr>
 		            		</cfif>
 		            		<cfif qViewGetGraduationCourses.RecordCount>
@@ -121,8 +121,9 @@
 								</tr>
 								<cfloop query="qViewGetGraduationCourses">
 									<tr>
-										<td width="55%"><cfoutput><a href="../courses/?course=#URLEncodedFormat(qViewGetGraduationCourses.id)#" title="#qViewGetGraduationCourses.course_number#">#qViewGetGraduationCourses.course_number#</a></cfoutput></td>
-										<td width="35%"><cfoutput>#qViewGetGraduationCourses.foreign_course_number#</cfoutput></td>
+										<td width="20%"><cfoutput><a href="../courses/?course=#URLEncodedFormat(qViewGetGraduationCourses.id)#" title="#qViewGetGraduationCourses.course_number#">#qViewGetGraduationCourses.course_number#</a></cfoutput></td>
+										<td width="50%"><cfoutput>#qViewGetGraduationCourses.category# (#qViewGetGraduationCourses.description#)</cfoutput></td>
+										<td width="30%"><cfoutput>#qViewGetGraduationCourses.foreign_course_number#</cfoutput></td>
 									</tr>
 								</cfloop>
 		            		</cfif>

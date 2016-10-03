@@ -61,11 +61,11 @@
 </cfquery>
 
 <cfquery name="qViewGetGraduationCourses">
-	SELECT g.courses_id, g.foreign_course_number, c.id, c.course_number
-	FROM DEGREE_GRADUATION_COURSES g
-	JOIN COURSES c
-	ON g.courses_id = c.id
-	WHERE g.degrees_id = <cfqueryparam value="#URLDecode(url.degree)#" cfsqltype="cf_sql_integer">
+	SELECT g.courses_id, g.foreign_course_number, c.id, c.course_number, cat.category, cat.description
+	FROM DEGREE_GRADUATION_COURSES g, COURSES c, CATEGORIES cat
+	WHERE g.courses_id = c.id
+	AND g.categories_id = cat.id
+	AND g.degrees_id = <cfqueryparam value="#URLDecode(url.degree)#" cfsqltype="cf_sql_integer">
 </cfquery>
 
 <cfquery name="qViewGetGraduationCodekeys">
