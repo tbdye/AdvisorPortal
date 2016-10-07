@@ -43,11 +43,30 @@
 				</cfif>
 				
 				<!--- Find the account, if exists --->
-				<cfquery name="qLoginGetAccount">
-					SELECT id, active, first_name, last_name, email, password, salt
-					FROM ACCOUNTS
-					WHERE email = <cfqueryparam value="#trim(form.emailAddress)#" cfsqltype="cf_sql_varchar">
-				</cfquery>
+				<cftry>
+					<!--- Try to contact the database --->
+					<cfquery name="qLoginGetAccount">
+						SELECT id, active, first_name, last_name, email, password, salt
+						FROM ACCOUNTS
+						WHERE email = <cfqueryparam value="#trim(form.emailAddress)#" cfsqltype="cf_sql_varchar">
+					</cfquery>
+					<cfcatch type="database">
+						<!--- If the connection timed out silently, try again --->
+						<cftry>
+							<cfquery name="qLoginGetAccount">
+								SELECT id, active, first_name, last_name, email, password, salt
+								FROM ACCOUNTS
+								WHERE email = <cfqueryparam value="#trim(form.emailAddress)#" cfsqltype="cf_sql_varchar">
+							</cfquery>
+							<cfcatch type="database">
+								<!--- Generate a friendly error message and give up --->
+								<cfset messageBean.addError('The server is not responding.  Please try again later.', 'email')>
+								<cfinclude template="login.cfm">
+								<cfreturn>
+							</cfcatch>
+						</cftry>
+					</cfcatch>
+				</cftry>
 				
 				<!--- Check password.  If does not match, fail.  Otherwise, evaluate student or faculty account --->
 				<cfif !qLoginGetAccount.RecordCount || qLoginGetAccount.password NEQ Hash(form.password & qLoginGetAccount.salt, "SHA-512")>
@@ -142,11 +161,31 @@
 				</cfif>
 				
 				<!--- Perform uniqueness validation on form fields --->
-				<cfquery name="qLoginCheckStudentId">
-					SELECT accounts_id, student_id
-					FROM STUDENTS
-					WHERE student_id = <cfqueryparam value="#trim(form.studentId)#" cfsqltype="cf_sql_integer">
-				</cfquery>
+				<cftry>
+					<!--- Try to contact the database --->
+					<cfquery name="qLoginCheckStudentId">
+						SELECT accounts_id, student_id
+						FROM STUDENTS
+						WHERE student_id = <cfqueryparam value="#trim(form.studentId)#" cfsqltype="cf_sql_integer">
+					</cfquery>
+					<cfcatch type="database">
+						<!--- If the connection timed out silently, try again --->
+						<cftry>
+							<cfquery name="qLoginCheckStudentId">
+								SELECT accounts_id, student_id
+								FROM STUDENTS
+								WHERE student_id = <cfqueryparam value="#trim(form.studentId)#" cfsqltype="cf_sql_integer">
+							</cfquery>
+							<cfcatch type="database">
+								<!--- Generate a friendly error message and give up --->
+								<cfset messageBean.addError('The server is not responding.  Please try again later.', 'studentId')>
+								<cfinclude template="login.cfm">
+								<cfreturn>
+							</cfcatch>
+						</cftry>
+					</cfcatch>
+				</cftry>
+				
 				<cfquery name="qLoginCheckEmail">
 					SELECT email
 					FROM ACCOUNTS
