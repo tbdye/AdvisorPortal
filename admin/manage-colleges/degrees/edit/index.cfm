@@ -4,7 +4,7 @@
 	<cflocation url="..">
 </cfif>
 
-<cfset messageBean=createObject('#this.mappings['cfcMapping']#.messageBean').init()>
+<cfset messageBean=createObject('cfcMapping.messageBean').init()>
 
 <!--- Do basic validation --->
 <cfif !IsDefined("url.college") || !IsDefined("url.degree") || !IsNumeric("#URLDecode(url.college)#") || !IsNumeric("#URLDecode(url.degree)#")>
@@ -40,19 +40,15 @@
 </cfquery>
 
 <cfquery name="qEditGetAllCategories">
-	SELECT id, category
-	FROM CATEGORIES
-</cfquery>
-
-<cfquery name="qEditGetAllCodekeys">
-	SELECT id, description
-	FROM CODEKEYS
+	SELECT id, degrees_id, category
+	FROM DEGREE_CATEGORIES
+	WHERE degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
 </cfquery>
 
 <cfquery name="qEditGetDegreeNotes">
 	SELECT
-		admission_courses_note, admission_codekeys_note,
-		graduation_courses_note, graduation_codekeys_note, general_note
+		admission_courses_note, admission_categories_note,
+		graduation_courses_note, graduation_categories_note, general_note
 	FROM DEGREE_NOTES
 	WHERE degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
 </cfquery>
@@ -68,34 +64,38 @@
 
 <!--- Prepare requirements contents --->
 <cfquery name="qEditGetAdmissionCourses">
-	SELECT a.courses_id, a.foreign_course_number, c.id, c.course_number, cat.category
-	FROM DEGREE_ADMISSION_COURSES a, COURSES c, CATEGORIES cat
-	WHERE a.courses_id = c.id
-	AND a.categories_id = cat.id
-	AND a.degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
+	SELECT a.courses_id, a.foreign_course_number, a.degree_categories_id, c.id, c.course_number, d.category
+	FROM DEGREE_ADMISSION_COURSES a
+	JOIN COURSES c
+	ON c.id = a.courses_id
+	JOIN DEGREE_CATEGORIES d
+	ON d.id = a.degree_categories_id
+	WHERE a.degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
 </cfquery>
 
-<cfquery name="qEditGetAdmissionCodekeys">
-	SELECT a.codekeys_id, a.credit, c.id, c.description
-	FROM DEGREE_ADMISSION_CODEKEYS a
-	JOIN CODEKEYS c
-	ON a.codekeys_id = c.id
+<cfquery name="qEditGetAdmissionCategories">
+	SELECT a.degree_categories_id, a.credit, d.category
+	FROM DEGREE_ADMISSION_CATEGORIES a
+	JOIN DEGREE_CATEGORIES d
+	ON d.id = a.degree_categories_id
 	WHERE a.degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
 </cfquery>
 
 <cfquery name="qEditGetGraduationCourses">
-	SELECT g.courses_id, g.foreign_course_number, c.id, c.course_number, cat.category
-	FROM DEGREE_GRADUATION_COURSES g, COURSES c, CATEGORIES cat
-	WHERE g.courses_id = c.id
-	AND g.categories_id = cat.id
-	AND g.degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
+	SELECT g.courses_id, g.foreign_course_number, g.degree_categories_id, c.id, c.course_number, d.category
+	FROM DEGREE_GRADUATION_COURSES g
+	JOIN COURSES c
+	ON c.id = g.courses_id
+	JOIN DEGREE_CATEGORIES d
+	ON d.id = g.degree_categories_id
+	WHERE g.degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
 </cfquery>
 
-<cfquery name="qEditGetGraduationCodekeys">
-	SELECT g.codekeys_id, g.credit, c.id, c.description
-	FROM DEGREE_GRADUATION_CODEKEYS g
-	JOIN CODEKEYS c
-	ON g.codekeys_id = c.id
+<cfquery name="qEditGetGraduationCategories">
+	SELECT g.degree_categories_id, g.credit, d.category
+	FROM DEGREE_GRADUATION_CATEGORIES g
+	JOIN DEGREE_CATEGORIES d
+	ON d.id = g.degree_categories_id
 	WHERE g.degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
 </cfquery>
 
@@ -179,6 +179,127 @@
 	</cfif>
 </cfif>
 
+<!--- Define the category "remove button action" --->
+<cfif isDefined("form.delCategory")>
+	
+	<!--- Ensure the category is not in use --->
+	<cfquery dbtype="query" name="qEditCheckAdmCourseCategory">
+		SELECT category
+		FROM qEditGetAdmissionCourses
+		WHERE degree_categories_id = <cfqueryparam value="#form.categoryId#" cfsqltype="cf_sql_integer">
+	</cfquery>
+	
+	<cfquery dbtype="query" name="qEditCheckGrdCourseCategory">
+		SELECT category
+		FROM qEditGetGraduationCourses
+		WHERE degree_categories_id = <cfqueryparam value="#form.categoryId#" cfsqltype="cf_sql_integer">
+	</cfquery>
+	
+	<cfquery dbtype="query" name="qEditCheckAdmDegreeCategory">
+		SELECT degree_categories_id
+		FROM qEditGetAdmissionCategories
+		WHERE degree_categories_id = <cfqueryparam value="#form.categoryId#" cfsqltype="cf_sql_integer">
+	</cfquery>
+	
+	<cfquery dbtype="query" name="qEditCheckGrdDegreeCategory">
+		SELECT degree_categories_id
+		FROM qEditGetGraduationCategories
+		WHERE degree_categories_id = <cfqueryparam value="#form.categoryId#" cfsqltype="cf_sql_integer">
+	</cfquery>
+	
+	<cfquery name="qEditCheckCategorySelectedCourses">
+		SELECT id
+		FROM PLAN_SELECTEDCOURSES
+		WHERE degree_categories_id = <cfqueryparam value="#form.categoryId#" cfsqltype="cf_sql_integer">
+	</cfquery>
+	
+	<cfif qEditCheckAdmCourseCategory.RecordCount>
+		<cfset messageBean.addError('This degree category is in use by admission courses and cannot be deleted.', 'delCategory')>
+	</cfif>
+	
+	<cfif qEditCheckGrdCourseCategory.RecordCount>
+		<cfset messageBean.addError('This degree category is in use by graduation courses and cannot be deleted.', 'delCategory')>
+	</cfif>
+	
+	<cfif qEditCheckAdmDegreeCategory.RecordCount>
+		<cfset messageBean.addError('This degree category is in use by admission degree categories and cannot be deleted.', 'delCategory')>
+	</cfif>
+	
+	<cfif qEditCheckGrdDegreeCategory.RecordCount>
+		<cfset messageBean.addError('This degree category is in use by graduation degree categories and cannot be deleted.', 'delCategory')>
+	</cfif>
+	
+	<cfif qEditCheckCategorySelectedCourses.RecordCount>
+		<cfset messageBean.addError('This degree category is in use by student degree plans and cannot be deleted.', 'delCategory')>
+	</cfif>
+	
+	<!--- Stop here if errors were detected --->
+	<cfif messageBean.hasErrors()>
+		<cfinclude template="model/editDegree.cfm">
+		<cfreturn>
+	</cfif>
+	
+	<!--- Looks good, so delete the category --->
+	<cfquery>
+		DELETE
+		FROM DEGREE_CATEGORIES
+		WHERE id = <cfqueryparam value="#form.categoryId#" cfsqltype="cf_sql_integer">
+	</cfquery>
+	
+	<!--- Refresh page --->
+	<cflocation url="?college=#URLEncodedFormat(qEditGetCollege.id)#&degree=#URLEncodedFormat(qEditGetDegree.id)#">
+</cfif>
+
+<!--- Define the category "Add category" button action --->
+<cfif isDefined("form.addDegreeCategory")>
+	
+	<!--- Perform simple validation on form fields --->
+	<cfif !len(trim(form.degreeCategory))>
+		<cfset messageBean.addError('The degree category heading name must be supplied.', 'degreeCategory')>
+	</cfif>
+	
+	<!--- Stop here if errors were detected --->
+	<cfif messageBean.hasErrors()>
+		<cfinclude template="model/editDegree.cfm">
+		<cfreturn>
+	</cfif>
+	
+	<!--- Ensure no duplicates --->
+	<cfset degreeCategory=canonicalize(trim(form.degreeCategory), true, true)>
+	
+	<cfquery dbtype="query" name="qEditCheckCategory">
+		SELECT category
+		FROM qEditGetAllCategories
+		WHERE degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
+		AND category = <cfqueryparam value="#degreeCategory#" cfsqltype="cf_sql_varchar">
+	</cfquery>
+	
+	<cfif qEditCheckCategory.RecordCount>
+		<cfset messageBean.addError('This degree category already exists.', 'degreeCategory')>
+	</cfif>
+	
+	<!--- Stop here if errors were detected --->
+	<cfif messageBean.hasErrors()>
+		<cfinclude template="model/editDegree.cfm">
+		<cfreturn>
+	</cfif>
+	
+	<!--- Looks good, so update degree categories --->
+	<cfquery>
+		INSERT INTO DEGREE_CATEGORIES (
+			degrees_id, category
+		) VALUES (
+			<cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">,
+			<cfqueryparam value="#degreeCategory#" cfsqltype="cf_sql_varchar">
+		)
+	</cfquery>
+	
+	<!--- Refresh page if there were no errors --->
+	<cfif !messageBean.hasErrors()>
+		<cflocation url="?college=#URLEncodedFormat(qEditGetCollege.id)#&degree=#URLEncodedFormat(qEditGetDegree.id)#">
+	</cfif>
+</cfif>
+
 <!--- Define the admission requirements course notes "update" button action --->
 <cfif isDefined("form.updateAdmCourseReqNoteButton")>
 	<cfset admCourseReqNote=canonicalize(trim(form.admCourseReqNote), true, true)>
@@ -221,7 +342,7 @@
 	
 	<!--- Perform simple validation on form fields --->
 	<cfif !len(trim(form.localAdmCourse))>
-		<cfset messageBean.addError('An EvCC equivalent course number is required.', 'localAdmCourse')>
+		<cfset messageBean.addError('A CC equivalent course number is required.', 'localAdmCourse')>
 	</cfif>
 	
 	<cfif form.localAdmCourseCategory EQ 0>
@@ -249,7 +370,7 @@
 	</cfquery>
 	
 	<cfif !qEditGetCourse.RecordCount>
-		<cfset messageBean.addError('The EvCC course could not be found.', 'localAdmCourse')>
+		<cfset messageBean.addError('The CC course could not be found.', 'localAdmCourse')>
 	</cfif>
 	
 	<!--- Stop here if errors were detected --->
@@ -267,7 +388,7 @@
 	</cfquery>
 	
 	<cfif qEditCheckCourse.RecordCount>
-		<cfset messageBean.addError('This EvCC course is already an admission requirement.', 'localAdmCourse')>
+		<cfset messageBean.addError('This CC course is already an admission requirement.', 'localAdmCourse')>
 	</cfif>
 	
 	<!--- Stop here if errors were detected --->
@@ -281,7 +402,7 @@
 	
 	<cfquery>
 		INSERT INTO DEGREE_ADMISSION_COURSES (
-			degrees_id, courses_id, categories_id, foreign_course_number
+			degrees_id, courses_id, degree_categories_id, foreign_course_number
 		) VALUES (
 			<cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">,
 			<cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">,
@@ -296,19 +417,19 @@
 	</cfif>
 </cfif>
 
-<!--- Define the admission requirements codekey notes "update" button action --->
-<cfif isDefined("form.updateAdmCodekeyReqNoteButton")>
-	<cfset admCodekeyReqNote=canonicalize(trim(form.admCodekeyReqNote), true, true)>
+<!--- Define the admission requirements category notes "update" button action --->
+<cfif isDefined("form.updateAdmCategoryReqNoteButton")>
+	<cfset admCategoryReqNote=canonicalize(trim(form.admCategoryReqNote), true, true)>
 		
-	<cfif admCodekeyReqNote NEQ qEditGetDegreeNotes.admission_codekeys_note>
+	<cfif admCategoryReqNote NEQ qEditGetDegreeNotes.admission_categories_note>
 		
-		<!--- Update codekey notes --->
+		<!--- Update category notes --->
 		<cfquery>
 			UPDATE DEGREE_NOTES
-			<cfif len(trim(admCodekeyReqNote))>
-				SET admission_codekeys_note = <cfqueryparam value="#admCodekeyReqNote#" cfsqltype="cf_sql_varchar">
+			<cfif len(trim(admCategoryReqNote))>
+				SET admission_categories_note = <cfqueryparam value="#admCategoryReqNote#" cfsqltype="cf_sql_varchar">
 			<cfelse>
-				SET admission_codekeys_note = NULL
+				SET admission_categories_note = NULL
 			</cfif>
 			WHERE degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
 		</cfquery>
@@ -320,50 +441,35 @@
 	</cfif>
 </cfif>
 
-<!--- Define the admission requirements codekeys "remove" button action --->
-<cfif isDefined("form.delAdmCodekeyReq")>
+<!--- Define the admission requirements category "remove" button action --->
+<cfif isDefined("form.delAdmCategoryReq")>
 	<cfquery>
 		DELETE
-		FROM DEGREE_ADMISSION_CODEKEYS
+		FROM DEGREE_ADMISSION_CATEGORIES
 		WHERE degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
-		AND codekeys_id = <cfqueryparam value="#form.admCodekeysId#" cfsqltype="cf_sql_integer">
+		AND degree_categories_id = <cfqueryparam value="#form.admCategoryId#" cfsqltype="cf_sql_integer">
 	</cfquery>
 	
 	<!--- Refresh page --->
 	<cflocation url="?college=#URLEncodedFormat(qEditGetCollege.id)#&degree=#URLEncodedFormat(qEditGetDegree.id)#">
 </cfif>
 
-<!--- Define the admission requirements by academic discipline "add" button action --->
-<cfif isDefined("form.addAdmCodekeyReq")>
+<!--- Define the admission requirements by degree category "add" button action --->
+<cfif isDefined("form.addAdmCategoryReq")>
 	
 	<!--- Perform simple validation on form fields --->
-	<cfif form.localAdmCodekey EQ 0>
-		<cfset messageBean.addError('Please select a discipline.', 'localAdmCodekey')>
+	<cfif form.localAdmCategory EQ 0>
+		<cfset messageBean.addError('Please select a category.', 'localAdmCategory')>
 	</cfif>
 	
-	<cfif !len(trim(form.codekeyAdmCredits))>
-		<cfset messageBean.addError('The number of academic credits is required.', 'codekeyAdmCredits')>
-	<cfelseif !IsValid("numeric", trim(form.codekeyAdmCredits))>
-		<cfset messageBean.addError('Credits must be a decimal number.', 'codekeyAdmCredits')>
-	<cfelseif !(trim(form.codekeyAdmCredits) GT 0)>
-		<cfset messageBean.addError('The number of credits must be a positive number.', 'codekeyAdmCredits')>
-	</cfif>
-	
-	<!--- Stop here if errors were detected --->
-	<cfif messageBean.hasErrors()>
-		<cfinclude template="model/editDegree.cfm">
-		<cfreturn>
-	</cfif>
-	
-	<!--- Find the codekey, if exists --->
-	<cfquery name="qEditGetCodekey">
-		SELECT id
-		FROM CODEKEYS
-		WHERE id = <cfqueryparam value="#trim(form.localAdmCodekey)#" cfsqltype="cf_sql_integer">
-	</cfquery>
-
-	<cfif !qEditGetCodekey.RecordCount>
-		<cfset messageBean.addError('The EvCC discipline could not be found.', 'localAdmCodekey')>
+	<cfif !len(trim(form.categoryAdmCredits))>
+		<cfset messageBean.addError('The number of academic credits is required.', 'categoryAdmCredits')>
+	<cfelseif !IsValid("numeric", trim(form.categoryAdmCredits))>
+		<cfset messageBean.addError('Credits must be a decimal number.', 'categoryAdmCredits')>
+	<cfelseif !(trim(form.categoryAdmCredits) LT 100)>
+		<cfset messageBean.addError('The number of requested credits is too high.', 'categoryAdmCredits')>
+	<cfelseif !(trim(form.categoryAdmCredits) GT 0)>
+		<cfset messageBean.addError('The number of credits must be a positive number.', 'categoryAdmCredits')>
 	</cfif>
 	
 	<!--- Stop here if errors were detected --->
@@ -373,15 +479,15 @@
 	</cfif>
 	
 	<!--- Ensure no duplicates --->
-	<cfquery name="qEditCheckCodekey">
-		SELECT codekeys_id
-		FROM DEGREE_ADMISSION_CODEKEYS
+	<cfquery name="qEditCheckCategory">
+		SELECT degree_categories_id
+		FROM DEGREE_ADMISSION_CATEGORIES
 		WHERE degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
-		AND codekeys_id = <cfqueryparam value="#qEditGetCodekey.id#" cfsqltype="cf_sql_integer">
+		AND degree_categories_id = <cfqueryparam value="#trim(form.localAdmCategory)#" cfsqltype="cf_sql_integer">
 	</cfquery>
 	
-	<cfif qEditCheckCodekey.RecordCount>
-		<cfset messageBean.addError('This EvCC discipline is already an admission requirement.', 'localAdmCodekey')>
+	<cfif qEditCheckCategory.RecordCount>
+		<cfset messageBean.addError('This category is already an admission requirement.', 'localAdmCategory')>
 	</cfif>
 	
 	<!--- Stop here if errors were detected --->
@@ -389,15 +495,15 @@
 		<cfinclude template="model/editDegree.cfm">
 		<cfreturn>
 	</cfif>
-	
+
 	<!--- Looks good, so update degrees --->
 	<cfquery>
-		INSERT INTO DEGREE_ADMISSION_CODEKEYS (
-			degrees_id, codekeys_id, credit
+		INSERT INTO DEGREE_ADMISSION_CATEGORIES (
+			degrees_id, degree_categories_id, credit
 		) VALUES (
 			<cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">,
-			<cfqueryparam value="#qEditGetCodekey.id#" cfsqltype="cf_sql_integer">,
-			<cfqueryparam value="#form.codekeyAdmCredits#" cfsqltype="cf_sql_decimal">
+			<cfqueryparam value="#trim(form.localAdmCategory)#" cfsqltype="cf_sql_integer">,
+			<cfqueryparam value="#form.categoryAdmCredits#" scale="2" cfsqltype="cf_sql_decimal">
 		)
 	</cfquery>
 	
@@ -449,7 +555,7 @@
 	
 	<!--- Perform simple validation on form fields --->
 	<cfif !len(trim(form.localGrdCourse))>
-		<cfset messageBean.addError('An EvCC equivalent course number is required.', 'localGrdCourse')>
+		<cfset messageBean.addError('An CC equivalent course number is required.', 'localGrdCourse')>
 	</cfif>
 	
 	<cfif form.localGrdCourseCategory EQ 0>
@@ -477,7 +583,7 @@
 	</cfquery>
 	
 	<cfif !qEditGetCourse.RecordCount>
-		<cfset messageBean.addError('The EvCC course could not be found.', 'localGrdCourse')>
+		<cfset messageBean.addError('The CC course could not be found.', 'localGrdCourse')>
 	</cfif>
 	
 	<!--- Ensure the course is not already an admission requirement --->
@@ -490,7 +596,7 @@
 		</cfquery>
 		
 		<cfif qEditCheckAdmCourse.RecordCount>
-			<cfset messageBean.addError('This EvCC course is already an admission requirement.', 'localGrdCourse')>
+			<cfset messageBean.addError('This CC course is already an admission requirement.', 'localGrdCourse')>
 		</cfif>
 	</cfif>
 	
@@ -509,7 +615,7 @@
 	</cfquery>
 	
 	<cfif qEditCheckCourse.RecordCount>
-		<cfset messageBean.addError('This EvCC course is already an graduation requirement.', 'localGrdCourse')>
+		<cfset messageBean.addError('This CC course is already an graduation requirement.', 'localGrdCourse')>
 	</cfif>
 	
 	<!--- Stop here if errors were detected --->
@@ -523,7 +629,7 @@
 	
 	<cfquery>
 		INSERT INTO DEGREE_GRADUATION_COURSES (
-			degrees_id, courses_id, categories_id, foreign_course_number
+			degrees_id, courses_id, degree_categories_id, foreign_course_number
 		) VALUES (
 			<cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">,
 			<cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">,
@@ -538,19 +644,19 @@
 	</cfif>
 </cfif>
 
-<!--- Define the graduation requirements codekey notes "update" button action --->
-<cfif isDefined("form.updateGrdCodekeyReqNoteButton")>
-	<cfset grdCodekeyReqNote=canonicalize(trim(form.grdCodekeyReqNote), true, true)>
+<!--- Define the graduation requirements category notes "update" button action --->
+<cfif isDefined("form.updateGrdCategoryReqNoteButton")>
+	<cfset grdCategoryReqNote=canonicalize(trim(form.grdCategoryReqNote), true, true)>
 		
-	<cfif grdCodekeyReqNote NEQ qEditGetDegreeNotes.graduation_codekeys_note>
+	<cfif grdCategoryReqNote NEQ qEditGetDegreeNotes.graduation_categories_note>
 		
-		<!--- Update codekey notes --->
+		<!--- Update category notes --->
 		<cfquery>
 			UPDATE DEGREE_NOTES
-			<cfif len(trim(grdCodekeyReqNote))>
-				SET graduation_codekeys_note = <cfqueryparam value="#grdCodekeyReqNote#" cfsqltype="cf_sql_varchar">
+			<cfif len(trim(grdCategoryReqNote))>
+				SET graduation_categories_note = <cfqueryparam value="#grdCategoryReqNote#" cfsqltype="cf_sql_varchar">
 			<cfelse>
-				SET graduation_codekeys_note = NULL
+				SET graduation_categories_note = NULL
 			</cfif>
 			WHERE degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
 		</cfquery>
@@ -562,33 +668,35 @@
 	</cfif>
 </cfif>
 
-<!--- Define the graduation requirements codekeys "remove" button action --->
-<cfif isDefined("form.delGrdCodekeyReq")>
+<!--- Define the graduation requirements category "remove" button action --->
+<cfif isDefined("form.delGrdCategoryReq")>
 	<cfquery>
 		DELETE
-		FROM DEGREE_GRADUATION_CODEKEYS
+		FROM DEGREE_GRADUATION_CATEGORIES
 		WHERE degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
-		AND codekeys_id = <cfqueryparam value="#form.grdCodekeysId#" cfsqltype="cf_sql_integer">
+		AND degree_categories_id = <cfqueryparam value="#form.grdCategoryId#" cfsqltype="cf_sql_integer">
 	</cfquery>
 	
 	<!--- Refresh page --->
 	<cflocation url="?college=#URLEncodedFormat(qEditGetCollege.id)#&degree=#URLEncodedFormat(qEditGetDegree.id)#">
 </cfif>
 
-<!--- Define the graduation requirements by academic discipline "add" button action --->
-<cfif isDefined("form.addGrdCodekeyReq")>
+<!--- Define the graduation requirements by degree category "add" button action --->
+<cfif isDefined("form.addGrdCategoryReq")>
 	
 	<!--- Perform simple validation on form fields --->
-	<cfif form.localGrdCodekey EQ 0>
-		<cfset messageBean.addError('Please select a discipline.', 'localGrdCodekey')>
+	<cfif form.localGrdCategory EQ 0>
+		<cfset messageBean.addError('Please select a category.', 'localGrdCategory')>
 	</cfif>
 	
-	<cfif !len(trim(form.codekeyGrdCredits))>
-		<cfset messageBean.addError('The number of academic credits is required.', 'codekeyGrdCredits')>
-	<cfelseif !IsValid("numeric", trim(form.codekeyGrdCredits))>
-		<cfset messageBean.addError('Credits must be a decimal number.', 'codekeyGrdCredits')>
-	<cfelseif !(trim(form.codekeyGrdCredits) GT 0)>
-		<cfset messageBean.addError('The number of credits must be a positive number.', 'codekeyGrdCredits')>
+	<cfif !len(trim(form.categoryGrdCredits))>
+		<cfset messageBean.addError('The number of academic credits is required.', 'categoryGrdCredits')>
+	<cfelseif !IsValid("numeric", trim(form.categoryGrdCredits))>
+		<cfset messageBean.addError('Credits must be a decimal number.', 'categoryGrdCredits')>
+	<cfelseif !(trim(form.categoryGrdCredits) LT 100)>
+		<cfset messageBean.addError('The number of requested credits is too high.', 'categoryGrdCredits')>
+	<cfelseif !(trim(form.categoryGrdCredits) GT 0)>
+		<cfset messageBean.addError('The number of credits must be a positive number.', 'categoryGrdCredits')>
 	</cfif>
 	
 	<!--- Stop here if errors were detected --->
@@ -597,29 +705,16 @@
 		<cfreturn>
 	</cfif>
 	
-	<!--- Find the codekey, if exists --->
-	<cfquery name="qEditGetCodekey">
-		SELECT id
-		FROM CODEKEYS
-		WHERE id = <cfqueryparam value="#trim(form.localGrdCodekey)#" cfsqltype="cf_sql_integer">
+	<!--- Ensure the category is not already an admission requirement --->
+	<cfquery name="qEditCheckAdmCategory">
+		SELECT degree_categories_id
+		FROM DEGREE_ADMISSION_CATEGORIES
+		WHERE degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
+		AND degree_categories_id = <cfqueryparam value="#trim(form.localGrdCategory)#" cfsqltype="cf_sql_integer">
 	</cfquery>
-
-	<cfif !qEditGetCodekey.RecordCount>
-		<cfset messageBean.addError('The EvCC discipline could not be found.', 'localGrdCodekey')>
-	</cfif>
 	
-	<!--- Ensure the codekey is not already an admission requirement --->
-	<cfif !messageBean.hasErrors()>
-		<cfquery name="qEditCheckAdmCodekey">
-			SELECT codekeys_id
-			FROM DEGREE_ADMISSION_CODEKEYS
-			WHERE degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
-			AND codekeys_id = <cfqueryparam value="#qEditGetCodekey.id#" cfsqltype="cf_sql_integer">
-		</cfquery>
-		
-		<cfif qEditCheckAdmCodekey.RecordCount>
-			<cfset messageBean.addError('This EvCC discipline is already an admission requirement.', 'localGrdCodekey')>
-		</cfif>
+	<cfif qEditCheckAdmCategory.RecordCount>
+		<cfset messageBean.addError('This CC category is already an admission requirement.', 'localGrdCategory')>
 	</cfif>
 	
 	<!--- Stop here if errors were detected --->
@@ -629,15 +724,15 @@
 	</cfif>
 	
 	<!--- Ensure no duplicates --->
-	<cfquery name="qEditCheckCodekey">
-		SELECT codekeys_id
-		FROM DEGREE_GRADUATION_CODEKEYS
+	<cfquery name="qEditCheckCategory">
+		SELECT degree_categories_id
+		FROM DEGREE_GRADUATION_CATEGORIES
 		WHERE degrees_id = <cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">
-		AND codekeys_id = <cfqueryparam value="#qEditGetCodekey.id#" cfsqltype="cf_sql_integer">
+		AND degree_categories_id = <cfqueryparam value="#trim(form.localGrdCategory)#" cfsqltype="cf_sql_integer">
 	</cfquery>
 	
-	<cfif qEditCheckCodekey.RecordCount>
-		<cfset messageBean.addError('This EvCC discipline is already an graduation requirement.', 'localGrdCodekey')>
+	<cfif qEditCheckCategory.RecordCount>
+		<cfset messageBean.addError('This category is already an graduation requirement.', 'localGrdCategory')>
 	</cfif>
 	
 	<!--- Stop here if errors were detected --->
@@ -645,15 +740,15 @@
 		<cfinclude template="model/editDegree.cfm">
 		<cfreturn>
 	</cfif>
-	
+
 	<!--- Looks good, so update degrees --->
 	<cfquery>
-		INSERT INTO DEGREE_GRADUATION_CODEKEYS (
-			degrees_id, codekeys_id, credit
+		INSERT INTO DEGREE_GRADUATION_CATEGORIES (
+			degrees_id, degree_categories_id, credit
 		) VALUES (
 			<cfqueryparam value="#qEditGetDegree.id#" cfsqltype="cf_sql_integer">,
-			<cfqueryparam value="#qEditGetCodekey.id#" cfsqltype="cf_sql_integer">,
-			<cfqueryparam value="#form.codekeyGrdCredits#" cfsqltype="cf_sql_decimal">
+			<cfqueryparam value="#trim(form.localGrdCategory)#" cfsqltype="cf_sql_integer">,
+			<cfqueryparam value="#form.categoryGrdCredits#" scale="2" cfsqltype="cf_sql_decimal">
 		)
 	</cfquery>
 	

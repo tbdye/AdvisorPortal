@@ -73,6 +73,22 @@
 											<td><label for="studentId">Student ID:</label></td>
 											<td><cfinput type="text" id="studentId" name="studentId" value="#qUserGetAccount.student_id#"></td>
 										</tr>
+										<tr>
+											<td width="160px"><label for="mathCourse">Math course:</label></td>
+											<td>
+												<cfselect name="mathCourse" query="qUserGetMathCourses" display="course_number" value="id" selected="#qUserGetPlacementCourses.math_courses_id#" queryPosition="below">
+													<option value="0">Select course:</option>
+												</cfselect>
+											</td>
+										</tr>
+										<tr>
+											<td width="160px"><label for="englishCourse">English course:</label></td>
+											<td>
+												<cfselect name="englishCourse" query="qUserGetEnglishCourses" display="course_number" value="id" selected="#qUserGetPlacementCourses.english_courses_id#" queryPosition="below">
+													<option value="0">Select course:</option>
+												</cfselect>
+											</td>
+										</tr>
 									</cfif>
 									<tr>
 										<td><label for="password">Password:</label></td>

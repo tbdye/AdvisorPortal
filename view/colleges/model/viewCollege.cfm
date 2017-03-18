@@ -52,14 +52,12 @@
 		            		</cfif>
 		            		<cfif qViewGetAdmissionCourses.RecordCount>
 		            			<tr>
-									<th width="33%">EvCC Course</th>
-									<th width="33%">Category</th>
-									<th width="33%">Equivalent Course</th>
+									<th width="50%">CC Course</th>
+									<th width="50%">Equivalent Course</th>
 								</tr>
 								<cfloop query="qViewGetAdmissionCourses">
 									<tr>
 										<td><cfoutput><a href="../courses/?course=#URLEncodedFormat(qViewGetAdmissionCourses.id)#" title="#qViewGetAdmissionCourses.course_number#">#qViewGetAdmissionCourses.course_number#</a></cfoutput></td>
-										<td><cfoutput>#qViewGetAdmissionCourses.category# (#qViewGetAdmissionCourses.description#)</cfoutput></td>
 										<td><cfoutput>#qViewGetAdmissionCourses.foreign_course_number#</cfoutput></td>
 									</tr>
 								</cfloop>
@@ -79,8 +77,8 @@
 		            		</cfif>
 		            		<cfif qViewGetAdmissionDepartments.RecordCount>
 		            			<tr>
-									<th width="66%">EvCC Department</th>
-									<th width="33%">Credit Required</th>
+									<th width="50%">CC Department</th>
+									<th width="50%">Credit Required</th>
 								</tr>
 								<cfloop query="qViewGetAdmissionDepartments">
 									<tr>

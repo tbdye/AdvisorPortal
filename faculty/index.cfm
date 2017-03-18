@@ -4,7 +4,7 @@
 	<cflocation url="..">
 </cfif>
 
-<cfset messageBean=createObject('#this.mappings['cfcMapping']#.messageBean').init()>
+<cfset messageBean=createObject('cfcMapping.messageBean').init()>
 
 <!--- Define form action for "Select" button. --->
 <cfif isDefined("form.selectButton")>

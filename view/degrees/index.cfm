@@ -4,7 +4,7 @@
 	<cflocation url="..">
 </cfif>
 
-<cfset messageBean=createObject('#this.mappings['cfcMapping']#.messageBean').init()>
+<cfset messageBean=createObject('cfcMapping.messageBean').init()>
 
 <!--- Do basic validation --->
 <cfif !isDefined("url.degree") || !IsNumeric("#URLDecode(url.degree)#")>
@@ -38,42 +38,46 @@
 <!--- Prepare degree content --->
 <cfquery name="qViewGetDegreeNotes">
 	SELECT
-		admission_courses_note, admission_codekeys_note,
-		graduation_courses_note, graduation_codekeys_note, general_note
+		admission_courses_note, admission_categories_note,
+		graduation_courses_note, graduation_categories_note, general_note
 	FROM DEGREE_NOTES
-	WHERE degrees_id = <cfqueryparam value="#URLDecode(url.degree)#" cfsqltype="cf_sql_integer">
+	WHERE degrees_id = <cfqueryparam value="#qViewGetDegree.id#" cfsqltype="cf_sql_integer">
 </cfquery>
 
 <cfquery name="qViewGetAdmissionCourses">
-	SELECT a.courses_id, a.foreign_course_number, c.id, c.course_number, cat.category, cat.description
-	FROM DEGREE_ADMISSION_COURSES a, COURSES c, CATEGORIES cat
-	WHERE a.courses_id = c.id
-	AND a.categories_id = cat.id
-	AND a.degrees_id = <cfqueryparam value="#URLDecode(url.degree)#" cfsqltype="cf_sql_integer">
+	SELECT a.courses_id, a.foreign_course_number, a.degree_categories_id, c.id, c.course_number, d.category
+	FROM DEGREE_ADMISSION_COURSES a
+	JOIN COURSES c
+	ON c.id = a.courses_id
+	JOIN DEGREE_CATEGORIES d
+	ON d.id = a.degree_categories_id
+	WHERE a.degrees_id = <cfqueryparam value="#qViewGetDegree.id#" cfsqltype="cf_sql_integer">
 </cfquery>
 
-<cfquery name="qViewGetAdmissionCodekeys">
-	SELECT a.codekeys_id, a.credit, c.id, c.description
-	FROM DEGREE_ADMISSION_CODEKEYS a
-	JOIN CODEKEYS c
-	ON a.codekeys_id = c.id
-	WHERE a.degrees_id = <cfqueryparam value="#URLDecode(url.degree)#" cfsqltype="cf_sql_integer">
+<cfquery name="qViewGetAdmissionCategories">
+	SELECT a.degree_categories_id, a.credit, d.category
+	FROM DEGREE_ADMISSION_CATEGORIES a
+	JOIN DEGREE_CATEGORIES d
+	ON d.id = a.degree_categories_id
+	WHERE a.degrees_id = <cfqueryparam value="#qViewGetDegree.id#" cfsqltype="cf_sql_integer">
 </cfquery>
 
 <cfquery name="qViewGetGraduationCourses">
-	SELECT g.courses_id, g.foreign_course_number, c.id, c.course_number, cat.category, cat.description
-	FROM DEGREE_GRADUATION_COURSES g, COURSES c, CATEGORIES cat
-	WHERE g.courses_id = c.id
-	AND g.categories_id = cat.id
-	AND g.degrees_id = <cfqueryparam value="#URLDecode(url.degree)#" cfsqltype="cf_sql_integer">
+	SELECT g.courses_id, g.foreign_course_number, g.degree_categories_id, c.id, c.course_number, d.category
+	FROM DEGREE_GRADUATION_COURSES g
+	JOIN COURSES c
+	ON c.id = g.courses_id
+	JOIN DEGREE_CATEGORIES d
+	ON d.id = g.degree_categories_id
+	WHERE g.degrees_id = <cfqueryparam value="#qViewGetDegree.id#" cfsqltype="cf_sql_integer">
 </cfquery>
 
-<cfquery name="qViewGetGraduationCodekeys">
-	SELECT g.codekeys_id, g.credit, c.id, c.description
-	FROM DEGREE_GRADUATION_CODEKEYS g
-	JOIN CODEKEYS c
-	ON g.codekeys_id = c.id
-	WHERE g.degrees_id = <cfqueryparam value="#URLDecode(url.degree)#" cfsqltype="cf_sql_integer">
+<cfquery name="qViewGetGraduationCategories">
+	SELECT g.degree_categories_id, g.credit, d.category
+	FROM DEGREE_GRADUATION_CATEGORIES g
+	JOIN DEGREE_CATEGORIES d
+	ON d.id = g.degree_categories_id
+	WHERE g.degrees_id = <cfqueryparam value="#qViewGetDegree.id#" cfsqltype="cf_sql_integer">
 </cfquery>
 
 <!--- Display page --->

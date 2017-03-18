@@ -4,7 +4,7 @@
 	<cflocation url="..">
 </cfif>
 
-<cfset messageBean=createObject('#this.mappings['cfcMapping']#.messageBean').init()>
+<cfset messageBean=createObject('cfcMapping.messageBean').init()>
 
 <!--- Do basic validation --->
 <cfif !IsNumeric("#URLDecode(url.course)#")>
@@ -45,9 +45,25 @@
 	ORDER BY p.group_id, c.course_number
 </cfquery>
 
-<cfquery name="qEditGetSelectGroups" dbtype="query">
+<cfquery name="qEditGetCorequisites">
+	SELECT cr.id, cr.courses_id, cr.group_id, cr.courses_corequisite_id, c.course_number
+	FROM COREQUISITES cr
+	JOIN COURSES c
+	ON cr.courses_corequisite_id = c.id
+	WHERE cr.courses_id = <cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">
+	ORDER BY cr.group_id, c.course_number
+</cfquery>
+
+<cfquery name="qEditGetSelectPrereqGroups" dbtype="query">
 	SELECT group_id
 	FROM qEditGetPrerequisites
+	GROUP BY group_id
+	ORDER BY group_id DESC
+</cfquery>
+
+<cfquery name="qEditGetSelectCoreqGroups" dbtype="query">
+	SELECT group_id
+	FROM qEditGetCorequisites
 	GROUP BY group_id
 	ORDER BY group_id DESC
 </cfquery>
@@ -224,46 +240,6 @@
 	</cfif>
 </cfif>
 
-<!--- Define "Remove" button behavior for placement scores --->
-<cfif isDefined("form.removePlacementButton")>
-	<cfquery>
-		DELETE
-		FROM PREREQUISITE_PLACEMENTS
-		WHERE courses_id = <cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">
-	</cfquery>
-	
-	<!--- Refresh page --->
-	<cflocation url="?course=#URLEncodedFormat(qEditGetCourse.id)#">
-</cfif>
-
-<!--- Define "Add" button behavior for placement scores--->
-<cfif isDefined("form.addPlacementButton")>
-	
-	<!--- Do basic validation --->
-	<cfif !len(trim(form.coursePlacement))>
-		<cfset messageBean.addError('A description of placement criteria is required.', 'coursePlacement')>
-	</cfif>
-	
-	<!--- Add placement record --->
-	<cfif !messageBean.hasErrors()>
-		<cfset coursePlacement=canonicalize(trim(form.coursePlacement), true, true)>
-		
-		<cfquery>
-			INSERT INTO PREREQUISITE_PLACEMENTS (
-				courses_id, placement
-			) VALUES (
-				<cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">,
-				<cfqueryparam value="#coursePlacement#" cfsqltype="cf_sql_varchar">
-			)
-		</cfquery>
-	</cfif>
-	
-	<!--- Refresh page if there were no errors --->
-	<cfif !messageBean.hasErrors()>
-		<cflocation url="?course=#URLEncodedFormat(qEditGetCourse.id)#">
-	</cfif>
-</cfif>
-
 <!--- Define "Remove" button behavior for prerequisites --->
 <cfif isDefined("form.removePrerequisiteButton")>
 	<cfquery>
@@ -308,12 +284,12 @@
 	</cfif>
 	
 	<!--- Ensure no duplicates in an existing group --->
-	<cfif groupId NEQ 0>
+	<cfif prereqGroupId NEQ 0>
 		<cfquery name="qEditCheckPrerequisite" dbtype="query">
 			SELECT id
 			FROM qEditGetPrerequisites
 			WHERE courses_id = <cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">
-			AND group_id = <cfqueryparam value="#form.groupId#" cfsqltype="cf_sql_integer">
+			AND group_id = <cfqueryparam value="#form.prereqGroupId#" cfsqltype="cf_sql_integer">
 			AND courses_prerequisite_id = <cfqueryparam value="#qEditGetPrerequisiteCourse.id#" cfsqltype="cf_sql_integer">
 		</cfquery>
 		
@@ -329,7 +305,7 @@
 	</cfif>
 	
 	<!--- Looks good, so add prerequisite course --->
-	<cfif groupId EQ 0>
+	<cfif prereqGroupId EQ 0>
 		
 		<!--- Prerequisite is part of a new group, so find the last group number --->
 		<cfquery name="qEditGetLastGroup" dbtype="query" maxrows="1">
@@ -362,8 +338,158 @@
 				courses_id, group_id, courses_prerequisite_id
 			) VALUES (
 				<cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">,
-				<cfqueryparam value="#form.groupId#" cfsqltype="cf_sql_integer">,
+				<cfqueryparam value="#form.prereqGroupId#" cfsqltype="cf_sql_integer">,
 				<cfqueryparam value="#qEditGetPrerequisiteCourse.id#" cfsqltype="cf_sql_integer">
+			)
+		</cfquery>
+	</cfif>
+	
+	<!--- Refresh page if there were no errors --->
+	<cfif !messageBean.hasErrors()>
+		<cflocation url="?course=#URLEncodedFormat(qEditGetCourse.id)#">
+	</cfif>
+</cfif>
+
+<!--- Define "Remove" button behavior for corequisites --->
+<cfif isDefined("form.removeCorequisiteButton")>
+	<cfquery>
+		DELETE
+		FROM COREQUISITES
+		WHERE id = <cfqueryparam value="#form.corequisiteId#" cfsqltype="cf_sql_integer">
+	</cfquery>
+	
+	<!--- Refresh page --->
+	<cflocation url="?course=#URLEncodedFormat(qEditGetCourse.id)#">
+</cfif>
+
+<!--- Define "Add" button behavior for corequisites --->
+<cfif isDefined("form.addCorequisiteButton")>
+	
+	<!--- Perform simple validation on form fields --->
+	<cfif !len(trim(form.courseCorequisite))>
+		<cfset messageBean.addError('A corequisite course number is required.', 'courseCorequisite')>
+	</cfif>
+	
+	<!--- Stop here if errors were detected --->
+	<cfif messageBean.hasErrors()>
+		<cfinclude template="model/editCourse.cfm">
+		<cfreturn>
+	</cfif>
+	
+	<!--- Find the corequisite course, if exists --->
+	<cfquery name="qEditGetCorequisiteCourse">
+		SELECT id, course_number
+		FROM COURSES
+		WHERE course_number = <cfqueryparam value="#trim(form.courseCorequisite)#" cfsqltype="cf_sql_varchar">
+	</cfquery>
+	
+	<cfif !qEditGetCorequisiteCourse.RecordCount>
+		<cfset messageBean.addError('The corequisite course could not be found.', 'courseCorequisite')>
+	</cfif>
+	
+	<!--- Stop here if errors were detected --->
+	<cfif messageBean.hasErrors()>
+		<cfinclude template="model/editCourse.cfm">
+		<cfreturn>
+	</cfif>
+	
+	<!--- Ensure no duplicates in an existing group --->
+	<cfif coreqGroupId NEQ 0>
+		<cfquery name="qEditCheckCorequisite" dbtype="query">
+			SELECT id
+			FROM qEditGetCorequisites
+			WHERE courses_id = <cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">
+			AND group_id = <cfqueryparam value="#form.coreqGroupId#" cfsqltype="cf_sql_integer">
+			AND courses_corequisite_id = <cfqueryparam value="#qEditGetCorequisiteCourse.id#" cfsqltype="cf_sql_integer">
+		</cfquery>
+		
+		<cfif qEditCheckCorequisite.RecordCount>
+			<cfset messageBean.addError('This course is already a corequisite for this group.', 'courseCorequisite')>
+		</cfif>
+		
+		<!--- Stop here if errors were detected --->
+		<cfif messageBean.hasErrors()>
+			<cfinclude template="model/editCourse.cfm">
+			<cfreturn>
+		</cfif>
+	</cfif>
+	
+	<!--- Looks good, so add corequisite course --->
+	<cfif coreqGroupId EQ 0>
+		
+		<!--- Corequisite is part of a new group, so find the last group number --->
+		<cfquery name="qEditGetLastGroup" dbtype="query" maxrows="1">
+			SELECT group_id
+			FROM qEditGetCorequisites
+			GROUP BY group_id
+			ORDER BY group_id DESC
+		</cfquery>
+		
+		<cfquery>
+			INSERT INTO COREQUISITES (
+				courses_id, group_id, courses_corequisite_id
+			) VALUES (
+				<cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">,
+				<cfif qEditGetLastGroup.RecordCount>
+					<!--- Increment the last group id --->
+					<cfqueryparam value="#qEditGetLastGroup.group_id + 1#" cfsqltype="cf_sql_integer">,
+				<cfelse>
+					<!--- Create a new group id at value 1 --->
+					1,
+				</cfif>
+				<cfqueryparam value="#qEditGetCorequisiteCourse.id#" cfsqltype="cf_sql_integer">
+			)
+		</cfquery>
+	<cfelse>
+		
+		<!--- Add corequisite to existing group --->
+		<cfquery>
+			INSERT INTO COREQUISITES (
+				courses_id, group_id, courses_corequisite_id
+			) VALUES (
+				<cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">,
+				<cfqueryparam value="#form.coreqGroupId#" cfsqltype="cf_sql_integer">,
+				<cfqueryparam value="#qEditGetCorequisiteCourse.id#" cfsqltype="cf_sql_integer">
+			)
+		</cfquery>
+	</cfif>
+	
+	<!--- Refresh page if there were no errors --->
+	<cfif !messageBean.hasErrors()>
+		<cflocation url="?course=#URLEncodedFormat(qEditGetCourse.id)#">
+	</cfif>
+</cfif>
+
+<!--- Define "Remove" button behavior for placement scores --->
+<cfif isDefined("form.removePlacementButton")>
+	<cfquery>
+		DELETE
+		FROM PREREQUISITE_PLACEMENTS
+		WHERE courses_id = <cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">
+	</cfquery>
+	
+	<!--- Refresh page --->
+	<cflocation url="?course=#URLEncodedFormat(qEditGetCourse.id)#">
+</cfif>
+
+<!--- Define "Add" button behavior for placement scores--->
+<cfif isDefined("form.addPlacementButton")>
+	
+	<!--- Do basic validation --->
+	<cfif !len(trim(form.coursePlacement))>
+		<cfset messageBean.addError('A description of placement criteria is required.', 'coursePlacement')>
+	</cfif>
+	
+	<!--- Add placement record --->
+	<cfif !messageBean.hasErrors()>
+		<cfset coursePlacement=canonicalize(trim(form.coursePlacement), true, true)>
+		
+		<cfquery>
+			INSERT INTO PREREQUISITE_PLACEMENTS (
+				courses_id, placement
+			) VALUES (
+				<cfqueryparam value="#qEditGetCourse.id#" cfsqltype="cf_sql_integer">,
+				<cfqueryparam value="#coursePlacement#" cfsqltype="cf_sql_varchar">
 			)
 		</cfquery>
 	</cfif>

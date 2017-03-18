@@ -174,6 +174,51 @@
 								</table>
 							</cfform>
 						</div>
+						
+						<cfif IsUserInRole("student")>
+							<p/>
+							
+							<div id="updateAccountForm">
+								<cfform>
+									<h2>Update course placements</h2>
+									<table>
+										<cfif messageBean.hasErrors() && isDefined("form.buttonUpdatePlacements")>
+											<tr>	
+												<td colspan="2">
+													<div id="form-errors">
+														<ul>
+															<cfloop array="#messageBean.getErrors()#" index="error">
+																<cfoutput><li>#error.message#</li></cfoutput>
+															</cfloop>
+														</ul>
+													</div>
+												</td>
+											</tr>
+										</cfif>
+										<tr>
+											<td width="160px"><label for="mathCourse">Math course:</label></td>
+											<td>
+												<cfselect name="mathCourse" query="qAccountGetMathCourses" display="course_number" value="id" selected="#qAccountGetPlacementCourses.math_courses_id#" queryPosition="below">
+													<option value="0">Select course:</option>
+												</cfselect>
+											</td>
+										</tr>
+										<tr>
+											<td width="160px"><label for="englishCourse">English course:</label></td>
+											<td>
+												<cfselect name="englishCourse" query="qAccountGetEnglishCourses" display="course_number" value="id" selected="#qAccountGetPlacementCourses.english_courses_id#" queryPosition="below">
+													<option value="0">Select course:</option>
+												</cfselect>
+											</td>
+										</tr>
+										<tr>
+										<td></td>
+										<td><cfinput type="submit" name="buttonUpdatePlacements" value="Update placements"></td>
+									</tr>
+									</table>
+								</cfform>
+							</div>
+						</cfif>
 			        </div>
 	            </div>
 	            <p/>

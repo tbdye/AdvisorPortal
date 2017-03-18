@@ -4,7 +4,7 @@
 	<cflocation url="..">
 </cfif>
 
-<cfset messageBean=createObject('#this.mappings['cfcMapping']#.messageBean').init()>
+<cfset messageBean=createObject('cfcMapping.messageBean').init()>
 
 <!--- Do basic validation --->
 <cfif !isDefined("url.college") || !IsNumeric("#URLDecode(url.college)#")>
@@ -32,10 +32,9 @@
 </cfquery>
 
 <cfquery name="qViewGetAdmissionCourses">
-	SELECT a.foreign_course_number, c.id, c.course_number, cat.category, cat.description
-	FROM COLLEGE_ADMISSION_COURSES a, COURSES c, CATEGORIES cat
+	SELECT a.foreign_course_number, c.id, c.course_number
+	FROM COLLEGE_ADMISSION_COURSES a, COURSES c
 	WHERE a.courses_id = c.id
-	AND a.categories_id = cat.id
 	AND a.colleges_id = <cfqueryparam value="#URLDecode(url.college)#" cfsqltype="cf_sql_integer">
 </cfquery>
 

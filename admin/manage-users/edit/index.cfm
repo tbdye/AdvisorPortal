@@ -4,7 +4,7 @@
 	<cflocation url="..">
 </cfif>
 
-<cfset messageBean=createObject('#this.mappings['cfcMapping']#.messageBean').init()>
+<cfset messageBean=createObject('cfcMapping.messageBean').init()>
 
 <!--- Prepare basic contents of the page --->
 <cfquery name="qUserGetAccount">
@@ -22,6 +22,31 @@
 <!--- Back out if the user ID is not valid --->
 <cfif !qUserGetAccount.RecordCount>
 	<cflocation url="..">
+</cfif>
+
+<!--- Populate math and english placement data for students --->
+<cfif IsValid("integer", qUserGetAccount.s_accounts_id)>
+	<cfquery name="qUserGetPlacementCourses">
+		SELECT math_courses_id, english_courses_id
+		FROM STUDENT_PLACEMENTCOURSES
+		WHERE students_accounts_id = <cfqueryparam value="#qUserGetAccount.id#" cfsqltype="cf_sql_integer">
+	</cfquery>
+	
+	<cfquery name="qUserGetMathCourses">
+		SELECT id, course_number
+		FROM COURSES
+		WHERE use_catalog = 1
+		AND course_number LIKE 'MATH%'
+		ORDER BY course_number
+	</cfquery>
+	
+	<cfquery name="qUserGetEnglishCourses">
+		SELECT id, course_number
+		FROM COURSES
+		WHERE use_catalog = 1
+		AND course_number LIKE 'ENGL%'
+		ORDER BY course_number
+	</cfquery>
 </cfif>
 
 <!--- Set defaults for form data --->
@@ -188,6 +213,40 @@
 						WHERE accounts_id = <cfqueryparam value="#qUserGetAccount.id#" cfsqltype="cf_sql_integer">
 					</cfquery>
 				</cfif>
+			</cfif>
+		</cfif>
+	</cfif>
+	
+	<!--- Evaluate placement courses --->
+	<cfif (isDefined("form.mathCourse") || isDefined("form.englishCourse")) &&
+		(form.mathCourse NEQ 0 || form.englishCourse NEQ 0) &&
+		!messageBean.hasErrors()>
+		
+		<cfif form.mathCourse EQ 0>
+			<cfset messageBean.addError('Please select a math course.', 'mathCourse')>
+		</cfif>
+		<cfif form.englishCourse EQ 0>
+			<cfset messageBean.addError('Please select an english course.', 'englishCourse')>
+		</cfif>
+		
+		<cfif !messageBean.hasErrors()>
+			<cfif !qUserGetPlacementCourses.RecordCount>
+				<cfquery>
+					INSERT INTO STUDENT_PLACEMENTCOURSES (
+						students_accounts_id, math_courses_id, english_courses_id
+					) VALUES (
+						<cfqueryparam value="#qUserGetAccount.id#" cfsqltype="cf_sql_integer">,
+						<cfqueryparam value="#form.mathCourse#" cfsqltype="cf_sql_integer">,
+						<cfqueryparam value="#form.englishCourse#" cfsqltype="cf_sql_integer">
+					)
+				</cfquery>
+			<cfelse>
+				<cfquery>
+					UPDATE STUDENT_PLACEMENTCOURSES
+					SET math_courses_id = <cfqueryparam value="#form.mathCourse#" cfsqltype="cf_sql_integer">,
+						english_courses_id = <cfqueryparam value="#form.englishCourse#" cfsqltype="cf_sql_integer">
+					WHERE students_accounts_id = <cfqueryparam value="#qUserGetAccount.id#" cfsqltype="cf_sql_integer">
+				</cfquery>
 			</cfif>
 		</cfif>
 	</cfif>

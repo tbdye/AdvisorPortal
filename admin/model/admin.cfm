@@ -28,7 +28,7 @@
 				    	
 				    	<p><a href="manage-colleges" title="Manage Colleges">Colleges</a></p>
 						<p><a href="manage-courses" title="Manage Courses">Courses</a></p>
-						<p><a href="manage-departments" title="Manage Departments">Departments</a> (not available)</p> 
+						<p><a href="manage-departments" title="Manage Departments">Departments</a></p> 
 						<cfif IsUserInRole("administrator")>
 							<p><a href="manage-users" title="Manage Users">Users</a></p>
 						</cfif>

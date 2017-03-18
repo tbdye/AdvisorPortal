@@ -95,6 +95,21 @@
 								</td>
 							</tr>
 				    	</table>
+				    	
+				    	<cfif qViewGetCorequisites.RecordCount>
+					    	<h2>Corequisites</h2>
+				    		<table>
+				    			<tr>
+									<td>
+										<ul>
+											<cfloop index="i" from=1 to=#ArrayLen(aCorequisites)#>
+												<li><cfoutput>#aCorequisites[i]#</cfoutput><br></li>
+											</cfloop>
+										</ul>
+									</td>
+								</tr>
+					    	</table>
+				    	</cfif>
 
 						<p/>
 	                </div>

@@ -1,6 +1,6 @@
 <!--- Account Controller --->
 <!--- Thomas Dye, August 2016 --->
-<cfset messageBean=createObject('#this.mappings['cfcMapping']#.messageBean').init()>
+<cfset messageBean=createObject('cfcMapping.messageBean').init()>
 
 <cfquery name="qAccountGetAccount">
 	<cfif IsUserInRole("student")>
@@ -17,6 +17,32 @@
 </cfquery>
 
 <cfset session.loginName="#qAccountGetAccount.first_name# #qAccountGetAccount.last_name#">
+
+<cfif IsUserInRole("student")>
+	
+	<!--- Populate math and english placement data --->
+	<cfquery name="qAccountGetPlacementCourses">
+		SELECT math_courses_id, english_courses_id
+		FROM STUDENT_PLACEMENTCOURSES
+		WHERE students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">
+	</cfquery>
+
+	<cfquery name="qAccountGetMathCourses">
+		SELECT id, course_number
+		FROM COURSES
+		WHERE use_catalog = 1
+		AND course_number LIKE 'MATH%'
+		ORDER BY course_number
+	</cfquery>
+	
+	<cfquery name="qAccountGetEnglishCourses">
+		SELECT id, course_number
+		FROM COURSES
+		WHERE use_catalog = 1
+		AND course_number LIKE 'ENGL%'
+		ORDER BY course_number
+	</cfquery>
+</cfif>
 
 <cfif isDefined("form.buttonUpdateEmail")>
 	
@@ -71,7 +97,7 @@
 	</cfquery>
 	
 	<!--- Refresh the page --->
-	<cflocation url="index.cfm">
+	<cflocation url="./">
 </cfif>
 
 <cfif isDefined("form.buttonUpdatePassword")>
@@ -107,7 +133,7 @@
 	</cfquery>
 	
 	<!--- Refresh the page --->
-	<cflocation url="index.cfm">
+	<cflocation url="./">
 </cfif>
 
 <cfif isDefined("form.buttonUpdateAccount")>
@@ -171,7 +197,50 @@
 	</cfif>
 	
 	<!--- Refresh the page --->
-	<cflocation url="index.cfm">
+	<cflocation url="./">
+</cfif>
+
+<!--- Define the placement courses "Update placements" button action --->
+<cfif isDefined("form.buttonUpdatePlacements")>
+
+	<!--- Perform simple validation on form fields --->
+	<cfif form.mathCourse EQ 0>
+		<cfset messageBean.addError('Please select a math course.', 'mathCourse')>
+	</cfif>
+	<cfif form.englishCourse EQ 0>
+		<cfset messageBean.addError('Please select an english course.', 'englishCourse')>
+	</cfif>
+	
+	<!--- Stop here if errors were detected --->
+	<cfif messageBean.hasErrors()>
+		<cfinclude template="model/account.cfm">
+		<cfreturn>
+	</cfif>
+	
+	<!--- Looks good, so create record for placement courses --->
+	<cfif !qAccountGetPlacementCourses.RecordCount>
+		<cfquery>
+			INSERT INTO STUDENT_PLACEMENTCOURSES (
+				students_accounts_id, math_courses_id, english_courses_id
+			) VALUES (
+				<cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">,
+				<cfqueryparam value="#form.mathCourse#" cfsqltype="cf_sql_integer">,
+				<cfqueryparam value="#form.englishCourse#" cfsqltype="cf_sql_integer">
+			)
+		</cfquery>
+	<cfelse>
+		<cfquery>
+			UPDATE STUDENT_PLACEMENTCOURSES
+			SET math_courses_id = <cfqueryparam value="#form.mathCourse#" cfsqltype="cf_sql_integer">,
+				english_courses_id = <cfqueryparam value="#form.englishCourse#" cfsqltype="cf_sql_integer">
+			WHERE students_accounts_id = <cfqueryparam value="#session.accountId#" cfsqltype="cf_sql_integer">
+		</cfquery>
+	</cfif>
+	
+	<!--- Refresh page if there were no errors --->
+	<cfif !messageBean.hasErrors()>
+		<cflocation url="./">
+	</cfif>
 </cfif>
 
 <!--- Display page --->

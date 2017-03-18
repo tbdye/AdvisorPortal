@@ -1,5 +1,5 @@
 <!--- Dashboard Model --->
-<!--- Thomas Dye, September 2016 --->
+<!--- Thomas Dye, September 2016, February 2017 --->
 <cfif !isDefined("messageBean")>
 	<cflocation url="..">
 </cfif>
@@ -31,8 +31,47 @@
 	        <div id="page-content" class="page-plus-side">
 	            <div class="content">
 	                <span property="dc:title" content="Dashboard" class="rdf-meta element-hidden"></span>
-	
-                	<cfif qDashboardGetActivePlan.RecordCount>
+
+					<cfif !qDashboardGetPlacementCourses.RecordCount>
+						<h2>Add placement courses</h2>
+						<cfform>
+							<table>
+								<cfif messageBean.hasErrors() && isDefined("form.addPlacementButton")>
+									<tr>
+										<td colspan="2">
+											<div id="form-errors">
+												<ul>
+													<cfloop array="#messageBean.getErrors()#" index="error">
+														<cfoutput><li>#error.message#</li></cfoutput>
+													</cfloop>
+												</ul>
+											</div>											
+										</td>
+									</tr>
+								</cfif>
+								<tr>
+									<th width="20%">Math</th>
+									<th width="20%">English</th>
+									<th></th>
+								</tr>
+								<tr>
+									<td>
+										<cfselect name="mathCourse" query="qDashboardGetMathCourses" display="course_number" value="id" queryPosition="below">
+											<option value="0">Select course:</option>
+										</cfselect>
+									</td>
+									<td>
+										<cfselect name="englishCourse" query="qDashboardGetEnglishCourses" display="course_number" value="id" queryPosition="below">
+											<option value="0">Select course:</option>
+										</cfselect>
+									</td>
+									<td>
+										<cfinput type="submit" name="addPlacementButton" value="Add">
+									</td>
+								</tr>
+							</table>
+						</cfform>
+                	<cfelseif qDashboardGetActivePlan.RecordCount>
 						<h2>Active Plan: <cfoutput>#qDashboardGetActivePlan.plan_name#</cfoutput></h2>
 
 						<p>
@@ -52,398 +91,78 @@
 
 						<p/>
 
-						<hr/>
-
 						<p/>
 
 						<cfif qDashboardGetActivePlan.RecordCount && qDashboardGetCourses.RecordCount>
 							<h2>Courses remaining for this plan</h2>
+							
+							<!--- Display courses by category --->
+							<cfloop query="#qDashboardGetCategories#">
+								<cfquery dbtype="query" name="qDashboardGetCategoryCourses">
+									SELECT c_id, course_number, title, cc_id, cc_credit, credit, gc_id, sc_id, min_credit, max_credit
+									FROM qDashboardGetCourses
+									WHERE degree_categories_id = #qDashboardGetCategories.id#
+								</cfquery>
+								
+								<hr/>
+								
+								<cfoutput>
+									<h3>#qDashboardGetCategories.category#</h3></td>
+									<div id="h4-box">
+										<table>
+											<tr>
+												<th width="20%">Code</th>
+												<th>Title</th>
+												<th width="15%">Credits</th>
+												<th width="20%">Status</th>
+											</tr>
+											<cfloop query="qDashboardGetCategoryCourses">
+												<tr>
+			                                    	<!--- Display code --->
+			                                    	<td>
+			                                    		<a href="../view/courses/?course=#URLEncodedFormat(qDashboardGetCategoryCourses.c_id)#" title="#qDashboardGetCategoryCourses.course_number#">#qDashboardGetCategoryCourses.course_number#</a>
+			                                    	</td>
+													
+													<!--- Display title --->
+													<td>
+														#qDashboardGetCategoryCourses.title#
+													</td>
+													
+													<!--- Display course credits --->
+													<td>
+														<!--- Check to see if this course is marked as completed --->
+														<cfif len(qDashboardGetCategoryCourses.cc_id)>
+															<!--- Display the completed course credits by default --->
+															#qDashboardGetCategoryCourses.cc_credit#
+														<!--- If selected course credit was variable, cell is blank --->
+														<cfelseif !len(qDashboardGetCategoryCourses.credit)>
+															<!--- Alert user to update information --->
+															<a href="../plans/edit/?plan=#URLEncodedFormat(qDashboardGetActivePlan.plans_id)#" title="#qDashboardGetCategoryCourses.course_number#">Update</a>
+														<!--- The selected course credit was not variable --->
+														<cfelse>
+															<!--- Display credit --->
+															#qDashboardGetCategoryCourses.credit#
+														</cfif>
+													</td>
+													
+													<!--- Display course status --->
+													<td>
+														<!--- The course number will exist if the student has completed or verified this course --->
+														<cfif len(qDashboardGetCategoryCourses.cc_id)>
+															Complete
+														<!--- The course number will exist if the course is an optional graduation requirement --->
+														<cfelseif len(qDashboardGetCategoryCourses.gc_id)>
+															Optional
+														</cfif>
+													</td>
+												</tr>
+											</cfloop>
+										</table>
+									</div>
+								</cfoutput>
+							</cfloop>
 						<cfelse>
 							<h2>There are no courses specified in this plan</h2>
-						</cfif>
-
-						<cfif arrayLen(aCategoryC)>
-							<h3>English Composition</h3></td>
-							<div id="h4-box">
-							<table>
-								<tr>
-									<th width="20%">Code</th>
-									<th>Title</th>
-									<th width="15%">Credits</th>
-									<th width="20%">Status</th>
-								</tr>
-								<cfloop from=1 to="#arrayLen(aCategoryC)#" index="Counter">
-									<tr>
-										<cfoutput>
-	                                    	<!--- Display code --->
-	                                    	<td><a href="../view/courses/?course=#URLEncodedFormat(aCategoryC[Counter][5])#" title="#aCategoryC[Counter][1]#">#aCategoryC[Counter][1]#</a></td>
-											<!--- Display title --->
-											<td>#aCategoryC[Counter][2]#</td>
-											<td>
-												<!--- Check to see if this course is marked as completed --->
-												<cfif len(aCategoryC[Counter][9])>
-													<!--- Display the completed course credits by default --->
-													#aCategoryC[Counter][10]#
-												<!--- If selected course credit was variable, cell is blank --->
-												<cfelseif !len(aCategoryC[Counter][3])>
-													<!--- Alert user to update information --->
-													<a href="../plans/edit/?plan=#URLEncodedFormat(qDashboardGetActivePlan.plans_id)#" title="Update credits for #aCategoryC[Counter][1]#">Update</a>
-												<!--- The selected course credit was not variable --->
-												<cfelse>
-													<!--- Display credit --->
-													#aCategoryC[Counter][3]#
-												</cfif>
-											</td>
-											<td>
-												<!--- The course number will exist if the student has completed or verified this course --->
-												<cfif len(aCategoryC[Counter][9])>
-													Complete
-												<!--- The course number will exist if the course is an optional graduation requirement --->
-												<cfelseif len(aCategoryC[Counter][8])>
-													Optional
-												</cfif>
-											</td>
-	                                    </cfoutput>
-									</tr>
-								</cfloop>
-							</table>
-							</div>
-						</cfif>
-						
-						<cfif arrayLen(aCategoryW)>
-							<h3>Writing and Additional Composition</h3>
-							<div id="h4-box">
-							<table>
-								<tr>
-									<th width="20%">Code</th>
-									<th>Title</th>
-									<th width="15%">Credits</th>
-									<th width="20%">Status</th>
-								</tr>
-								<cfloop from=1 to="#arrayLen(aCategoryW)#" index="Counter">
-									<tr>
-										<cfoutput>
-	                                    	<!--- Display code --->
-	                                    	<td><a href="../view/courses/?course=#URLEncodedFormat(aCategoryW[Counter][5])#" title="#aCategoryW[Counter][1]#">#aCategoryW[Counter][1]#</a></td>
-											<!--- Display title --->
-											<td>#aCategoryW[Counter][2]#</td>
-											<td>
-												<!--- Check to see if this course is marked as completed --->
-												<cfif len(aCategoryW[Counter][9])>
-													<!--- Display the completed course credits by default --->
-													#aCategoryW[Counter][10]#
-												<!--- If selected course credit was variable, cell is blank --->
-												<cfelseif !len(aCategoryW[Counter][3])>
-													<!--- Alert user to update information --->
-													<a href="../plans/edit/?plan=#URLEncodedFormat(qDashboardGetActivePlan.plans_id)#" title="Update credits for #aCategoryW[Counter][1]#">Update</a>
-												<!--- The selected course credit was not variable --->
-												<cfelse>
-													<!--- Display credit --->
-													#aCategoryW[Counter][3]#
-												</cfif>
-											</td>
-											<td>
-												<!--- The course number will exist if the student has completed or verified this course --->
-												<cfif len(aCategoryW[Counter][9])>
-													Complete
-												<!--- The course number will exist if the course is an optional graduation requirement --->
-												<cfelseif len(aCategoryW[Counter][8])>
-													Optional
-												</cfif>
-											</td>
-	                                    </cfoutput>
-									</tr>
-								</cfloop>
-							</table>
-							</div>
-						</cfif>
-						
-						<cfif arrayLen(aCategoryQSR)>
-							<h3>Quantitative and Symbolic Reasoning</h3>
-							<div id="h4-box">
-							<table>
-								<tr>
-									<th width="20%">Code</th>
-									<th>Title</th>
-									<th width="15%">Credits</th>
-									<th width="20%">Status</th>
-								</tr>
-								<cfloop from=1 to="#arrayLen(aCategoryQSR)#" index="Counter">
-									<tr>
-										<cfoutput>
-	                                    	<!--- Display code --->
-	                                    	<td><a href="../view/courses/?course=#URLEncodedFormat(aCategoryQSR[Counter][5])#" title="#aCategoryQSR[Counter][1]#">#aCategoryQSR[Counter][1]#</a></td>
-											<!--- Display title --->
-											<td>#aCategoryQSR[Counter][2]#</td>
-											<td>
-												<!--- Check to see if this course is marked as completed --->
-												<cfif len(aCategoryQSR[Counter][9])>
-													<!--- Display the completed course credits by default --->
-													#aCategoryQSR[Counter][10]#
-												<!--- If selected course credit was variable, cell is blank --->
-												<cfelseif !len(aCategoryQSR[Counter][3])>
-													<!--- Alert user to update information --->
-													<a href="../plans/edit/?plan=#URLEncodedFormat(qDashboardGetActivePlan.plans_id)#" title="Update credits for #aCategoryQSR[Counter][1]#">Update</a>
-												<!--- The selected course credit was not variable --->
-												<cfelse>
-													<!--- Display credit --->
-													#aCategoryQSR[Counter][3]#
-												</cfif>
-											</td>
-											<td>
-												<!--- The course number will exist if the student has completed or verified this course --->
-												<cfif len(aCategoryQSR[Counter][9])>
-													Complete
-												<!--- The course number will exist if the course is an optional graduation requirement --->
-												<cfelseif len(aCategoryQSR[Counter][8])>
-													Optional
-												</cfif>
-											</td>
-	                                    </cfoutput>
-									</tr>
-								</cfloop>
-							</table>
-							</div>
-						</cfif>
-						
-						<cfif arrayLen(aCategoryNW)>
-							<h3>The Natural World</h3>
-							<div id="h4-box">
-							<table>
-								<tr>
-									<th width="20%">Code</th>
-									<th>Title</th>
-									<th width="15%">Credits</th>
-									<th width="20%">Status</th>
-								</tr>
-								<cfloop from=1 to="#arrayLen(aCategoryNW)#" index="Counter">
-									<tr>
-										<cfoutput>
-	                                    	<!--- Display code --->
-	                                    	<td><a href="../view/courses/?course=#URLEncodedFormat(aCategoryNW[Counter][5])#" title="#aCategoryNW[Counter][1]#">#aCategoryNW[Counter][1]#</a></td>
-											<!--- Display title --->
-											<td>#aCategoryNW[Counter][2]#</td>
-											<td>
-												<!--- Check to see if this course is marked as completed --->
-												<cfif len(aCategoryNW[Counter][9])>
-													<!--- Display the completed course credits by default --->
-													#aCategoryNW[Counter][10]#
-												<!--- If selected course credit was variable, cell is blank --->
-												<cfelseif !len(aCategoryNW[Counter][3])>
-													<!--- Alert user to update information --->
-													<a href="../plans/edit/?plan=#URLEncodedFormat(qDashboardGetActivePlan.plans_id)#" title="Update credits for #aCategoryNW[Counter][1]#">Update</a>
-												<!--- The selected course credit was not variable --->
-												<cfelse>
-													<!--- Display credit --->
-													#aCategoryNW[Counter][3]#
-												</cfif>
-											</td>
-											<td>
-												<!--- The course number will exist if the student has completed or verified this course --->
-												<cfif len(aCategoryNW[Counter][9])>
-													Complete
-												<!--- The course number will exist if the course is an optional graduation requirement --->
-												<cfelseif len(aCategoryNW[Counter][8])>
-													Optional
-												</cfif>
-											</td>
-	                                    </cfoutput>
-									</tr>
-								</cfloop>
-							</table>
-							</div>
-						</cfif>
-						
-						<cfif arrayLen(aCategoryVLPA)>
-							<h3>Visual, Literary, and Performing Arts</h3>
-							<div id="h4-box">
-							<table>
-								<tr>
-									<th width="20%">Code</th>
-									<th>Title</th>
-									<th width="15%">Credits</th>
-									<th width="20%">Status</th>
-								</tr>
-								<cfloop from=1 to="#arrayLen(aCategoryVLPA)#" index="Counter">
-									<tr>
-										<cfoutput>
-	                                    	<!--- Display code --->
-	                                    	<td><a href="../view/courses/?course=#URLEncodedFormat(aCategoryVLPA[Counter][5])#" title="#aCategoryVLPA[Counter][1]#">#aCategoryVLPA[Counter][1]#</a></td>
-											<!--- Display title --->
-											<td>#aCategoryVLPA[Counter][2]#</td>
-											<td>
-												<!--- Check to see if this course is marked as completed --->
-												<cfif len(aCategoryVLPA[Counter][9])>
-													<!--- Display the completed course credits by default --->
-													#aCategoryVLPA[Counter][10]#
-												<!--- If selected course credit was variable, cell is blank --->
-												<cfelseif !len(aCategoryVLPA[Counter][3])>
-													<!--- Alert user to update information --->
-													<a href="../plans/edit/?plan=#URLEncodedFormat(qDashboardGetActivePlan.plans_id)#" title="Update credits for #aCategoryVLPA[Counter][1]#">Update</a>
-												<!--- The selected course credit was not variable --->
-												<cfelse>
-													<!--- Display credit --->
-													#aCategoryVLPA[Counter][3]#
-												</cfif>
-											</td>
-											<td>
-												<!--- The course number will exist if the student has completed or verified this course --->
-												<cfif len(aCategoryVLPA[Counter][9])>
-													Complete
-												<!--- The course number will exist if the course is an optional graduation requirement --->
-												<cfelseif len(aCategoryVLPA[Counter][8])>
-													Optional
-												</cfif>
-											</td>
-	                                    </cfoutput>
-									</tr>
-								</cfloop>
-							</table>
-							</div>
-						</cfif>
-						
-						<cfif arrayLen(aCategoryIS)>
-							<h3>Individuals and Societies</h3>
-							<div id="h4-box">
-							<table>
-								<tr>
-									<th width="20%">Code</th>
-									<th>Title</th>
-									<th width="15%">Credits</th>
-									<th width="20%">Status</th>
-								</tr>
-								<cfloop from=1 to="#arrayLen(aCategoryIS)#" index="Counter">
-									<tr>
-										<cfoutput>
-	                                    	<!--- Display code --->
-	                                    	<td><a href="../view/courses/?course=#URLEncodedFormat(aCategoryIS[Counter][5])#" title="#aCategoryIS[Counter][1]#">#aCategoryIS[Counter][1]#</a></td>
-											<!--- Display title --->
-											<td>#aCategoryIS[Counter][2]#</td>
-											<td>
-												<!--- Check to see if this course is marked as completed --->
-												<cfif len(aCategoryIS[Counter][9])>
-													<!--- Display the completed course credits by default --->
-													#aCategoryIS[Counter][10]#
-												<!--- If selected course credit was variable, cell is blank --->
-												<cfelseif !len(aCategoryIS[Counter][3])>
-													<!--- Alert user to update information --->
-													<a href="../plans/edit/?plan=#URLEncodedFormat(qDashboardGetActivePlan.plans_id)#" title="Update credits for #aCategoryIS[Counter][1]#">Update</a>
-												<!--- The selected course credit was not variable --->
-												<cfelse>
-													<!--- Display credit --->
-													#aCategoryIS[Counter][3]#
-												</cfif>
-											</td>
-											<td>
-												<!--- The course number will exist if the student has completed or verified this course --->
-												<cfif len(aCategoryIS[Counter][9])>
-													Complete
-												<!--- The course number will exist if the course is an optional graduation requirement --->
-												<cfelseif len(aCategoryIS[Counter][8])>
-													Optional
-												</cfif>
-											</td>
-	                                    </cfoutput>
-									</tr>
-								</cfloop>
-							</table>
-							</div>
-						</cfif>
-							
-						<cfif arrayLen(aCategoryDIV)>
-							<h3>Diversity</h3>
-							<div id="h4-box">
-							<table>
-								<tr>
-									<th width="20%">Code</th>
-									<th>Title</th>
-									<th width="15%">Credits</th>
-									<th width="20%">Status</th>
-								</tr>
-								<cfloop from=1 to="#arrayLen(aCategoryDIV)#" index="Counter">
-									<tr>
-										<cfoutput>
-	                                    	<!--- Display code --->
-	                                    	<td><a href="../view/courses/?course=#URLEncodedFormat(aCategoryDIV[Counter][5])#" title="#aCategoryDIV[Counter][1]#">#aCategoryDIV[Counter][1]#</a></td>
-											<!--- Display title --->
-											<td>#aCategoryDIV[Counter][2]#</td>
-											<td>
-												<!--- Check to see if this course is marked as completed --->
-												<cfif len(aCategoryDIV[Counter][9])>
-													<!--- Display the completed course credits by default --->
-													#aCategoryDIV[Counter][10]#
-												<!--- If selected course credit was variable, cell is blank --->
-												<cfelseif !len(aCategoryDIV[Counter][3])>
-													<!--- Alert user to update information --->
-													<a href="../plans/edit/?plan=#URLEncodedFormat(qDashboardGetActivePlan.plans_id)#" title="Update credits for #aCategoryDIV[Counter][1]#">Update</a>
-												<!--- The selected course credit was not variable --->
-												<cfelse>
-													<!--- Display credit --->
-													#aCategoryDIV[Counter][3]#
-												</cfif>
-											</td>
-											<td>
-												<!--- The course number will exist if the student has completed or verified this course --->
-												<cfif len(aCategoryDIV[Counter][9])>
-													Complete
-												<!--- The course number will exist if the course is an optional graduation requirement --->
-												<cfelseif len(aCategoryDIV[Counter][8])>
-													Optional
-												</cfif>
-											</td>
-	                                    </cfoutput>
-									</tr>
-								</cfloop>
-							</table>
-							</div>
-						</cfif>
-							
-						<cfif arrayLen(aCategoryE)>
-							<h3>General Electives</h3>
-							<div id="h4-box">
-							<table>
-								<tr>
-									<th width="20%">Code</th>
-									<th>Title</th>
-									<th width="15%">Credits</th>
-									<th width="20%">Status</th>
-								</tr>
-								<cfloop from=1 to="#arrayLen(aCategoryE)#" index="Counter">
-									<tr>
-										<cfoutput>
-	                                    	<!--- Display code --->
-	                                    	<td><a href="../view/courses/?course=#URLEncodedFormat(aCategoryE[Counter][5])#" title="#aCategoryE[Counter][1]#">#aCategoryE[Counter][1]#</a></td>
-											<!--- Display title --->
-											<td>#aCategoryE[Counter][2]#</td>
-											<td>
-												<!--- Check to see if this course is marked as completed --->
-												<cfif len(aCategoryE[Counter][9])>
-													<!--- Display the completed course credits by default --->
-													#aCategoryE[Counter][10]#
-												<!--- If selected course credit was variable, cell is blank --->
-												<cfelseif !len(aCategoryE[Counter][3])>
-													<!--- Alert user to update information --->
-													<a href="../plans/edit/?plan=#URLEncodedFormat(qDashboardGetActivePlan.plans_id)#" title="Update credits for #aCategoryE[Counter][1]#">Update</a>
-												<!--- The selected course credit was not variable --->
-												<cfelse>
-													<!--- Display credit --->
-													#aCategoryE[Counter][3]#
-												</cfif>
-											</td>
-											<td>
-												<!--- The course number will exist if the student has completed or verified this course --->
-												<cfif len(aCategoryE[Counter][9])>
-													Complete
-												<!--- The course number will exist if the course is an optional graduation requirement --->
-												<cfelseif len(aCategoryE[Counter][8])>
-													Optional
-												</cfif>
-											</td>
-	                                    </cfoutput>
-									</tr>
-								</cfloop>
-							</table>
-							</div>
 						</cfif>
 					<cfelse>
 						<h2>Get Started</h2>

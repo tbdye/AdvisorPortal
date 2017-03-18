@@ -142,7 +142,7 @@
 						    		<tr>
 						    			<td width="125px">Grouping: </td>
 							    		<td>
-							    			<cfselect name="groupId" query="qEditGetSelectGroups" display="group_id" value="group_id" queryPosition="above" >
+							    			<cfselect name="prereqGroupId" query="qEditGetSelectPrereqGroups" display="group_id" value="group_id" queryPosition="above" >
 												<option value="0">New group</option>
 											</cfselect>
 							    		</td>
@@ -154,6 +154,71 @@
 							    	<tr>
 							    		<td></td>
 							    		<td><cfinput type="submit" name="addPrerequisiteButton" value="Add prerequisite"></td>
+						    		</cfform>
+					    		</tr>
+							</table>
+			    		</div>
+			    		</table>
+			    		
+			    		<!--------------------- corequisites ---------------------------->	
+				    	<h3>Corequisites</h3>
+			    		
+			    		<div id="h4-box">
+			    			<table>
+								<tr>
+						    		<th width="45%">Grouping</th>
+						    		<th width="45%">Course</th>
+						    		<th></th>
+					    		</tr>
+					    		<cfloop query="qEditGetCorequisites">
+						    		<tr>
+							    		<cfform>
+								    		<td><cfoutput>#qEditGetCorequisites.group_id#</cfoutput></td>
+								    		<td><cfoutput>#qEditGetCorequisites.course_number#</cfoutput></td>
+								    		<td>
+									    		<cfinput type="hidden" name="corequisiteId" value="#qEditGetCorequisites.id#">
+									    		<cfinput type="submit" name="removeCorequisiteButton" value="Remove">
+								    		</td>
+							    		</cfform>
+						    		</tr>
+					    		</cfloop>			    				
+			    			</table>
+			    		</div>
+			    		
+			    		<div id="h4-box">
+				    		<table>
+				    			<tr>
+									<td colspan="2"><h4>Add New Corequisite</h4></td>
+								</tr>
+								<cfif messageBean.hasErrors() && isDefined("form.addCorequisiteButton")>
+								<tr>
+									<td colspan="2">
+										<div id="form-errors">
+											<ul>
+												<cfloop array="#messageBean.getErrors()#" index="error">
+													<cfoutput><li>#error.message#</li></cfoutput>
+												</cfloop>
+											</ul>
+										</div>											
+									</td>
+								</tr>
+								</cfif>				    							    			
+						    	<cfform>
+						    		<tr>
+						    			<td width="125px">Grouping: </td>
+							    		<td>
+							    			<cfselect name="coreqGroupId" query="qEditGetSelectCoreqGroups" display="group_id" value="group_id" queryPosition="above" >
+												<option value="0">New group</option>
+											</cfselect>
+							    		</td>
+							    	</tr>
+							    	<tr>
+							    		<td>Course: </td>
+							    		<td><cfinput type="text" id="courseCorequisite" name="courseCorequisite"></td>
+							    	</tr>
+							    	<tr>
+							    		<td></td>
+							    		<td><cfinput type="submit" name="addCorequisiteButton" value="Add corequisite"></td>
 						    		</cfform>
 					    		</tr>
 							</table>

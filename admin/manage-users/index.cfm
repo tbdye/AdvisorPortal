@@ -4,7 +4,21 @@
 	<cflocation url="..">
 </cfif>
 
-<cfset messageBean=createObject('#this.mappings['cfcMapping']#.messageBean').init()>
+<cfset messageBean=createObject('cfcMapping.messageBean').init()>
+
+<!--- Display all students --->
+<cfif isDefined("url.search") && url.search EQ 'all'>
+	<cfquery name="qAdminSearchAccount">
+		SELECT a.first_name + ' ' + a.last_name AS full_name, a.email,
+				a.id, a.active, s.student_id, s.accounts_id AS s_accounts_id,
+				f.accounts_id AS f_accounts_id, f.editor, f.administrator
+		FROM accounts a
+		FULL JOIN students s
+		ON a.id = s.accounts_id
+		FULL JOIN faculty f
+		ON a.id = f.accounts_id
+	</cfquery>
+</cfif>
 
 <!--- Define form action for "Search" button --->
 <cfif isDefined("form.searchButton")>
@@ -54,24 +68,10 @@
 	
 	<cfinclude template="model/manageUsers.cfm">
 	<cfreturn>
-	
-<!--- Display all students --->
-<cfelseif isDefined("url.search") && url.search EQ 'all'>
-	<cfquery name="qAdminSearchAccount">
-		SELECT a.first_name + ' ' + a.last_name AS full_name, a.email,
-				a.id, a.active, s.student_id, s.accounts_id AS s_accounts_id,
-				f.accounts_id AS f_accounts_id, f.editor, f.administrator
-		FROM accounts a
-		FULL JOIN students s
-		ON a.id = s.accounts_id
-		FULL JOIN faculty f
-		ON a.id = f.accounts_id
-	</cfquery>
-	<cfinclude template="model/manageUsers.cfm">
-	<cfreturn>
+</cfif>
 	
 <!---Define form action for "Create an account" button--->
-<cfelseif isDefined("form.createFacultyButton")>
+<cfif isDefined("form.createFacultyButton")>
 	
 	<!--- Perform simple validation on form fields --->
 	<cfif !len(trim(form.firstName))>
@@ -158,11 +158,12 @@
 		)
 	</cfquery>
 	
-	<cfinclude template="model/manageUsers.cfm">
-	<cfreturn>
+	<!--- Refresh page if there were no errors --->
+	<cfif !messageBean.hasErrors()>
+		<cflocation url="./">
+	</cfif>
+</cfif>
 
 <!--- Display default landing page. --->
-<cfelse>
-	<cfinclude template="model/manageUsers.cfm">
-	<cfreturn>
-</cfif>
+<cfinclude template="model/manageUsers.cfm">
+<cfreturn>

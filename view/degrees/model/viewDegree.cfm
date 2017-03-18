@@ -64,14 +64,14 @@
 		            		</cfif>
 		            		<cfif qViewGetAdmissionCourses.RecordCount>
 		            			<tr>
-									<th>EvCC Course</th>
+									<th>CC Course</th>
 									<th>Category</th>
 									<th>Equivalent Course</th>
 								</tr>
 								<cfloop query="qViewGetAdmissionCourses">
 									<tr>
 										<td width="20%"><cfoutput><a href="../courses/?course=#URLEncodedFormat(qViewGetAdmissionCourses.id)#" title="#qViewGetAdmissionCourses.course_number#">#qViewGetAdmissionCourses.course_number#</a></cfoutput></td>
-										<td width="50%"><cfoutput>#qViewGetAdmissionCourses.category# (#qViewGetAdmissionCourses.description#)</cfoutput></td>
+										<td width="50%"><cfoutput>#qViewGetAdmissionCourses.category#</cfoutput></td>
 										<td width="30%"><cfoutput>#qViewGetAdmissionCourses.foreign_course_number#</cfoutput></td>
 									</tr>
 								</cfloop>
@@ -79,25 +79,25 @@
 		            	</table>
 	            	</cfif>
 	            	
-	            	<cfif len(qViewGetDegreeNotes.admission_codekeys_note) || qViewGetAdmissionCodekeys.RecordCount>
+	            	<cfif len(qViewGetDegreeNotes.admission_categories_note) || qViewGetAdmissionCategories.RecordCount>
 	            		
-	            		<h2>Admission Requirements by Academic Discipline</h2>
+	            		<h2>Admission Requirements by Degree Category</h2>
 	            		<table>
-	            			<cfif len(qViewGetDegreeNotes.admission_codekeys_note)>
+	            			<cfif len(qViewGetDegreeNotes.admission_categories_note)>
 		            			<tr>
 		            				<!--- ToDo:  convert this to preformatted text --->
-		            				<td colspan="2"><cfoutput>#qViewGetDegreeNotes.admission_codekeys_note#</cfoutput></td>
+		            				<td colspan="2"><cfoutput>#qViewGetDegreeNotes.admission_categories_note#</cfoutput></td>
 		            			</tr>
 		            		</cfif>
-		            		<cfif qViewGetAdmissionCodekeys.RecordCount>
+		            		<cfif qViewGetAdmissionCategories.RecordCount>
 		            			<tr>
-									<th>EvCC Codekey</th>
+									<th>CC Category</th>
 									<th>Credit Required</th>
 								</tr>
-								<cfloop query="qViewGetAdmissionCodekeys">
+								<cfloop query="qViewGetAdmissionCategories">
 									<tr>
-										<td width="55%"><cfoutput>#qViewGetAdmissionCodekeys.description#</cfoutput></td>
-										<td width="35%"><cfoutput>#qViewGetAdmissionCodekeys.credit#</cfoutput></td>
+										<td width="55%"><cfoutput>#qViewGetAdmissionCategories.category#</cfoutput></td>
+										<td width="35%"><cfoutput>#qViewGetAdmissionCategories.credit#</cfoutput></td>
 									</tr>
 								</cfloop>
 		            		</cfif>
@@ -116,13 +116,13 @@
 		            		</cfif>
 		            		<cfif qViewGetGraduationCourses.RecordCount>
 		            			<tr>
-									<th>EvCC Course</th>
+									<th>CC Course</th>
 									<th>Equivalent Course</th>
 								</tr>
 								<cfloop query="qViewGetGraduationCourses">
 									<tr>
 										<td width="20%"><cfoutput><a href="../courses/?course=#URLEncodedFormat(qViewGetGraduationCourses.id)#" title="#qViewGetGraduationCourses.course_number#">#qViewGetGraduationCourses.course_number#</a></cfoutput></td>
-										<td width="50%"><cfoutput>#qViewGetGraduationCourses.category# (#qViewGetGraduationCourses.description#)</cfoutput></td>
+										<td width="50%"><cfoutput>#qViewGetGraduationCourses.category#</cfoutput></td>
 										<td width="30%"><cfoutput>#qViewGetGraduationCourses.foreign_course_number#</cfoutput></td>
 									</tr>
 								</cfloop>
@@ -130,25 +130,25 @@
 		            	</table>
 	            	</cfif>
 	            	
-	            	<cfif len(qViewGetDegreeNotes.graduation_codekeys_note) || qViewGetGraduationCodekeys.RecordCount>
+	            	<cfif len(qViewGetDegreeNotes.graduation_categories_note) || qViewGetGraduationCategories.RecordCount>
 	            		
-	            		<h2>Optional Graduation Requirements by Academic Discipline</h2>
+	            		<h2>Optional Graduation Requirements by Degree Category</h2>
 	            		<table>
-	            			<cfif len(qViewGetDegreeNotes.graduation_codekeys_note)>
+	            			<cfif len(qViewGetDegreeNotes.graduation_categories_note)>
 		            			<tr>
 		            				<!--- ToDo:  convert this to preformatted text --->
-		            				<td colspan="2"><cfoutput>#qViewGetDegreeNotes.graduation_codekeys_note#</cfoutput></td>
+		            				<td colspan="2"><cfoutput>#qViewGetDegreeNotes.graduation_categories_note#</cfoutput></td>
 		            			</tr>
 		            		</cfif>
-		            		<cfif qViewGetGraduationCodekeys.RecordCount>
+		            		<cfif qViewGetGraduationCategories.RecordCount>
 		            			<tr>
-									<th>EvCC Codekey</th>
+									<th>CC Codekey</th>
 									<th>Credit Required</th>
 								</tr>
-								<cfloop query="qViewGetGraduationCodekeys">
+								<cfloop query="qViewGetGraduationCategories">
 									<tr>
-										<td width="55%"><cfoutput>#qViewGetGraduationCodekeys.description#</cfoutput></td>
-										<td width="35%"><cfoutput>#qViewGetGraduationCodekeys.credit#</cfoutput></td>
+										<td width="55%"><cfoutput>#qViewGetGraduationCategories.category#</cfoutput></td>
+										<td width="35%"><cfoutput>#qViewGetGraduationCategories.credit#</cfoutput></td>
 									</tr>
 								</cfloop>
 		            		</cfif>
